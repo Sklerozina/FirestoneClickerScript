@@ -2,6 +2,9 @@
 #MaxThreadsPerHotkey 2
 
 SendMode "InputThenPlay"
+^r:: {
+	Reload
+}
 
 ^y:: {
     static toggled := false
@@ -10,22 +13,28 @@ SendMode "InputThenPlay"
 
 	if !toggled {
 		MsgBox "Скрипт приостановлен."
-		Exit
+		Reload
 	}
 	
 	While toggled
 	{
-		Sleep 5000
+		Sleep 500
 		if WinExist("ahk_exe Firestone.exe")
 		{
 			WinActivate
 		}
+
+		BackToMainScreen ; Принудительный возврат на главный экран (Много раз жмёт Esc, а потом кликает на закрытие диалога)
 		Sleep 1000
+		CollectMapLoot
+		Sleep 1000
+		DoExpeditions
+		Sleep 2000
 		CollectTools
 		Sleep 2000
 		CollectXPGuard
 
-		Sleep 600000 ; Ждём минуту
+		Sleep 300000 ; Ждём 5 минут
 	}
         
 }
@@ -47,17 +56,57 @@ CollectXPGuard() {
 	Press "{Esc}"
 }
 
+; Экспедиции
+DoExpeditions() {
+	ClickGuildIcon
+	FClick(296, 387) ; Клик на здание экспедиций
+	FClick(1305, 296) ; Клик на кнопку принятия экспедиции
+	Sleep 1000
+	FClick(1305, 296) ; Клик на кнопку принятия экспедиции
+	Press "{Esc}"
+	Press "{Esc}"
+}
+
+CollectMapLoot() {
+	Press "{m}"
+	FClick(1834, 583)
+	FClick(143, 953)
+	Press "{Esc}"
+}
+
 FindFirestoneWindowAndActivate() {
-	if !WinActive("ahk_exe Firestone.exe")
+	if !WinExist("ahk_exe Firestone.exe")
 	{
-		MsgBox "Окно перестало быть активным! Принудительный выход."
+		MsgBox "Окно с игрой не найдено! Принудительный выход."
 		Exit
 	}
+
+	if !WinActive("ahk_exe Firestone.exe")
+	{
+		Result := MsgBox("Окно перестало быть активным! Мне продолжить?",, "YesNo")
+		if Result = "Yes"
+			WinActivate
+		else
+			Exit
+	}
+}
+
+BackToMainScreen(){
+	Press "{Esc}"
+	Press "{Esc}"
+	Press "{Esc}"
+	FClick(1537, 275)
 }
 
 ; Клик на иконку города на главном экране
 ClickCityIcon() {
-	FClick 1850, 185 ; Клик на иконку города
+	; FClick 1850, 185 ; Клик на иконку города
+	Press "{t}"
+}
+
+; Клик на иконку гильдии
+ClickGuildIcon() {
+	FClick 1865, 442 ; Клик на иконку города
 }
 
 FClick(x, y) {
