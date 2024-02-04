@@ -10,7 +10,7 @@ SendMode "InputThenPlay"
 }
 
 hwids := 0
-
+firestone_hwid := 0
 ;^d:: {
 ;	DoWMDailys
 ;}
@@ -53,6 +53,7 @@ DoWMDailys() {
 
 ; Запускается по таймеру
 DoWork() {
+	global firestone_hwid
 	hwids := FindAllFirestones()
 	Loop hwids.Length
 	{
@@ -122,13 +123,14 @@ CollectMapLoot() {
 }
 
 FindFirestoneWindowAndActivate() {
-	if !WinExist
+	global firestone_hwid
+	if !WinExist(firestone_hwid)
 	{
 		MsgBox "Окно с игрой не найдено! Принудительный выход."
 		Exit
 	}
 
-	if !WinActive
+	if !WinActive(firestone_hwid)
 	{
 		Result := MsgBox("Окно перестало быть активным! Мне продолжить?",, "YesNo")
 		if Result = "Yes"
