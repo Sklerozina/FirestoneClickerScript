@@ -2,9 +2,18 @@
 #MaxThreadsPerHotkey 2
 
 SendMode "InputThenPlay"
-^r:: {
+; Thread "Interrupt", 0  ; Make all threads always-interruptible.
+
+^+e:: {
+	MsgBox "Скрипт перезапущен."
 	Reload
 }
+
+hwids := 0
+
+;^d:: {
+;	DoWMDailys
+;}
 
 ^y:: {
     static toggled := false
@@ -16,15 +25,45 @@ SendMode "InputThenPlay"
 		Reload
 	}
 	
-	While toggled
+	if toggled
 	{
-		Sleep 500
-		if WinExist("ahk_exe Firestone.exe")
-		{
+		MsgBox "Запускаю."
+		DoWork
+		SetTimer DoWork, 300000
+	}
+        
+}
+
+DoWMDailys() {
+	hwids := FindAllFirestones()
+	Loop hwids.Length
+	{
+        firestone_hwid := hwids[A_Index]
+        If WinExist(firestone_hwid){
+			WinActivate
+		}
+	
+		Press "{m}"
+		FClick(1834, 583) ; Клик для перехода на карту военной кампании
+		FClick(1777, 977)
+		FClick(720, 779) ; Кнопка выбора, освобождение
+		MouseClickDrag("L", 265, 575, 1427, 575, 100)
+	}
+}
+
+; Запускается по таймеру
+DoWork() {
+	hwids := FindAllFirestones()
+	Loop hwids.Length
+	{
+        firestone_hwid := hwids[A_Index]
+        If WinExist(firestone_hwid){
 			WinActivate
 		}
 
 		BackToMainScreen ; Принудительный возврат на главный экран (Много раз жмёт Esc, а потом кликает на закрытие диалога)
+		Sleep 1000
+		DoUpgrades
 		Sleep 1000
 		CollectMapLoot
 		Sleep 1000
@@ -33,10 +72,18 @@ SendMode "InputThenPlay"
 		CollectTools
 		Sleep 2000
 		CollectXPGuard
-
-		Sleep 300000 ; Ждём 5 минут
 	}
-        
+}
+
+DoUpgrades() {
+	Press "{u}"
+	FClick(1771, 180)
+	FClick(1758, 875)
+	FClick(1758, 758)
+	FClick(1758, 644)
+	FClick(1758, 527)
+	FClick(1758, 424)
+	Press "{u}"
 }
 
 ; Сбор инструментов
@@ -69,25 +116,25 @@ DoExpeditions() {
 
 CollectMapLoot() {
 	Press "{m}"
-	FClick(1834, 583)
+	FClick(1834, 583) ; Клик для перехода на карту военной кампании
 	FClick(143, 953)
 	Press "{Esc}"
 }
 
 FindFirestoneWindowAndActivate() {
-	if !WinExist("ahk_exe Firestone.exe")
+	if !WinExist
 	{
 		MsgBox "Окно с игрой не найдено! Принудительный выход."
 		Exit
 	}
 
-	if !WinActive("ahk_exe Firestone.exe")
+	if !WinActive
 	{
 		Result := MsgBox("Окно перестало быть активным! Мне продолжить?",, "YesNo")
 		if Result = "Yes"
 			WinActivate
 		else
-			Exit
+			Reload
 	}
 }
 
@@ -121,4 +168,8 @@ Press(key) {
 
 	Send key
 	Sleep 1000
+}
+
+FindAllFirestones() {
+	return WinGetList("ahk_exe Firestone.exe")
 }
