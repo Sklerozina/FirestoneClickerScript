@@ -27,6 +27,7 @@ saved_mouse_position_y := 0
 
 	if !toggled {
 		ToolTip "Скрипт приостановлен."
+		SetTimer () => ToolTip(), -2000
 		Sleep 2000
 		Exit
 	}
