@@ -37,7 +37,7 @@ saved_mouse_position_y := 0
 		SetTimer () => ToolTip(), -2000
 		MouseGetPos(&saved_mouse_position_x, &saved_mouse_position_y)
 		DoWork
-		SetTimer DoWork, 300000
+		SetTimer DoWork, 180000
 	}
         
 }
