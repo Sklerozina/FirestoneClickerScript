@@ -26,14 +26,14 @@ MouseGetPos(&saved_mouse_position_x, &saved_mouse_position_y)
 
 	if !toggled {
 		ToolTip "Скрипт приостановлен."
-		Sleep 5000
-		Reload
+		Sleep 2000
+		Exit
 	}
 	
 	if toggled
 	{
 		ToolTip "Запускаю."
-		SetTimer () => ToolTip(), -5000
+		SetTimer () => ToolTip(), -2000
 		DoWork
 		SetTimer DoWork, 300000
 	}
@@ -64,9 +64,9 @@ DoWMDailys() {
 DoWork() {
 	global firestone_hwid, saved_mouse_position_x, saved_mouse_position_y
 
-	MouseGetPos(&Mx, &mY)
+	MouseGetPos(&Mx, &My)
 	; Если мышка двигалась пока спали, пропускаем задачу
-	If((saved_mouse_position_x == Mx) && (saved_mouse_position_y == mY)) {
+	If((saved_mouse_position_x == Mx) && (saved_mouse_position_y == My)) {
 		hwids := FindAllFirestones()
 		Loop hwids.Length
 		{
@@ -75,17 +75,26 @@ DoWork() {
 				WinActivate
 			}
 
-			BackToMainScreen ; Принудительный возврат на главный экран (Много раз жмёт Esc, потом кликает на закрытие диалога)
-			Sleep 1000
-			DoUpgrades
-			Sleep 1000
-			CollectMapLoot
-			Sleep 1000
-			DoExpeditions
-			Sleep 2000
-			CollectTools
-			Sleep 2000
-			CollectXPGuard
+			try
+			{
+				BackToMainScreen ; Принудительный возврат на главный экран (Много раз жмёт Esc, потом кликает на закрытие диалога)
+				SleepAndWait 1000
+				DoUpgrades
+				SleepAndWait 1000
+				CollectMapLoot
+				SleepAndWait 1000
+				DoExpeditions
+				SleepAndWait 2000
+				CollectTools
+				SleepAndWait 2000
+				CollectXPGuard
+			}
+			catch Number
+			{
+				ToolTip "Прерываю работу."
+				SetTimer () => ToolTip(), -2000
+				break
+			}
 		}
     }
 	
@@ -125,8 +134,7 @@ CollectXPGuard() {
 DoExpeditions() {
 	ClickGuildIcon
 	FClick(296, 387) ; Клик на здание экспедиций
-	FClick(1305, 296) ; Клик на кнопку принятия экспедиции
-	Sleep 1000
+	FClick(1305, 296, 2000) ; Клик на кнопку принятия экспедиции
 	FClick(1305, 296) ; Клик на кнопку принятия экспедиции
 	Press "{Esc}"
 	Press "{Esc}"
@@ -179,14 +187,14 @@ FClick(x, y, wait := 1000) {
 	FindFirestoneWindowAndActivate
 
 	Click x, y
-	Sleep wait
+	SleepAndWait(wait)
 }
 
 Press(key, wait := 1000) {
 	FindFirestoneWindowAndActivate
 
 	Send key
-	Sleep wait
+	SleepAndWait(wait)
 }
 
 SleepAndWait(m := 1000) {
@@ -195,7 +203,7 @@ SleepAndWait(m := 1000) {
 	MouseGetPos(&Mx2, &My2)
 	; Если мышка двигалась пока спали, пропускаем задачу
 	If((Mx1 != Mx2) && (My1 != My2)) {
-		Exit
+		throw 1
 	}
 }
 
