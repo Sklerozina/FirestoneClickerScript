@@ -13,13 +13,14 @@ hwids := 0
 firestone_hwid := 0
 saved_mouse_position_x := 0
 saved_mouse_position_y := 0
-MouseGetPos(&saved_mouse_position_x, &saved_mouse_position_y)
+
 
 ;^d:: {
 ;	DoWMDailys
 ;}
 
 ^y:: {
+	global saved_mouse_position_x, saved_mouse_position_y
     static toggled := false
 	
     toggled := !toggled
@@ -34,6 +35,7 @@ MouseGetPos(&saved_mouse_position_x, &saved_mouse_position_y)
 	{
 		ToolTip "Запускаю."
 		SetTimer () => ToolTip(), -2000
+		MouseGetPos(&saved_mouse_position_x, &saved_mouse_position_y)
 		DoWork
 		SetTimer DoWork, 300000
 	}
