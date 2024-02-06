@@ -15,9 +15,9 @@ saved_mouse_position_x := 0
 saved_mouse_position_y := 0
 
 
-;^d:: {
-;	DoWMDailys
-;}
+^d:: {
+	DoWMDailys
+}
 
 ^y:: {
 	global saved_mouse_position_x, saved_mouse_position_y
@@ -44,23 +44,28 @@ saved_mouse_position_y := 0
 }
 
 DoWMDailys() {
-	global firestone_hwid
-	hwids := FindAllFirestones()
-	Loop hwids.Length
+	Press "{m}"
+	FClick(1834, 583) ; Клик для перехода на карту военной кампании
+	; Здесь можно проверить, светятся ли невыполненные дейлики
+	if (WaitForPixel(1876, 942, "0xF30000 0xF40000 0xF70000", 2000))
 	{
-        firestone_hwid := hwids[A_Index]
-        If WinExist(firestone_hwid){
-			WinActivate
-		}
-	
-		Press "{m}"
-		FClick(1834, 583) ; Клик для перехода на карту военной кампании
 		FClick(1777, 977)
 		FClick(720, 779) ; Кнопка выбора, освобождение
-		;MouseClickDrag("L", 265, 575, 1427, 575, 100)
-		;SendEvent "{Click 100 200 0}
 		SendEvent "{Click 265 575 Down}{click 1427 575 Up}"
+		SleepAndWait 500
+		; Первая миссия
+		DoWMMission(221, 748) ; 1
+		DoWMMission(626, 748) ; 2
+		DoWMMission(1024, 748) ; 3
+		DoWMMission(1425, 748) ; 4
+		DoWMMission(1802, 748) ; 5
+		; тут надо двигать мышь
 	}
+	else
+	{
+		MsgBox "Дейлики не обнаружены"
+	}
+	BackToMainScreen
 }
 
 ; Запускается по таймеру
@@ -80,11 +85,13 @@ DoWork() {
 
 			try
 			{
-				BackToMainScreen ; Принудительный возврат на главный экран (Много раз жмёт Esc, потом кликает на закрытие диалога)
+				BackToMainScreen 
 				SleepAndWait 1000
 				DoUpgrades
 				SleepAndWait 1000
 				CollectMapLoot
+				SleepAndWait 1000
+				DoWMDailys
 				SleepAndWait 1000
 				DoExpeditions
 				SleepAndWait 2000
@@ -109,10 +116,6 @@ DoUpgrades() {
 	Press "{u}", 500
 	FClick(1771, 180, 200)
 	FClick(1758, 875, 200)
-	FClick(1758, 758, 200)
-	FClick(1758, 644, 200)
-	FClick(1758, 527, 200)
-	FClick(1758, 424, 200)
 	Press "{u}"
 }
 
@@ -150,6 +153,24 @@ CollectMapLoot() {
 	Press "{Esc}"
 }
 
+DoWMMission(x, y) {
+	if WaitForPixel(x, y, "0x0AA008 0x0B9F05 0x0A9F05 0x0AA005", 2000)
+	{
+		FClick(x, y)
+		MouseMove(1150, 212) ; Убираем мышь, чтобы не светила кнопку
+		if WaitForPixel(926, 734, "0x0AA008 0x0B9F05 0x0A9F05", 120000) ; Ждём появление кнопки подтверждения
+			FClick(926, 734)
+		else
+		{
+			MsgBox "Не могу дождаться пикселя, выход"
+			Exit
+		}
+
+	}
+	else
+		return 0
+}
+
 FindFirestoneWindowAndActivate() {
 	global firestone_hwid
 	if !WinExist(firestone_hwid)
@@ -168,6 +189,7 @@ FindFirestoneWindowAndActivate() {
 	}
 }
 
+; Принудительный возврат на главный экран (Много раз жмёт Esc, потом кликает на закрытие диалога)
 BackToMainScreen(){
 	Press "{Esc}"
 	Press "{Esc}"
@@ -208,6 +230,21 @@ SleepAndWait(m := 1000) {
 	If((Mx1 != Mx2) && (My1 != My2)) {
 		throw 1
 	}
+}
+
+WaitForPixel(x, y, colors, timeout := 300000) {
+	t := 0
+	while t < timeout
+	{
+		if InStr(colors, String(PixelGetColor(x, y)))
+		{
+			return 1
+		}
+		SleepAndWait 1000
+		t += 1000
+	}
+
+	return 0
 }
 
 FindAllFirestones() {
