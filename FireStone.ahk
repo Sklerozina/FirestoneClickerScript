@@ -115,16 +115,19 @@ DoAlchemy() {
 	
 	if CheckIfGreenAndClick(860, 764)
 	{
+		MouseMove(860, 200)
 		CheckIfGreenAndClick(860, 764, 5000)
 	}
 
 	if CheckIfGreenAndClick(1210, 764)
 	{
+		MouseMove(860, 200)
 		CheckIfGreenAndClick(1210, 764, 5000)
 	}
 
 	if CheckIfGreenAndClick(1560, 764)
 	{
+		MouseMove(860, 200)
 		CheckIfGreenAndClick(1560, 764, 5000)
 	}
 
