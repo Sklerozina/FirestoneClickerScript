@@ -13,7 +13,20 @@ hwids := 0
 firestone_hwid := 0
 saved_mouse_position_x := 0
 saved_mouse_position_y := 0
+prestige_mode := false
 
+; Сменить режим апгрейда героев
+^NumpadEnd::
+^Numpad1::
+{
+	global prestige_mode
+
+	prestige_mode := !prestige_mode
+	if prestige_mode
+		Tp "Режим престижа"
+	else
+		Tp "Обычный режим"
+}
 
 ; ^d:: {
 ; 	global firestone_hwid
@@ -144,9 +157,18 @@ DoWMDailys() {
 }
 
 DoUpgrades() {
+	global prestige_mode
+
 	Press "{u}", 500
 	FClick(1771, 180, 200)
 	FClick(1758, 875, 200)
+	if prestige_mode
+	{
+		FClick(1758, 758, 200)
+		FClick(1758, 644, 200)
+		FClick(1758, 527, 200)
+		FClick(1758, 424, 200)
+	}
 	Press "{u}"
 }
 
@@ -286,6 +308,11 @@ WaitForPixel(x, y, colors, timeout := 300000) {
 	}
 
 	return 0
+}
+
+Tp(text, timeout := -2000) {
+	ToolTip text
+	SetTimer () => ToolTip(), timeout
 }
 
 FindAllFirestones() {
