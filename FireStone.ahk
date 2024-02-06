@@ -43,30 +43,6 @@ saved_mouse_position_y := 0
         
 }
 
-DoWMDailys() {
-	Press "{m}"
-	FClick(1834, 583) ; Клик для перехода на карту военной кампании
-	; Здесь можно проверить, светятся ли невыполненные дейлики
-	if (WaitForPixel(1876, 942, "0xF30000 0xF40000 0xF70000", 2000))
-	{
-		FClick(1777, 977)
-		FClick(720, 779) ; Кнопка выбора, освобождение
-		SendEvent "{Click 265 575 Down}{click 1427 575 Up}"
-		SleepAndWait 500
-		; Первая миссия
-		DoWMMission(221, 748) ; 1
-		DoWMMission(626, 748) ; 2
-		DoWMMission(1024, 748) ; 3
-		DoWMMission(1425, 748) ; 4
-		DoWMMission(1802, 748) ; 5
-		; тут надо двигать мышь
-		BackToMainScreen ; пока так для надёжности
-		
-	}
-	else
-		Press "{Esc}" ; Выходим с карты
-}
-
 ; Запускается по таймеру
 DoWork() {
 	global firestone_hwid, saved_mouse_position_x, saved_mouse_position_y
@@ -109,6 +85,30 @@ DoWork() {
 	
 
 	MouseGetPos(&saved_mouse_position_x, &saved_mouse_position_y)
+}
+
+DoWMDailys() {
+	Press "{m}"
+	FClick(1834, 583) ; Клик для перехода на карту военной кампании
+	; Здесь можно проверить, светятся ли невыполненные дейлики
+	if (WaitForPixel(1876, 942, "0xF30000 0xF40000 0xF70000", 2000))
+	{
+		FClick(1777, 977)
+		FClick(720, 779) ; Кнопка выбора, освобождение
+		SendEvent "{Click 265 575 Down}{click 1427 575 Up}"
+		SleepAndWait 500
+		; Первая миссия
+		DoWMMission(221, 748) ; 1
+		DoWMMission(626, 748) ; 2
+		DoWMMission(1024, 748) ; 3
+		DoWMMission(1425, 748) ; 4
+		DoWMMission(1802, 748) ; 5
+		; тут надо двигать мышь
+		BackToMainScreen ; пока так для надёжности
+		
+	}
+	else
+		Press "{Esc}" ; Выходим с карты
 }
 
 DoUpgrades() {
