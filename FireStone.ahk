@@ -115,19 +115,19 @@ DoAlchemy() {
 	
 	if CheckIfGreenAndClick(860, 764)
 	{
-		MouseMove(860, 200)
+		MouseMove(860, 200) ; Сдвигаем курсор, чтобы не загораживал
 		CheckIfGreenAndClick(860, 764, 5000)
 	}
 
 	if CheckIfGreenAndClick(1210, 764)
 	{
-		MouseMove(860, 200)
+		MouseMove(860, 200) ; Сдвигаем курсор, чтобы не загораживал
 		CheckIfGreenAndClick(1210, 764, 5000)
 	}
 
 	if CheckIfGreenAndClick(1560, 764)
 	{
-		MouseMove(860, 200)
+		MouseMove(860, 200) ; Сдвигаем курсор, чтобы не загораживал
 		CheckIfGreenAndClick(1560, 764, 5000)
 	}
 
@@ -300,14 +300,14 @@ SleepAndWait(m := 1000) {
 
 WaitForPixel(x, y, colors, timeout := 300000) {
 	t := 0
-	while t < timeout
+	while t <= timeout
 	{
 		if InStr(colors, String(PixelGetColor(x, y)))
 		{
 			return 1
 		}
-		SleepAndWait 1000
-		t += 1000
+		SleepAndWait 500
+		t += 500
 	}
 
 	return 0
