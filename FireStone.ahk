@@ -60,12 +60,11 @@ DoWMDailys() {
 		DoWMMission(1425, 748) ; 4
 		DoWMMission(1802, 748) ; 5
 		; тут надо двигать мышь
+		BackToMainScreen ; пока так для надёжности
+		
 	}
 	else
-	{
-		MsgBox "Дейлики не обнаружены"
-	}
-	BackToMainScreen
+		Press "{Esc}" ; Выходим с карты
 }
 
 ; Запускается по таймеру
