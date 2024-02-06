@@ -86,15 +86,12 @@ DoWork() {
 				SleepAndWait 1000
 				CollectMapLoot
 				SleepAndWait 1000
-				DoWMDailys
-				SleepAndWait 1000
-				DoAlchemy
-				SleepAndWait 1000
-				DoExpeditions
-				SleepAndWait 2000
-				CollectTools
-				SleepAndWait 2000
-				CollectXPGuard
+				ClickCityIcon ; зайти в город
+				DoAlchemy ; Алхимия
+				CollectXPGuard ; Страж
+				CollectTools ; Механик
+				DoExpeditions ; Экспедиции
+				Press "{Esc}" ; На главный экран
 			}
 			catch Number
 			{
@@ -105,12 +102,10 @@ DoWork() {
 		}
     }
 	
-
 	MouseGetPos(&saved_mouse_position_x, &saved_mouse_position_y)
 }
 
 DoAlchemy() {
-	ClickCityIcon
 	FClick(480, 790)
 	
 	if CheckIfGreenAndClick(860, 764)
@@ -132,18 +127,15 @@ DoAlchemy() {
 	}
 
 	Press "{Esc}"
-	Press "{Esc}"
 }
 
 DoWMDailys() {
-	Press "{m}"
-	FClick(1834, 583) ; Клик для перехода на карту военной кампании
 	; Здесь можно проверить, светятся ли невыполненные дейлики
-	if (WaitForPixel(1876, 942, "0xF30000 0xF40000 0xF70000", 2000))
+	if (WaitForPixel(1876, 942, "0xF30000 0xF40000 0xF70000", 1000))
 	{
 		FClick(1777, 977)
 		FClick(720, 779) ; Кнопка выбора, освобождение
-		SendEvent "{Click 265 575 Down}{click 1427 575 Up}"
+		SendEvent "{Click 265 575 Down}{click 1427 575 Up}" ; Скролл дейликов в самое начало
 		SleepAndWait 500
 		; Первая миссия
 		DoWMMission(221, 748) ; 1
@@ -151,12 +143,9 @@ DoWMDailys() {
 		DoWMMission(1024, 748) ; 3
 		DoWMMission(1425, 748) ; 4
 		DoWMMission(1802, 748) ; 5
-		; тут надо двигать мышь
-		BackToMainScreen ; пока так для надёжности
-		
+
+		Press "{Esc}"
 	}
-	else
-		Press "{Esc}" ; Выходим с карты
 }
 
 DoUpgrades() {
@@ -164,71 +153,78 @@ DoUpgrades() {
 
 	Press "{u}", 500
 	FClick(1771, 180, 200)
-	FClick(1758, 875, 200)
+	FClick(1758, 875, 200, 5)
 	if prestige_mode
 	{
-		FClick(1758, 758, 200)
-		FClick(1758, 644, 200)
-		FClick(1758, 527, 200)
-		FClick(1758, 424, 200)
+		FClick(1758, 758, 200, 5)
+		FClick(1758, 644, 200, 5)
+		FClick(1758, 527, 200, 5)
+		FClick(1758, 424, 200, 5)
 	}
 	Press "{u}"
 }
 
 ; Сбор инструментов
 CollectTools() {
-	ClickCityIcon()
 	FClick 1230, 800 ; Клик на здание механика
 	FClick 600, 460 ; Клик на выбор Механик
 	FClick 1620, 680 ; Клик на кнопку получения инструментов
-	Press "{Esc}"
 	Press "{Esc}"
 }
 
 ; Прокачка стража
 CollectXPGuard() {
-	Press "{G}"
-	FClick 1150, 765
+	FClick 625, 230 ; Здание стража
+	FClick 1150, 765 ; Интерфейс стража
 	Press "{Esc}"
 }
 
 ; Экспедиции
 DoExpeditions() {
-	ClickGuildIcon
+	FClick(1482, 127) ; Клик на здание гильдии
 	FClick(296, 387) ; Клик на здание экспедиций
 	FClick(1305, 296, 2000) ; Клик на кнопку принятия экспедиции
 	FClick(1305, 296) ; Клик на кнопку принятия экспедиции
-	Press "{Esc}"
-	Press "{Esc}"
+	Press "{Esc}" ; Закрыть окно экспедиций
+	Press "{Esc}" ; Выйти в город
 }
 
 CollectMapLoot() {
 	Press "{m}"
-	FClick(1834, 583) ; Клик для перехода на карту военной кампании
-	FClick(143, 953)
+
+	; Прокликать завершённые задания
+	loop
+	{
+		if not CheckIfGreenAndClick(95, 310, 5000)
+			break
+		else
+			CheckIfGreenAndClick(814, 614, 5000)
+	}
+
+	FClick(1834, 583, 500) ; Клик для перехода на карту военной кампании
+	CheckIfGreenAndClick(60, 953, 1000)
+
+	DoWMDailys
+
 	Press "{Esc}"
 }
 
 DoWMMission(x, y) {
-	if WaitForPixel(x, y, "0x0AA008 0x0B9F05 0x0A9F05 0x0AA005", 2000)
+	if CheckIfGreenAndClick(x, y, 2000)
 	{
-		FClick(x, y)
 		MouseMove(1150, 212) ; Убираем мышь, чтобы не светила кнопку
-		if WaitForPixel(926, 734, "0x0AA008 0x0B9F05 0x0A9F05", 120000) ; Ждём появление кнопки подтверждения
-			FClick(926, 734)
-		else
+		if !CheckIfGreenAndClick(926, 734, 120000) ; Ждём появление кнопки подтверждения
 		{
 			MsgBox "Не могу дождаться пикселя, выход"
 			Exit
 		}
-
 	}
 	else
 		return 0
 }
 
 CheckIfGreenAndClick(x, y, timeout := 1000){
-	if WaitForPixel(x, y, "0x0AA008 0x0B9F05 0x0A9F05 0x0AA005", timeout)
+	if WaitForPixel(x, y, "0x0AA008 0x0B9F05 0x0A9F05 0x0AA005 0x0AA006", timeout)
 	{
 		FClick(x, y)
 		return 1
@@ -274,10 +270,10 @@ ClickGuildIcon() {
 	FClick 1865, 442 ; Клик на иконку города
 }
 
-FClick(x, y, wait := 1000) {
+FClick(x, y, wait := 1000, clickcount := 1) {
 	FindFirestoneWindowAndActivate
 
-	Click x, y
+	Click x, y, clickcount
 	SleepAndWait(wait)
 }
 
