@@ -15,9 +15,16 @@ saved_mouse_position_x := 0
 saved_mouse_position_y := 0
 
 
-^d:: {
-	DoWMDailys
-}
+; ^d:: {
+; 	global firestone_hwid
+; 	firestone_hwid := WinExist("ahk_exe Firestone.exe")
+
+; 	If WinExist(firestone_hwid){
+; 		WinActivate
+; 	}
+
+; 	; Do Test Things
+; }
 
 ^y:: {
 	global saved_mouse_position_x, saved_mouse_position_y
@@ -68,6 +75,8 @@ DoWork() {
 				SleepAndWait 1000
 				DoWMDailys
 				SleepAndWait 1000
+				DoAlchemy
+				SleepAndWait 1000
 				DoExpeditions
 				SleepAndWait 2000
 				CollectTools
@@ -85,6 +94,29 @@ DoWork() {
 	
 
 	MouseGetPos(&saved_mouse_position_x, &saved_mouse_position_y)
+}
+
+DoAlchemy() {
+	ClickCityIcon
+	FClick(480, 790)
+	
+	if CheckIfGreenAndClick(860, 764)
+	{
+		CheckIfGreenAndClick(860, 764, 5000)
+	}
+
+	if CheckIfGreenAndClick(1210, 764)
+	{
+		CheckIfGreenAndClick(1210, 764, 5000)
+	}
+
+	if CheckIfGreenAndClick(1560, 764)
+	{
+		CheckIfGreenAndClick(1560, 764, 5000)
+	}
+
+	Press "{Esc}"
+	Press "{Esc}"
 }
 
 DoWMDailys() {
@@ -168,6 +200,16 @@ DoWMMission(x, y) {
 	}
 	else
 		return 0
+}
+
+CheckIfGreenAndClick(x, y, timeout := 1000){
+	if WaitForPixel(x, y, "0x0AA008 0x0B9F05 0x0A9F05 0x0AA005", timeout)
+	{
+		FClick(x, y)
+		return 1
+	}
+
+	return 0
 }
 
 FindFirestoneWindowAndActivate() {
