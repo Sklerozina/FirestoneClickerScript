@@ -19,13 +19,13 @@ prestige_mode := false
 
 ;; Координаты заданий для карты
 ; ~20 minutes
-map_litle_missons := {866:207, 1390:320, 1333:409, 1216:435, 536:472, 682:493, 845:640, 1266:673, 1455:552, 907:335, 696:198, 499:158, 1338:619, 1291:159, 818:345}
+map_litle_missons := {866:207, 1390:320, 1333:409, 1216:435, 536:472, 682:493, 845:640, 1266:673, 1455:552, 907:335, 696:198, 499:158, 1338:619, 1291:159, 818:345, 1134:416, 617:325}
 ; ~40 minutes
-map_small_missons := {564:262, 1289:280, 1480:227, 789:476, 672:569, 1433:663, 668:728, 854:515, 1034:648, 466:306, 478:387, 445:644, 1012:500}
+map_small_missons := {564:262, 1289:280, 1480:227, 789:476, 672:569, 1433:663, 668:728, 854:515, 1034:648, 466:306, 478:387, 445:644, 1012:500, 1418:394, 1318:517}
 ; ~1-2 hours
-map_medium_missons := {1214:285, 1008:401, 773:621, 1140:600, 1450:469, 840:767, 1047:769, 1325:774, 1147:948, 1202:521, 760:822}
+map_medium_missons := {1214:285, 1008:401, 773:621, 1140:600, 1450:469, 840:767, 1047:769, 1325:774, 1147:948, 1202:521, 760:822, 702:656, 951:198, 896:732, 1400:753, 1245:360, 646:392}
 ; Seas, Monsters, Dragons
-map_big_missons := {1097:522, 459:899, 596:540, 1485:749}
+map_big_missons := {1097:522, 459:899, 596:540, 1485:749, 374:972, 836:960}
 
 ; Сменить режим апгрейда героев
 ^NumpadEnd::
@@ -40,38 +40,32 @@ map_big_missons := {1097:522, 459:899, 596:540, 1485:749}
 		Tp "Обычный режим"
 }
 
-^m:: {
-	global firestone_hwid
-	hwids := FindAllFirestones()
-	Loop hwids.Length
-	{
-		firestone_hwid := hwids[A_Index]
-		If WinExist(firestone_hwid){
-			WinActivate
-		}
+; ^m:: {
+; 	global firestone_hwid
+; 	hwids := FindAllFirestones()
+; 	Loop hwids.Length
+; 	{
+; 		firestone_hwid := hwids[A_Index]
+; 		If WinExist(firestone_hwid){
+; 			WinActivate
+; 		}
 
-		try
-		{
-			BackToMainScreen
-			Press "{m}"
-			; Прокликать завершённые задания
-			loop
-			{
-				if not CheckIfGreenAndClick(95, 310, 2500)
-					break
-				else
-					CheckIfGreenAndClick(814, 614, 2500)
-			}
-			DoMapMissions
-			Press "{Esc}" ; На главный экран
-		}
-		catch Number
-		{
-			ToolTip "Прерываю работу."
-			SetTimer () => ToolTip(), -2000
-		}
-	}
-}
+; 		try
+; 		{
+; 			BackToMainScreen
+; 			Press "{m}"
+; 			; Прокликать завершённые задания
+; 			MapFinishMissions
+; 			DoMapMissions
+; 			Press "{Esc}" ; На главный экран
+; 		}
+; 		catch Number
+; 		{
+; 			ToolTip "Прерываю работу."
+; 			SetTimer () => ToolTip(), -2000
+; 		}
+; 	}
+; }
 
 ; ^d:: {
 ; 	global firestone_hwid
@@ -82,6 +76,7 @@ map_big_missons := {1097:522, 459:899, 596:540, 1485:749}
 ; 	}
 
 ; 	; Do Test Things
+; 	MapFinishMissions
 ; }
 
 ^y:: {
@@ -264,15 +259,8 @@ DoMap() {
 	Press "{m}"
 
 	; Прокликать завершённые задания
-	loop
-	{
-		if not CheckIfGreenAndClick(95, 310, 2500)
-			break
-		else
-			CheckIfGreenAndClick(814, 614, 2500)
-	}
-
-	; DoMapMissions
+	MapFinishMissions
+	DoMapMissions
 	
 	FClick(1834, 583, 500) ; Клик для перехода на карту военной кампании
 	CheckIfGreenAndClick(60, 953, 1000)
@@ -287,7 +275,7 @@ CheckSquad() {
 }
 
 ClickOnMapMission(x, y) {
-	FClick x, y, 500
+	FClick x, y, 100
 	; Зелёная кнопка принятия
 	MouseMove 0, 0
 	if !CheckIfGreenAndClick(966, 855, 500)
@@ -322,6 +310,44 @@ DoWMMission(zone_x1, zone_y1, zone_x2, zone_y2, click_x, click_y) {
 	}
 	else
 		return 0
+}
+
+MapFinishMissions(){
+	loop
+	{
+		if not CheckIfGreenAndClick(95, 310, 1500)
+			break
+		else
+			CheckIfGreenAndClick(814, 614, 1500)
+	}
+
+	; Попробовать завершить задания, которым осталось меньше 3-х минут
+	loop
+	{
+		if not PixelSearch(&FoundX, &FoundY, 14, 208, 263, 341, 0xF7E5CB, 1)
+			break
+		else
+		{
+			FClick 138, 239, 500
+			if !CheckIfGreenAndClick(966, 855, 500)
+			{
+				if(CheckForImage(&FoundX, &FoundY, 1251, 720, 1491, 790, "*80 FreeOrange.png"))
+				{
+					FClick 1367, 747, 500
+					CheckIfGreenAndClick(815, 613, 5000)
+					continue
+				}
+		
+				if(CheckForImage(&FoundX, &FoundY, 948, 706, 1219, 807, "*80 Otmena.png"))
+					Press "{Esc}"
+					break
+			}
+			else
+			{
+				CheckIfGreenAndClick(815, 613, 5000)
+			}
+		}
+	}
 }
 
 DoMapMissions(){
