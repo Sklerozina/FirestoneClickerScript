@@ -4,6 +4,8 @@
 SendMode "InputThenPlay"
 ; Thread "Interrupt", 0  ; Make all threads always-interruptible.
 
+SetDefaultMouseSpeed 25
+
 ^+e:: {
 	MsgBox "Скрипт перезапущен."
 	Reload
@@ -14,6 +16,16 @@ firestone_hwid := 0
 saved_mouse_position_x := 0
 saved_mouse_position_y := 0
 prestige_mode := false
+
+;; Координаты заданий для карты
+; ~20 minutes
+map_litle_missons := {866:207, 1390:320, 1333:409, 1216:435, 536:472, 682:493, 845:640, 1266:673, 1455:552, 907:335, 696:198, 499:158, 1338:619}
+; ~40 minutes
+map_small_missons := {564:262, 1289:280, 1480:227, 789:476, 672:569, 1433:663, 668:728}
+; ~1-2 hours
+map_medium_missons := {1214:285, 1008:401, 773:621, 1140:600, 1450:469, 840:767, 1047:769, 1325:774, 1147:948, 1202:521, 760:822}
+; Seas, Monsters, Dragons
+map_big_missons := {1097:522, 459:899}
 
 ; Сменить режим апгрейда героев
 ^NumpadEnd::
@@ -26,6 +38,39 @@ prestige_mode := false
 		Tp "Режим престижа"
 	else
 		Tp "Обычный режим"
+}
+
+^m:: {
+	global firestone_hwid
+	hwids := FindAllFirestones()
+	Loop hwids.Length
+	{
+		firestone_hwid := hwids[A_Index]
+		If WinExist(firestone_hwid){
+			WinActivate
+		}
+
+		try
+		{
+			BackToMainScreen
+			Press "{m}"
+			; Прокликать завершённые задания
+			loop
+			{
+				if not CheckIfGreenAndClick(95, 310, 2500)
+					break
+				else
+					CheckIfGreenAndClick(814, 614, 2500)
+			}
+			DoMapMissions
+			Press "{Esc}" ; На главный экран
+		}
+		catch Number
+		{
+			ToolTip "Прерываю работу."
+			SetTimer () => ToolTip(), -2000
+		}
+	}
 }
 
 ; ^d:: {
@@ -84,7 +129,7 @@ DoWork() {
 				SleepAndWait 1000
 				DoUpgrades
 				SleepAndWait 1000
-				CollectMapLoot
+				DoMap
 				SleepAndWait 1000
 				ClickCityIcon ; зайти в город
 				DoAlchemy ; Алхимия
@@ -97,10 +142,17 @@ DoWork() {
 			{
 				ToolTip "Прерываю работу."
 				SetTimer () => ToolTip(), -2000
+				SetTimer DoWork, 180000 ; Если мышь двигалась, то следующий раз будет через 3 минуты
 				break
 			}
 		}
+
+		SetTimer DoWork, 300000 ; Если мышь не двигалась, то продолжаем через 5 минут
     }
+	else
+	{
+		SetTimer DoWork, 180000 ; Если мышь двигалась, то следующий раз будет через 3 минуты
+	}
 	
 	MouseGetPos(&saved_mouse_position_x, &saved_mouse_position_y)
 }
@@ -108,19 +160,19 @@ DoWork() {
 DoAlchemy() {
 	FClick(480, 790)
 	
-	if CheckIfGreenAndClick(860, 764)
+	if CheckIfGreenAndClick(860, 764) || CheckIfOrangeAndClick(920, 740, 250)
 	{
 		MouseMove(860, 200) ; Сдвигаем курсор, чтобы не загораживал
 		CheckIfGreenAndClick(860, 764, 5000)
 	}
 
-	if CheckIfGreenAndClick(1210, 764)
+	if CheckIfGreenAndClick(1210, 764) || CheckIfOrangeAndClick(1270, 250)
 	{
 		MouseMove(860, 200) ; Сдвигаем курсор, чтобы не загораживал
 		CheckIfGreenAndClick(1210, 764, 5000)
 	}
 
-	if CheckIfGreenAndClick(1560, 764)
+	if CheckIfGreenAndClick(1560, 764) || CheckIfOrangeAndClick(1620, 250)
 	{
 		MouseMove(860, 200) ; Сдвигаем курсор, чтобы не загораживал
 		CheckIfGreenAndClick(1560, 764, 5000)
@@ -131,20 +183,39 @@ DoAlchemy() {
 
 DoWMDailys() {
 	; Здесь можно проверить, светятся ли невыполненные дейлики
-	if (WaitForPixel(1876, 942, "0xF30000 0xF40000 0xF70000", 1000))
+	if (PixelSearch(&FoundX, &FoundY,1850, 900, 1900, 950, 0xF30000, 1))
 	{
-		FClick(1777, 977)
+		FClick(1777, 977) ; Ежедневные миссии
 		FClick(720, 779) ; Кнопка выбора, освобождение
 		SendEvent "{Click 265 575 Down}{click 1427 575 Up}" ; Скролл дейликов в самое начало
+		SendEvent "{Click 265 575 Down}{click 1427 575 Up}" ; Скролл дейликов в самое начало
+
 		SleepAndWait 500
 		; Первая миссия
-		DoWMMission(221, 748) ; 1
-		DoWMMission(626, 748) ; 2
-		DoWMMission(1024, 748) ; 3
-		DoWMMission(1425, 748) ; 4
-		DoWMMission(1802, 748) ; 5
+		DoWMMission(190, 700, 450, 770, 312, 740) ; 1
+		DoWMMission(580, 700, 850, 770, 720, 740) ; 2
+		DoWMMission(985, 700, 1240, 770, 1110, 740) ; 3
+		DoWMMission(1380, 700, 1640, 770, 1500, 740) ; 4
+		DoWMMission(1777, 700, 1800, 770, 1790, 740) ; 5
 
-		Press "{Esc}"
+		SendEvent "{click 1427 575 Down}{Click 265 575 Up}" ; Скролл дейликов в конец
+		SendEvent "{click 1427 575 Down}{Click 265 575 Up}" ; Скролл дейликов в конец
+
+		DoWMMission(280, 700, 540, 770, 405, 740) ; 6
+
+		Press "{Esc}" ; Вышли на карту
+
+		; Зайти ещё раз и проверить вторую стопку дейликов
+		FClick(1777, 977) ; Ежедневные миссии
+		SleepAndWait 500
+		if PixelSearch(&Found_X, &Found_Y, 1100, 740, 1340, 810, 0x0AA008, 1) ; 
+		{
+			FClick 1235, 770, 500 ; Жмём кнопку для захода в задания подземелий
+
+			DoWMMission(630, 700, 890, 770, 755, 740) ; 1 подземелье
+			
+			Press "{Esc}" ; Вышли на карту
+		}
 	}
 }
 
@@ -189,18 +260,20 @@ DoExpeditions() {
 	Press "{Esc}" ; Выйти в город
 }
 
-CollectMapLoot() {
+DoMap() {
 	Press "{m}"
 
 	; Прокликать завершённые задания
 	loop
 	{
-		if not CheckIfGreenAndClick(95, 310, 5000)
+		if not CheckIfGreenAndClick(95, 310, 2500)
 			break
 		else
-			CheckIfGreenAndClick(814, 614, 5000)
+			CheckIfGreenAndClick(814, 614, 2500)
 	}
 
+	; DoMapMissions
+	
 	FClick(1834, 583, 500) ; Клик для перехода на карту военной кампании
 	CheckIfGreenAndClick(60, 953, 1000)
 
@@ -209,10 +282,27 @@ CollectMapLoot() {
 	Press "{Esc}"
 }
 
-DoWMMission(x, y) {
-	if CheckIfGreenAndClick(x, y, 2000)
+CheckSquad() {
+	return CheckForImage(&FoundX, &FoundY, 436, 959, 854, 1016, "*80 MapBezd.png")
+}
+
+ClickOnMapMission(x, y) {
+	FClick x, y, 500
+	; Зелёная кнопка принятия
+	MouseMove 0, 0
+	if !CheckIfGreenAndClick(966, 855, 500)
 	{
-		MouseMove(1150, 212) ; Убираем мышь, чтобы не светила кнопку
+		if(CheckForImage(&FoundX, &FoundY, 948, 706, 1219, 807, "*80 Otmena.png"))
+			Press "{Esc}"
+	}
+}
+
+DoWMMission(zone_x1, zone_y1, zone_x2, zone_y2, click_x, click_y) {
+	SleepAndWait 500
+	if PixelSearch(&Found_X, &Found_Y, zone_x1, zone_y1, zone_x2, zone_y2, 0x0AA008, 1)
+	{
+		FClick click_x, click_y
+		MouseMove(0, 0) ; Убираем мышь, чтобы не светила кнопку
 		if !CheckIfGreenAndClick(926, 734, 120000) ; Ждём появление кнопки подтверждения
 		{
 			MsgBox "Не могу дождаться пикселя, выход"
@@ -221,6 +311,55 @@ DoWMMission(x, y) {
 	}
 	else
 		return 0
+}
+
+DoMapMissions(){
+	; Проверить, есть ли не задания на карте и попытаться их начать.
+	if (CheckSquad())
+	{
+		Tp "У нас есть задания, которые нужно сделать!"
+		For x, y in map_litle_missons.OwnProps()
+		{
+			If !CheckSquad()
+				break
+	
+			ClickOnMapMission(x, y)
+		}
+	
+		For x, y in map_small_missons.OwnProps()
+		{
+			If !CheckSquad()
+				break
+	
+			ClickOnMapMission(x, y)
+		}
+	
+		For x, y in map_big_missons.OwnProps()
+		{
+			If !CheckSquad()
+				break
+	
+			ClickOnMapMission(x, y)
+		}
+
+		For x, y in map_medium_missons.OwnProps()
+		{
+			If !CheckSquad()
+				break
+	
+			ClickOnMapMission(x, y)
+		}
+	}
+}
+
+CheckIfOrangeAndClick(x, y, timeout := 1000){
+	if WaitForPixel(x, y, "0xFCAF47 0xFCAC47 0xFBAC46 0xFAAB45 0xF9AB44 0xFBAB47 0xFAAB46 0xF9AB45 0xF8AA44 0xF8A945 0xF9AA45 0xF9A946 0xF9A847", timeout)
+	{
+		FClick(x, y)
+		return 1
+	}
+
+	return 0
 }
 
 CheckIfGreenAndClick(x, y, timeout := 1000){
@@ -237,26 +376,24 @@ FindFirestoneWindowAndActivate() {
 	global firestone_hwid
 	if !WinExist(firestone_hwid)
 	{
-		MsgBox "Окно с игрой не найдено! Принудительный выход."
-		Exit
+		; "Окно с игрой не найдено! Перываю работу."
+		throw 1
 	}
 
 	if !WinActive(firestone_hwid)
 	{
-		Result := MsgBox("Окно перестало быть активным! Мне продолжить?",, "YesNo")
-		if Result = "Yes"
-			WinActivate
-		else
-			Reload
+		; "Окно перестало быть активным! Перываю работу."
+		throw 1
 	}
 }
 
 ; Принудительный возврат на главный экран (Много раз жмёт Esc, потом кликает на закрытие диалога)
 BackToMainScreen(){
-	Press "{Esc}"
-	Press "{Esc}"
-	Press "{Esc}"
-	FClick(1537, 275)
+	Press "{Esc}", 500
+	Press "{Esc}", 500
+	Press "{Esc}", 500
+	Press "{Esc}", 500
+	FClick(1537, 275, 250)
 }
 
 ; Клик на иконку города на главном экране
@@ -292,6 +429,15 @@ SleepAndWait(m := 1000) {
 	If((Mx1 != Mx2) && (My1 != My2)) {
 		throw 1
 	}
+}
+
+CheckForImage(&OutputX, &OutputY, X1, Y1, X2, Y2, image) {
+	try
+	{
+		return ImageSearch(&OutputX, &OutputY, X1, Y1, X2, Y2, image)
+	}
+	catch as exc
+		MsgBox "Возникла неожиданная ошибка с поиском изображения:`n" exc.Message
 }
 
 WaitForPixel(x, y, colors, timeout := 300000) {

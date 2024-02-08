@@ -1,5 +1,18 @@
 #Requires AutoHotkey v2.0
 
+A_Clipboard := ""
+; Сменить режим апгрейда героев
+Numpad0::
+{
+	MouseGetPos(&x, &y)
+    if (A_Clipboard != "")
+        A_Clipboard .= ", "
+    
+    A_Clipboard .= x . ":" . y
+
+}
+
+; Собрать все цвета +-10 вверх и вниз от цвентра
 ^p::
 {
     MouseGetPos(&x, &y)
