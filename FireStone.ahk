@@ -130,8 +130,6 @@ DoWork() {
 				DoExpeditions ; Экспедиции
 				Press "{Esc}" ; На главный экран
 				DoMap
-				SleepAndWait 1000
-				
 			}
 			catch Number
 			{
@@ -257,13 +255,15 @@ DoExpeditions() {
 
 DoMap() {
 	Press "{m}"
+	FClick(1834, 583, 500) ; Клик для перехода на карту военной кампании
+	CheckIfGreenAndClick(60, 953, 1000) ; Забрать лут
+	FClick(1832, 438, 500) ; Вернуться обратно на карту миссий
 
 	; Прокликать завершённые задания
 	MapFinishMissions
 	DoMapMissions
 	
 	FClick(1834, 583, 500) ; Клик для перехода на карту военной кампании
-	CheckIfGreenAndClick(60, 953, 1000)
 
 	DoWMDailys
 
