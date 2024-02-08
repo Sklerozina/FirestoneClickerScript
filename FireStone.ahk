@@ -123,15 +123,15 @@ DoWork() {
 				BackToMainScreen 
 				SleepAndWait 1000
 				DoUpgrades
-				SleepAndWait 1000
-				DoMap
-				SleepAndWait 1000
 				ClickCityIcon ; зайти в город
 				DoAlchemy ; Алхимия
 				CollectXPGuard ; Страж
 				CollectTools ; Механик
 				DoExpeditions ; Экспедиции
 				Press "{Esc}" ; На главный экран
+				DoMap
+				SleepAndWait 1000
+				
 			}
 			catch Number
 			{
