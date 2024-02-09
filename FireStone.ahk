@@ -11,6 +11,9 @@ SetDefaultMouseSpeed 25
 	Reload
 }
 
+; Игра должна быть в разрешении 1920x1018,
+; без рамок, например с помощью Borderless Gaming приложения
+
 hwids := 0
 firestone_hwid := 0
 saved_mouse_position_x := 0
@@ -23,9 +26,9 @@ map_litle_missons := {866:207, 1390:320, 1333:409, 1216:435, 536:472, 682:493, 8
 ; ~40 minutes
 map_small_missons := {564:262, 1289:280, 1480:227, 789:476, 672:569, 1433:663, 668:728, 854:515, 1034:648, 466:306, 478:387, 445:644, 1012:500, 1418:394, 1318:517, 1411:845}
 ; ~1-2 hours
-map_medium_missons := {1214:285, 1008:401, 773:621, 1140:600, 1450:469, 840:767, 1047:769, 1325:774, 1147:948, 1202:521, 760:822, 702:656, 951:198, 896:732, 1400:753, 1245:360, 646:392}
+map_medium_missons := {1214:285, 1008:401, 773:621, 1140:600, 1450:469, 840:767, 1047:769, 1325:774, 1147:948, 1202:521, 760:822, 702:656, 951:198, 896:732, 1400:753, 1245:360, 646:392, 921:578}
 ; Seas, Monsters, Dragons
-map_big_missons := {1097:522, 459:899, 596:540, 1485:749, 374:972, 836:960, 957:787, 542:947}
+map_big_missons := {1097:522, 459:899, 596:540, 1485:749, 374:972, 836:960, 957:787, 542:947, 609:169, 1245:819}
 
 ; Сменить режим апгрейда героев
 ^NumpadEnd::
@@ -159,13 +162,13 @@ DoAlchemy() {
 		CheckIfGreenAndClick(860, 764, 5000)
 	}
 
-	if CheckIfGreenAndClick(1210, 764) || CheckIfOrangeAndClick(1270, 250)
+	if CheckIfGreenAndClick(1210, 764, 250) || CheckIfOrangeAndClick(1270, 250)
 	{
 		MouseMove(860, 200) ; Сдвигаем курсор, чтобы не загораживал
 		CheckIfGreenAndClick(1210, 764, 5000)
 	}
 
-	if CheckIfGreenAndClick(1560, 764) || CheckIfOrangeAndClick(1620, 250)
+	if CheckIfGreenAndClick(1560, 764, 250) || CheckIfOrangeAndClick(1620, 250)
 	{
 		MouseMove(860, 200) ; Сдвигаем курсор, чтобы не загораживал
 		CheckIfGreenAndClick(1560, 764, 5000)
@@ -199,8 +202,7 @@ DoWMDailys() {
 		Press "{Esc}" ; Вышли на карту
 
 		; Зайти ещё раз и проверить вторую стопку дейликов
-		FClick(1777, 977) ; Ежедневные миссии
-		SleepAndWait 500
+		FClick(1777, 977, 500) ; Ежедневные миссии
 		if PixelSearch(&Found_X, &Found_Y, 1100, 740, 1340, 810, 0x0AA008, 1) ; 
 		{
 			FClick 1235, 770, 500 ; Жмём кнопку для захода в задания подземелий
@@ -208,6 +210,10 @@ DoWMDailys() {
 			DoWMMission(630, 700, 890, 770, 755, 740) ; 1 подземелье
 			
 			Press "{Esc}" ; Вышли на карту
+		}
+		else
+		{
+			Press "{Esc}"
 		}
 	}
 }
@@ -332,14 +338,14 @@ MapFinishMissions(){
 			FClick 138, 239, 500
 			if !CheckIfGreenAndClick(966, 855, 500)
 			{
-				if(CheckForImage(&FoundX, &FoundY, 1251, 720, 1491, 790, "*80 FreeOrange.png"))
+				if(CheckForImage(&FoundX, &FoundY, 1251, 720, 1491, 790, "*120 FreeOrange.png"))
 				{
 					FClick 1367, 747, 500
 					CheckIfGreenAndClick(815, 613, 5000)
 					continue
 				}
 		
-				if(CheckForImage(&FoundX, &FoundY, 948, 706, 1219, 807, "*80 Otmena.png"))
+				if(CheckForImage(&FoundX, &FoundY, 948, 706, 1219, 807, "*120 Otmena.png"))
 					Press "{Esc}"
 					break
 			}
