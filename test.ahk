@@ -14,10 +14,10 @@ SendMode "InputThenPlay"
     try
         {
             if ImageSearch(&FoundX, &FoundY, 0, 0, 1920, 1040, "*150 M1.jpg")
-                {
-                    MsgBox "The icon was found at " FoundX "x" FoundY
-                    Click FoundX, FoundY
-                }
+			{
+				MsgBox "The icon was found at " FoundX "x" FoundY
+				Click FoundX, FoundY
+			}
             else
                 MsgBox "Icon could not be found on the screen."
         }
