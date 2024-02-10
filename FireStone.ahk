@@ -156,19 +156,19 @@ DoWork() {
 DoAlchemy() {
 	FClick(480, 790)
 	
-	if CheckIfGreenAndClick(860, 764) || CheckIfOrangeAndClick(920, 740, 250)
+	if CheckIfGreenAndClick(860, 764, 250) || CheckIfOrangeAndClick(920, 740, 250)
 	{
 		MouseMove(860, 200) ; Сдвигаем курсор, чтобы не загораживал
 		CheckIfGreenAndClick(860, 764, 5000)
 	}
 
-	if CheckIfGreenAndClick(1210, 764, 250) || CheckIfOrangeAndClick(1270, 250)
+	if CheckIfGreenAndClick(1210, 764, 250) || CheckIfOrangeAndClick(1270, 740, 250)
 	{
 		MouseMove(860, 200) ; Сдвигаем курсор, чтобы не загораживал
 		CheckIfGreenAndClick(1210, 764, 5000)
 	}
 
-	if CheckIfGreenAndClick(1560, 764, 250) || CheckIfOrangeAndClick(1620, 250)
+	if CheckIfGreenAndClick(1560, 764, 250) || CheckIfOrangeAndClick(1620, 740, 250)
 	{
 		MouseMove(860, 200) ; Сдвигаем курсор, чтобы не загораживал
 		CheckIfGreenAndClick(1560, 764, 5000)
