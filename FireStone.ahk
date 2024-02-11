@@ -292,13 +292,20 @@ ClickOnMapMission(x, y) {
 		{
 			FClick 1367, 747, 500
 			CheckIfGreenAndClick(815, 613, 5000)
+			return
 		}
 
-		if(CheckForImage(&FoundX, &FoundY, 948, 706, 1219, 807, "*80 Otmena.png"))
+		if(CheckForImage(&FoundX, &FoundY, 948, 706, 1219, 807, "*80 Otmena.png")){
 			Press "{Esc}"
+			return
+		}
+			
 
-		if(CheckForImage(&FoundX, &FoundY, 780, 812, 842, 866, "*80 x2.png"))
+		if(CheckForImage(&FoundX, &FoundY, 780, 812, 842, 866, "*80 x2.png")){
 			Press "{Esc}"
+			return
+		}
+			
 	}
 }
 
