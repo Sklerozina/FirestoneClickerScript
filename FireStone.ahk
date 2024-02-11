@@ -297,10 +297,8 @@ ClickOnMapMission(x, y) {
 		if(CheckForImage(&FoundX, &FoundY, 948, 706, 1219, 807, "*80 Otmena.png"))
 			Press "{Esc}"
 
-		if(CheckForImage(&FoundX, &FoundY, 780, 835, 836, 873, "*80 x2.png"))
+		if(CheckForImage(&FoundX, &FoundY, 780, 812, 842, 866, "*80 x2.png"))
 			Press "{Esc}"
-
-		
 	}
 }
 
