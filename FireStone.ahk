@@ -231,6 +231,7 @@ DoUpgrades() {
 		FClick(1758, 644, 200, 5)
 		FClick(1758, 527, 200, 5)
 		FClick(1758, 424, 200, 5)
+		FClick(1764, 290, 200, 5)
 	}
 	Press "{u}"
 }
