@@ -302,7 +302,7 @@ ClickOnMapMission(x, y) {
 		}
 			
 
-		if(CheckForImage(&FoundX, &FoundY, 780, 812, 842, 866, "*80 x2.png")){
+		if(CheckForImage(&FoundX, &FoundY, 1024, 803, 1164, 874, "*80 NotEnoughSquads.png")){
 			Press "{Esc}"
 			return
 		}
