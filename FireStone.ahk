@@ -318,8 +318,7 @@ DoWMMission(zone_x1, zone_y1, zone_x2, zone_y2, click_x, click_y) {
 		MouseMove(0, 0) ; Убираем мышь, чтобы не светила кнопку
 		if !CheckIfGreenAndClick(926, 734, 120000) ; Ждём появление кнопки подтверждения
 		{
-			MsgBox "Не могу дождаться пикселя, выход"
-			Exit
+			throw 1
 		}
 	}
 	else
