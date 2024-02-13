@@ -330,35 +330,44 @@ DoMapMissions(){
 	if (CheckSquad())
 	{
 		; Tp "У нас есть задания, которые нужно сделать!"
+		try_finish := false
 		For x, y in map_litle_missons.OwnProps()
 		{
 			If !CheckSquad()
 				break
 	
 			ClickOnMapMission(x, y)
+			try_finish := true
 		}
 
-		MapTryFinishMissions
-	
+		if try_finish
+			MapTryFinishMissions
+		
+		try_finish := false
 		For x, y in map_small_missons.OwnProps()
 		{
 			If !CheckSquad()
 				break
 	
 			ClickOnMapMission(x, y)
+			try_finish := true
 		}
 
-		MapTryFinishMissions
+		if try_finish
+			MapTryFinishMissions
 	
+		try_finish := false
 		For x, y in map_big_missons.OwnProps()
 		{
 			If !CheckSquad()
 				break
 	
 			ClickOnMapMission(x, y)
+			try_finish := true
 		}
 
-		MapTryFinishMissions
+		if try_finish
+			MapTryFinishMissions
 
 		For x, y in map_medium_missons.OwnProps()
 		{
@@ -379,22 +388,20 @@ MapTryFinishMissions() {
 		else
 		{
 			FClick 138, 239, 500
-			if !CheckIfGreenAndClick(966, 855, 500)
-			{
-				if(CheckForImage(&FoundX, &FoundY, 1251, 720, 1491, 790, "*120 FreeOrange.png"))
-				{
-					FClick 1367, 747, 500
-					CheckIfGreenAndClick(815, 613, 5000)
-					continue
-				}
-		
-				if(CheckForImage(&FoundX, &FoundY, 948, 706, 1219, 807, "*120 Otmena.png"))
-					Press "{Esc}"
-					break
+			if (CheckIfGreenAndClick(815, 605, 500)){
+				continue
 			}
-			else
+
+			if(CheckForImage(&FoundX, &FoundY, 1251, 720, 1491, 790, "*120 FreeOrange.png"))
 			{
-				CheckIfGreenAndClick(815, 613, 5000)
+				FClick 1367, 747, 500
+				CheckIfGreenAndClick(815, 605, 5000)
+				continue
+			}
+	
+			if(CheckForImage(&FoundX, &FoundY, 948, 706, 1219, 807, "*120 Otmena.png")){
+				Press "{Esc}"
+				break
 			}
 		}
 	}
