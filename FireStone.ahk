@@ -268,7 +268,7 @@ DoMap() {
 	FClick(1832, 438, 500) ; Вернуться обратно на карту миссий
 
 	; Прокликать завершённые задания
-	MapFinishMissions
+	MapTryFinishMissions
 	DoMapMissions
 	
 	FClick(1834, 583, 500) ; Клик для перехода на карту военной кампании
@@ -325,15 +325,52 @@ DoWMMission(zone_x1, zone_y1, zone_x2, zone_y2, click_x, click_y) {
 		return 0
 }
 
-MapFinishMissions(){
-	loop
+DoMapMissions(){
+	; Проверить, есть ли не задания на карте и попытаться их начать.
+	if (CheckSquad())
 	{
-		if not CheckIfGreenAndClick(95, 310, 1500)
-			break
-		else
-			CheckIfGreenAndClick(814, 614, 1500)
-	}
+		; Tp "У нас есть задания, которые нужно сделать!"
+		For x, y in map_litle_missons.OwnProps()
+		{
+			If !CheckSquad()
+				break
+	
+			ClickOnMapMission(x, y)
+		}
 
+		MapTryFinishMissions
+	
+		For x, y in map_small_missons.OwnProps()
+		{
+			If !CheckSquad()
+				break
+	
+			ClickOnMapMission(x, y)
+		}
+
+		MapTryFinishMissions
+	
+		For x, y in map_big_missons.OwnProps()
+		{
+			If !CheckSquad()
+				break
+	
+			ClickOnMapMission(x, y)
+		}
+
+		MapTryFinishMissions
+
+		For x, y in map_medium_missons.OwnProps()
+		{
+			If !CheckSquad()
+				break
+	
+			ClickOnMapMission(x, y)
+		}
+	}
+}
+
+MapTryFinishMissions() {
 	; Попробовать завершить задания, которым осталось меньше 3-х минут
 	loop
 	{
@@ -359,45 +396,6 @@ MapFinishMissions(){
 			{
 				CheckIfGreenAndClick(815, 613, 5000)
 			}
-		}
-	}
-}
-
-DoMapMissions(){
-	; Проверить, есть ли не задания на карте и попытаться их начать.
-	if (CheckSquad())
-	{
-		; Tp "У нас есть задания, которые нужно сделать!"
-		For x, y in map_litle_missons.OwnProps()
-		{
-			If !CheckSquad()
-				break
-	
-			ClickOnMapMission(x, y)
-		}
-	
-		For x, y in map_small_missons.OwnProps()
-		{
-			If !CheckSquad()
-				break
-	
-			ClickOnMapMission(x, y)
-		}
-	
-		For x, y in map_big_missons.OwnProps()
-		{
-			If !CheckSquad()
-				break
-	
-			ClickOnMapMission(x, y)
-		}
-
-		For x, y in map_medium_missons.OwnProps()
-		{
-			If !CheckSquad()
-				break
-	
-			ClickOnMapMission(x, y)
 		}
 	}
 }
