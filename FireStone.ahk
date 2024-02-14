@@ -180,7 +180,7 @@ DoPrestigeUpgrades(force := false) {
 	MouseGetPos(&Mx, &My)
 
 	; Если мышка двигалась или нажималась клавиатура пока спали, пропускаем задачу
-	If((A_TimeIdlePhysical >= 60000 && saved_mouse_position_x == Mx && saved_mouse_position_y == My) || force == true) {
+	If((A_TimeIdle >= 60000 && saved_mouse_position_x == Mx && saved_mouse_position_y == My) || force == true) {
 		hwids := FindAllFirestones()
 		Loop hwids.Length
 		{
