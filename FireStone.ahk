@@ -38,10 +38,15 @@ map_big_missons := {1097:522, 459:899, 596:540, 1485:749, 374:972, 836:944, 957:
 	global prestige_mode
 
 	prestige_mode := !prestige_mode
-	if prestige_mode
+	if prestige_mode {
+		SetTimer(DoPrestigeUpgrades, 60000)
 		Tp "Режим престижа"
+	}
 	else
+	{
+		SetTimer(DoPrestigeUpgrades, 0)
 		Tp "Обычный режим"
+	}
 }
 
 ; ^m:: {
@@ -154,6 +159,38 @@ DoWork() {
 	MouseGetPos(&saved_mouse_position_x, &saved_mouse_position_y)
 }
 
+DoPrestigeUpgrades() {
+	global firestone_hwid, saved_mouse_position_x, saved_mouse_position_y
+
+	MouseGetPos(&Mx, &My)
+	; Если мышка двигалась пока спали, пропускаем задачу
+	If((saved_mouse_position_x == Mx) && (saved_mouse_position_y == My)) {
+		hwids := FindAllFirestones()
+		Loop hwids.Length
+		{
+			firestone_hwid := hwids[A_Index]
+			If WinExist(firestone_hwid){
+				WinActivate
+			}
+
+			try
+			{
+				BackToMainScreen 
+				SleepAndWait 1000
+				DoUpgrades
+			}
+			catch Number
+			{
+				ToolTip "Прерываю работу."
+				SetTimer () => ToolTip(), -2000
+				break
+			}
+		}
+    }
+	
+	MouseGetPos(&saved_mouse_position_x, &saved_mouse_position_y)
+}
+
 DoAlchemy() {
 	FClick(480, 790)
 	
@@ -221,6 +258,7 @@ DoWMDailys() {
 
 DoUpgrades() {
 	global prestige_mode
+	SetMouseDelay 30
 
 	Press "{u}", 500
 	FClick(1771, 180, 200)
