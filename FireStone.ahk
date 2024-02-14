@@ -43,8 +43,16 @@ map_big_missons := {1097:522, 459:899, 596:540, 1485:749, 374:972, 836:944, 957:
 	if prestige_mode {
 		Tp "Режим престижа"
 		MouseGetPos(&saved_mouse_position_x, &saved_mouse_position_y)
-		SleepAndWait 2100
-		DoPrestigeUpgrades(true)
+		try
+		{
+			SleepAndWait 2100
+			DoPrestigeUpgrades(true)
+		}
+		catch Number
+		{
+			; А хз, наверное будет пустым тут
+		}
+		
 		SetTimer DoPrestigeUpgrades, 60000
 	}
 	else
@@ -109,8 +117,15 @@ map_big_missons := {1097:522, 459:899, 596:540, 1485:749, 374:972, 836:944, 957:
 	{
 		Tp "Запускаю."
 		MouseGetPos(&saved_mouse_position_x, &saved_mouse_position_y)
-		SleepAndWait 2100
-		DoWork(true)
+		try
+		{
+			SleepAndWait 2100
+			DoWork(true)
+		}
+		catch Number
+		{
+			; А хз, наверное будет пустым тут
+		}
 		SetTimer DoWork, 300000
 	}
         
