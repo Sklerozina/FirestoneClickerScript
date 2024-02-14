@@ -2,6 +2,8 @@
 #MaxThreadsPerHotkey 2
 #SingleInstance Force
 
+InstallKeybdHook
+
 SendMode "InputThenPlay"
 ; Thread "Interrupt", 0  ; Make all threads always-interruptible.
 
@@ -39,13 +41,16 @@ map_big_missons := {1097:522, 459:899, 596:540, 1485:749, 374:972, 836:944, 957:
 
 	prestige_mode := !prestige_mode
 	if prestige_mode {
-		SetTimer(DoPrestigeUpgrades, 60000)
 		Tp "Режим престижа"
+		MouseGetPos(&saved_mouse_position_x, &saved_mouse_position_y)
+		SleepAndWait 2100
+		DoPrestigeUpgrades(true)
+		SetTimer DoPrestigeUpgrades, 60000
 	}
 	else
 	{
-		SetTimer(DoPrestigeUpgrades, 0)
 		Tp "Обычный режим"
+		SetTimer DoPrestigeUpgrades, 0
 	}
 }
 
@@ -95,30 +100,34 @@ map_big_missons := {1097:522, 459:899, 596:540, 1485:749, 374:972, 836:944, 957:
     toggled := !toggled
 
 	if !toggled {
-		ToolTip "Скрипт приостановлен."
-		SetTimer () => ToolTip(), -2000
+		Tp "Скрипт приостановлен."
 		Sleep 2000
 		Exit
 	}
 	
 	if toggled
 	{
-		ToolTip "Запускаю."
-		SetTimer () => ToolTip(), -2000
+		Tp "Запускаю."
 		MouseGetPos(&saved_mouse_position_x, &saved_mouse_position_y)
-		DoWork
-		SetTimer DoWork, 180000
+		SleepAndWait 2100
+		DoWork(true)
+		SetTimer DoWork, 300000
 	}
         
 }
 
 ; Запускается по таймеру
-DoWork() {
+DoWork(force := false) {
 	global firestone_hwid, saved_mouse_position_x, saved_mouse_position_y
+	static delay := 300000
 
+	Thread "Priority", 1 ; На всякий случай, чтобы задача не прерывалась другими таймерами
+
+	; Если мышка двигалась или нажималась клавиатура пока спали, пропускаем задачу
 	MouseGetPos(&Mx, &My)
-	; Если мышка двигалась пока спали, пропускаем задачу
-	If((saved_mouse_position_x == Mx) && (saved_mouse_position_y == My)) {
+
+	; Если мышка двигалась или нажималась клавиатура пока спали, пропускаем задачу
+	If((A_TimeIdlePhysical >= delay && (saved_mouse_position_x == Mx) && (saved_mouse_position_y == My)) || force) {
 		hwids := FindAllFirestones()
 		Loop hwids.Length
 		{
@@ -129,6 +138,7 @@ DoWork() {
 
 			try
 			{
+				Sleep 1000 ; Заглушка, чтобы пошёл таймер в A_TimeIdlePhysical
 				BackToMainScreen 
 				SleepAndWait 1000
 				DoUpgrades
@@ -142,29 +152,31 @@ DoWork() {
 			}
 			catch Number
 			{
-				ToolTip "Прерываю работу."
-				SetTimer () => ToolTip(), -2000
-				SetTimer DoWork, 180000 ; Если мышь двигалась, то следующий раз будет через 3 минуты
+				Tp "Прерываю работу."
+				delay := 180000
+				SetTimer DoWork, delay ; Если мышь двигалась, то следующий раз будет через 3 минуты
 				break
 			}
 		}
-
-		SetTimer DoWork, 300000 ; Если мышь не двигалась, то продолжаем через 5 минут
+		delay := 300000
+		SetTimer DoWork, delay ; Если мышь не двигалась, то продолжаем через 5 минут
     }
 	else
 	{
-		SetTimer DoWork, 180000 ; Если мышь двигалась, то следующий раз будет через 3 минуты
+		delay := 180000
+		SetTimer DoWork, delay ; Если мышь двигалась, то следующий раз будет через 3 минуты
 	}
-	
+
 	MouseGetPos(&saved_mouse_position_x, &saved_mouse_position_y)
 }
 
-DoPrestigeUpgrades() {
+DoPrestigeUpgrades(force := false) {
 	global firestone_hwid, saved_mouse_position_x, saved_mouse_position_y
 
 	MouseGetPos(&Mx, &My)
-	; Если мышка двигалась пока спали, пропускаем задачу
-	If((saved_mouse_position_x == Mx) && (saved_mouse_position_y == My)) {
+
+	; Если мышка двигалась или нажималась клавиатура пока спали, пропускаем задачу
+	If((A_TimeIdlePhysical >= 60000 && (saved_mouse_position_x == Mx) && (saved_mouse_position_y == My)) || force) {
 		hwids := FindAllFirestones()
 		Loop hwids.Length
 		{
@@ -175,14 +187,14 @@ DoPrestigeUpgrades() {
 
 			try
 			{
+				Sleep 1000 ; Заглушка, чтобы пошёл таймер в A_TimeIdlePhysical
 				BackToMainScreen 
 				SleepAndWait 1000
 				DoUpgrades
 			}
 			catch Number
 			{
-				ToolTip "Прерываю работу."
-				SetTimer () => ToolTip(), -2000
+				Tp "Прерываю работу."
 				break
 			}
 		}
@@ -258,7 +270,6 @@ DoWMDailys() {
 
 DoUpgrades() {
 	global prestige_mode
-	SetMouseDelay 30
 
 	Press "{u}", 500
 	FClick(1771, 180, 200)
@@ -502,9 +513,11 @@ ClickGuildIcon() {
 
 FClick(x, y, wait := 1000, clickcount := 1) {
 	FindFirestoneWindowAndActivate
-
-	Click x, y, clickcount
-	SleepAndWait(wait)
+	loop clickcount
+	{
+		Click x, y
+		SleepAndWait(wait)
+	}
 }
 
 Press(key, wait := 1000) {
@@ -516,10 +529,13 @@ Press(key, wait := 1000) {
 
 SleepAndWait(m := 1000) {
 	MouseGetPos(&Mx1, &My1)
+
 	Sleep m
+
 	MouseGetPos(&Mx2, &My2)
+
 	; Если мышка двигалась пока спали, пропускаем задачу
-	If((Mx1 != Mx2) && (My1 != My2)) {
+	If((Mx1 != Mx2) && (My1 != My2) || A_TimeIdlePhysical <= m) {
 		throw 1
 	}
 }
