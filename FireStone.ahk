@@ -104,11 +104,11 @@ map_big_missons := {1097:522, 459:899, 596:540, 1485:749, 374:972, 836:944, 957:
 	
 	if toggled
 	{
-		Tp "Запускаю."
+		Tp "Запускаю.", -1000
 		MouseGetPos(&saved_mouse_position_x, &saved_mouse_position_y)
 		try
 		{
-			SleepAndWait 2100
+			Sleep 1100
 			DoWork(true)
 		}
 		catch Number
