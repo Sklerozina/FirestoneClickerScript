@@ -315,14 +315,19 @@ DoExpeditions() {
 }
 
 DoMap() {
+	map_status := ''
+
 	Press "{m}"
 	FClick(1834, 583, 500) ; Клик для перехода на карту военной кампании
 	CheckIfGreenAndClick(60, 953, 1000) ; Забрать лут
 	FClick(1832, 438, 500) ; Вернуться обратно на карту миссий
 
 	; Прокликать завершённые задания
-	MapTryFinishMissions
-	DoMapMissions
+	map_status := MapTryFinishMissions()
+	if map_status == 'hangup'
+		DoMapMissions(true)
+	else
+		DoMapMissions
 	
 	FClick(1834, 583, 500) ; Клик для перехода на карту военной кампании
 
@@ -359,6 +364,8 @@ ClickOnMapMission(x, y) {
 			Press "{Esc}"
 			return
 		}
+
+		CheckIfGreenAndClick(814, 603, 500)
 			
 	}
 }
@@ -378,15 +385,15 @@ DoWMMission(zone_x1, zone_y1, zone_x2, zone_y2, click_x, click_y) {
 		return 0
 }
 
-DoMapMissions(){
+DoMapMissions(force := false){
 	; Проверить, есть ли не задания на карте и попытаться их начать.
-	if (CheckSquad())
+	if (CheckSquad() || force == true)
 	{
 		; Tp "У нас есть задания, которые нужно сделать!"
 		try_finish := false
 		For x, y in map_litle_missons.OwnProps()
 		{
-			If !CheckSquad()
+			If !CheckSquad() && force == false
 				break
 	
 			ClickOnMapMission(x, y)
@@ -399,7 +406,7 @@ DoMapMissions(){
 		try_finish := false
 		For x, y in map_small_missons.OwnProps()
 		{
-			If !CheckSquad()
+			If !CheckSquad() && force == false
 				break
 	
 			ClickOnMapMission(x, y)
@@ -412,7 +419,7 @@ DoMapMissions(){
 		try_finish := false
 		For x, y in map_big_missons.OwnProps()
 		{
-			If !CheckSquad()
+			If !CheckSquad() && force == false
 				break
 	
 			ClickOnMapMission(x, y)
@@ -424,7 +431,7 @@ DoMapMissions(){
 
 		For x, y in map_medium_missons.OwnProps()
 		{
-			If !CheckSquad()
+			If !CheckSquad() && force == false
 				break
 	
 			ClickOnMapMission(x, y)
@@ -434,7 +441,7 @@ DoMapMissions(){
 
 MapTryFinishMissions() {
 	; Попробовать завершить задания, которым осталось меньше 3-х минут
-	loop
+	loop 20 ; Ограничим цикл, если вдруг что-то пошло не так.
 	{
 		if not PixelSearch(&FoundX, &FoundY, 14, 208, 263, 341, 0xF7E5CB, 1)
 			break
@@ -455,6 +462,10 @@ MapTryFinishMissions() {
 			if(CheckForImage(&FoundX, &FoundY, 948, 706, 1219, 807, "*120 Otmena.png")){
 				Press "{Esc}"
 				break
+			}
+
+			if (PixelSearch(&FoundX, &FoundY, 85, 274, 138, 332, 0xADABAD, 1)) {
+				return 'hangup'
 			}
 		}
 	}
