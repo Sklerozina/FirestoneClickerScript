@@ -243,15 +243,15 @@ DoAlchemy() {
 
 	; За кровь
 	if alchemy_1 == true
-		CheckIfGreenAndClick(860, 764, 500)
+		CheckIfGreenAndClick(860, 764, 2500)
 
 	; За пыль
 	if alchemy_2 == true
-		CheckIfGreenAndClick(1210, 764, 500)
+		CheckIfGreenAndClick(1210, 764, 2500)
 
 	; За монеты
 	if alchemy_3 == true
-		CheckIfGreenAndClick(1560, 764, 500)
+		CheckIfGreenAndClick(1560, 764, 2500)
 
 	Press "{Esc}"
 }
