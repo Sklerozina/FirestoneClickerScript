@@ -209,24 +209,49 @@ DoPrestigeUpgrades(force := false) {
 
 DoAlchemy() {
 	FClick(480, 790)
+
+	alchemy_1 := false
+	alchemy_2 := false
+	alchemy_3 := false
 	
-	if CheckIfGreenAndClick(860, 764, 250) || CheckIfOrangeAndClick(920, 740, 250)
+	; За кровь
+	if CheckIfGreenAndClick(860, 764, 250)
+		alchemy_1 := true
+	else
 	{
-		MouseMove(860, 200) ; Сдвигаем курсор, чтобы не загораживал
-		CheckIfGreenAndClick(860, 764, 5000)
+		if CheckIfOrangeAndClick(920, 740, 250)
+			alchemy_1 := true
+	}
+		
+	; За пыль
+	if CheckIfGreenAndClick(1210, 764, 250)
+		alchemy_2 := true
+	else
+	{
+		if CheckIfOrangeAndClick(1270, 740, 250)
+			alchemy_2 := true
 	}
 
-	if CheckIfGreenAndClick(1210, 764, 250) || CheckIfOrangeAndClick(1270, 740, 250)
+	; За монеты
+	if CheckIfGreenAndClick(1560, 764, 250)
+		alchemy_3 := true
+	else
 	{
-		MouseMove(860, 200) ; Сдвигаем курсор, чтобы не загораживал
-		CheckIfGreenAndClick(1210, 764, 5000)
+		if CheckIfOrangeAndClick(1620, 740, 250)
+			alchemy_3 := true
 	}
 
-	if CheckIfGreenAndClick(1560, 764, 250) || CheckIfOrangeAndClick(1620, 740, 250)
-	{
-		MouseMove(860, 200) ; Сдвигаем курсор, чтобы не загораживал
-		CheckIfGreenAndClick(1560, 764, 5000)
-	}
+	; За кровь
+	if alchemy_1 == true
+		CheckIfGreenAndClick(860, 764, 500)
+
+	; За пыль
+	if alchemy_2 == true
+		CheckIfGreenAndClick(1210, 764, 500)
+
+	; За монеты
+	if alchemy_3 == true
+		CheckIfGreenAndClick(1560, 764, 500)
 
 	Press "{Esc}"
 }
