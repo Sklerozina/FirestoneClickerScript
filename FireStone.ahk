@@ -24,6 +24,7 @@ saved_mouse_position_y := 0
 prestige_mode := false
 
 ;; Координаты заданий для карты
+map_world_domination_missions := {954:503}
 ; ~20 minutes
 map_litle_missons := {866:207, 1390:320, 1333:409, 1216:435, 536:472, 682:493, 845:640, 1266:673, 1455:552, 907:335, 696:198, 499:158, 1338:619, 1291:159, 818:345, 1134:416, 630:330, 1087:860}
 ; ~40 minutes
@@ -370,7 +371,7 @@ ClickOnMapMission(x, y) {
 	FClick x, y, 100
 	; Зелёная кнопка принятия
 	MouseMove 0, 0
-	if !CheckIfGreenAndClick(966, 855, 500)
+	if !CheckIfGreenAndClick(966, 855, 250)
 	{
 		if(CheckForImage(&FoundX, &FoundY, 1251, 720, 1491, 790, "*80 FreeOrange.png"))
 		{
@@ -414,6 +415,17 @@ DoMapMissions(force := false){
 	; Проверить, есть ли не задания на карте и попытаться их начать.
 	if (CheckSquad() || force == true)
 	{
+		; Мисси при событии "Мировое господство"
+		map_world_domination_missions
+		For x, y in map_world_domination_missions.OwnProps()
+		{
+			If !CheckSquad() && force == false
+				break
+	
+			ClickOnMapMission(x, y)
+			try_finish := true
+		}
+
 		; Tp "У нас есть задания, которые нужно сделать!"
 		try_finish := false
 		For x, y in map_litle_missons.OwnProps()
