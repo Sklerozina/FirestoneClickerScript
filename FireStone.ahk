@@ -416,6 +416,7 @@ DoMapMissions(force := false){
 	if (CheckSquad() || force == true)
 	{
 		; Мисси при событии "Мировое господство"
+		try_finish := false
 		For x, y in map_world_domination_missions.OwnProps()
 		{
 			If !CheckSquad() && force == false
@@ -424,6 +425,9 @@ DoMapMissions(force := false){
 			ClickOnMapMission(x, y)
 			try_finish := true
 		}
+
+		if try_finish == true
+			MapTryFinishMissions
 
 		; Tp "У нас есть задания, которые нужно сделать!"
 		try_finish := false
@@ -436,7 +440,7 @@ DoMapMissions(force := false){
 			try_finish := true
 		}
 
-		if try_finish
+		if try_finish == true
 			MapTryFinishMissions
 		
 		try_finish := false
@@ -449,7 +453,7 @@ DoMapMissions(force := false){
 			try_finish := true
 		}
 
-		if try_finish
+		if try_finish == true
 			MapTryFinishMissions
 	
 		try_finish := false
@@ -462,7 +466,7 @@ DoMapMissions(force := false){
 			try_finish := true
 		}
 
-		if try_finish
+		if try_finish == true
 			MapTryFinishMissions
 
 		For x, y in map_medium_missons.OwnProps()
