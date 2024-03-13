@@ -416,7 +416,6 @@ DoMapMissions(force := false){
 	if (CheckSquad() || force == true)
 	{
 		; Мисси при событии "Мировое господство"
-		map_world_domination_missions
 		For x, y in map_world_domination_missions.OwnProps()
 		{
 			If !CheckSquad() && force == false
