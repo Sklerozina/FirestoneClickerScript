@@ -24,7 +24,7 @@ saved_mouse_position_y := 0
 prestige_mode := false
 
 ;; Координаты заданий для карты
-map_world_domination_missions := {954:503}
+map_world_domination_missions := {954:503, 728:350}
 ; ~20 minutes
 map_litle_missons := {866:207, 1390:320, 1333:409, 1216:435, 536:472, 682:493, 845:640, 1266:673, 1455:552, 907:335, 696:198, 499:158, 1338:619, 1291:159, 818:345, 1134:416, 630:330, 1087:860}
 ; ~40 minutes
