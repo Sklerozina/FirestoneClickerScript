@@ -88,7 +88,6 @@ map_big_missons := {1097:522, 459:899, 596:540, 1485:749, 374:972, 836:944, 957:
 ; 	}
 
 ; 	; Do Test Things
-; 	MapFinishMissions
 ; }
 
 ^y:: {
@@ -118,14 +117,13 @@ map_big_missons := {1097:522, 459:899, 596:540, 1485:749, 374:972, 836:944, 957:
 		}
 		SetTimer DoWork, 300000
 	}
-        
 }
 
 ; Запускается по таймеру
 DoWork(force := false) {
 	global firestone_hwid, saved_mouse_position_x, saved_mouse_position_y
 	static delay := 300000
-	static daily_magazine_reward := false
+	static daily_magazine_reward := true
 
 	Thread "Priority", 1 ; На всякий случай, чтобы задача не прерывалась другими таймерами
 
@@ -158,6 +156,7 @@ DoWork(force := false) {
 				CollectXPGuard ; Страж
 				CollectTools ; Механик
 				DoExpeditions ; Экспедиции
+				DoResearch
 				Press "{Esc}" ; На главный экран
 				DoMap
 			}
@@ -212,6 +211,95 @@ DoPrestigeUpgrades(force := false) {
     }
 	
 	MouseGetPos(&saved_mouse_position_x, &saved_mouse_position_y)
+}
+
+DoResearch() {
+	research_count := 0
+	;; Проверяем, висит ли красный значёк у здания.
+	if not CheckIfRed(384, 641, 424, 680)
+		return
+
+	FClick 313, 630
+	FClick 1813, 930
+
+	MouseMove 0, 0
+
+	if PixelSearch(&OutputX, &OutputY, 445, 939, 461, 976, 0x285483, 1)
+	{
+		research_count += 1
+	}
+
+	if PixelSearch(&OutputX, &OutputY, 1090, 939, 1105, 976, 0x285483, 1)
+	{
+		research_count += 1
+	}
+		
+	loop 2
+	{
+		; Проверка на оранжевую кнопку, досрочное завершение
+		if CheckForImage(462, 899, 634, 948, "ResearchFree.png")
+		{
+			FClick 548, 925, 500
+			research_count -= 1
+			continue
+		}
+
+		; Проверить зелёную кнопку завершения
+		if PixelSearch(&OutputX, &OutputY, 474, 895, 633, 950, 0x0AA008, 1)
+		{
+			FClick 548, 925, 500
+			research_count -= 1
+			continue
+		}
+
+		MouseMove 0, 0
+		break
+	}
+	
+	;; Добавить проверку на второе исследование
+	if (research_count < 2)
+	{
+		loop 50
+		{
+			Press "{WheelUp}", 30
+		}
+
+		loop 2
+		{
+			x := 65
+			while x < 1700
+			{
+				MouseMove x, 100
+				if PixelSearch(&OutputX, &OutputY, x, 170, x, 824, 0x0D49DE, 1)
+				{
+					;; попробовать кликнуть
+					FClick OutputX, OutputY
+					;; Подождать окно принятия
+					if WaitForSearchPixel(669, 707, 928, 775, 0x0AA007, 1, 1000)
+					{
+						FClick 795, 738, 500
+
+						research_count += 1
+					}
+				}
+
+				if (research_count == 2)
+					break 2
+		
+				x += 50
+		
+				SleepAndWait 200
+			}
+
+			loop 30
+			{
+				Press "{WheelDown}", 30
+			}
+		}
+	}
+	
+
+	Press "{ESC}"
 }
 
 DoDailyMagazineReward() {
@@ -394,6 +482,7 @@ DoExpeditions() {
 
 	FClick(296, 387) ; Клик на здание экспедиций
 	CheckIfGreenAndClick 1184, 299
+	MouseMove 0, 0
 	CheckIfGreenAndClick 1184, 299, 3000
 	Press "{Esc}" ; Закрыть окно экспедиций
 	Press "{Esc}" ; Выйти в город
@@ -672,6 +761,21 @@ WaitForPixel(x, y, colors, timeout := 300000) {
 	while t <= timeout
 	{
 		if InStr(colors, String(PixelGetColor(x, y)))
+		{
+			return 1
+		}
+		SleepAndWait 500
+		t += 500
+	}
+
+	return 0
+}
+
+WaitForSearchPixel(x1, y1, x2, y2, color, variation := 0, timeout := 300000) {
+	t := 0
+	while t <= timeout
+	{
+		if PixelSearch(&OutputX, &OutputY, x1, y1, x2, y2, color, variation)
 		{
 			return 1
 		}
