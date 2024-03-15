@@ -233,7 +233,8 @@ DoResearch() {
 	{
 		research_count += 1
 	}
-		
+	
+	;; Проверка первого слота
 	loop 2
 	{
 		; Проверка на оранжевую кнопку, досрочное завершение
@@ -253,6 +254,24 @@ DoResearch() {
 		MouseMove 0, 0
 		SleepAndWait 500
 	}
+
+	;; Проверка второго слота
+	; Проверка на оранжевую кнопку, досрочное завершение
+	if CheckForImage(1090, 879, 1301, 958, "ResearchFree.png")
+	{
+		FClick 548, 925, 500
+		research_count -= 1
+	}
+
+	; Проверить зелёную кнопку завершения
+	if PixelSearch(&OutputX, &OutputY, 1122, 889, 1283, 951, 0x0AA008, 1)
+	{
+		FClick 548, 925, 500
+		research_count -= 1
+	}
+
+	MouseMove 0, 0
+	SleepAndWait 500
 	
 	;; Добавить проверку на второе исследование
 	if (research_count < 2)
