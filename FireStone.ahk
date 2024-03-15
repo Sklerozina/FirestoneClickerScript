@@ -241,7 +241,6 @@ DoResearch() {
 		{
 			FClick 548, 925, 500
 			research_count -= 1
-			continue
 		}
 
 		; Проверить зелёную кнопку завершения
@@ -249,11 +248,10 @@ DoResearch() {
 		{
 			FClick 548, 925, 500
 			research_count -= 1
-			continue
 		}
 
 		MouseMove 0, 0
-		break
+		SleepAndWait 500
 	}
 	
 	;; Добавить проверку на второе исследование
