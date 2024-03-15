@@ -153,7 +153,7 @@ DoWork(force := false) {
 				ClickCityIcon ; зайти в город
 				if daily_magazine_reward == false
 					DoDailyMagazineReward
-					daily_magazine_reward == true
+					daily_magazine_reward := true
 				DoAlchemy ; Алхимия
 				CollectXPGuard ; Страж
 				CollectTools ; Механик
