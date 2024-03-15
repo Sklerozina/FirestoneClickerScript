@@ -259,14 +259,14 @@ DoResearch() {
 	; Проверка на оранжевую кнопку, досрочное завершение
 	if CheckForImage(1090, 879, 1301, 958, "ResearchFree.png")
 	{
-		FClick 548, 925, 500
+		FClick 1201, 916, 500
 		research_count -= 1
 	}
 
 	; Проверить зелёную кнопку завершения
 	if PixelSearch(&OutputX, &OutputY, 1122, 889, 1283, 951, 0x0AA008, 1)
 	{
-		FClick 548, 925, 500
+		FClick 1201, 916, 500
 		research_count -= 1
 	}
 
