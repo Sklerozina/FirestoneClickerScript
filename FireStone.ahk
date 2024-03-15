@@ -125,6 +125,7 @@ map_big_missons := {1097:522, 459:899, 596:540, 1485:749, 374:972, 836:944, 957:
 DoWork(force := false) {
 	global firestone_hwid, saved_mouse_position_x, saved_mouse_position_y
 	static delay := 300000
+	static daily_magazine_reward := false
 
 	Thread "Priority", 1 ; На всякий случай, чтобы задача не прерывалась другими таймерами
 
@@ -146,8 +147,13 @@ DoWork(force := false) {
 				Sleep 1000 ; Заглушка, чтобы пошёл таймер в A_TimeIdlePhysical
 				BackToMainScreen 
 				SleepAndWait 1000
+				if CheckIfRed(1877, 517, 1912, 555)
+					daily_magazine_reward := false
 				DoUpgrades
 				ClickCityIcon ; зайти в город
+				if daily_magazine_reward == false
+					DoDailyMagazineReward
+					daily_magazine_reward == true
 				DoAlchemy ; Алхимия
 				CollectXPGuard ; Страж
 				CollectTools ; Механик
@@ -208,22 +214,40 @@ DoPrestigeUpgrades(force := false) {
 	MouseGetPos(&saved_mouse_position_x, &saved_mouse_position_y)
 }
 
+DoDailyMagazineReward() {
+	FClick 1300, 343
+	
+	if CheckForImage(390, 818, 785, 925, "magazine_free.png")
+	{
+		FClick 592, 743, 200
+	}
+
+	if CheckIfRed(1425, 25, 1474, 76)
+	{
+		FClick 1381, 91
+		if PixelSearch(&OutputX, &OutputY, 1261, 796, 1404, 841, 0x4CA02E, 1)
+		{
+			FClick 1324, 811
+		}
+	}
+
+	Press "{ESC}"
+
+	return true
+}
+
 DoAlchemy() {
+	;; Проверяем, висит ли красный значёк у здания.
+	if not CheckIfRed(570, 808, 614, 851)
+		return
+
 	FClick(480, 790)
 
 	alchemy_1 := false
 	alchemy_2 := false
 	alchemy_3 := false
 	
-	; За кровь
-	if CheckIfGreenAndClick(860, 764, 250)
-		alchemy_1 := true
-	else
-	{
-		if CheckIfOrangeAndClick(920, 740, 250)
-			alchemy_1 := true
-	}
-		
+	;; Сначала за пыль и монеты, потом за кровь
 	; За пыль
 	if CheckIfGreenAndClick(1210, 764, 250)
 		alchemy_2 := true
@@ -243,9 +267,15 @@ DoAlchemy() {
 	}
 
 	; За кровь
-	if alchemy_1 == true
-		CheckIfGreenAndClick(860, 764, 2500)
+	if CheckIfGreenAndClick(860, 764, 250)
+		alchemy_1 := true
+	else
+	{
+		if CheckIfOrangeAndClick(920, 740, 250)
+			alchemy_1 := true
+	}
 
+	;; Сначала за пыль и монеты, потом за кровь
 	; За пыль
 	if alchemy_2 == true
 		CheckIfGreenAndClick(1210, 764, 2500)
@@ -254,12 +284,16 @@ DoAlchemy() {
 	if alchemy_3 == true
 		CheckIfGreenAndClick(1560, 764, 2500)
 
+	; За кровь
+	if alchemy_1 == true
+		CheckIfGreenAndClick(860, 764, 2500)
+
 	Press "{Esc}"
 }
 
 DoWMDailys() {
 	; Здесь можно проверить, светятся ли невыполненные дейлики
-	if (PixelSearch(&FoundX, &FoundY,1850, 900, 1900, 950, 0xF30000, 1))
+	if (CheckIfRed(1850, 900, 1900, 950))
 	{
 		FClick(1777, 977) ; Ежедневные миссии
 		FClick(720, 779) ; Кнопка выбора, освобождение
@@ -317,7 +351,20 @@ DoUpgrades() {
 
 ; Сбор инструментов
 CollectTools() {
+	;; Проверяем, висит ли красный значёк у здания.
+	if not CheckIfRed(1325, 839, 1369, 882)
+		return
+	
 	FClick 1230, 800 ; Клик на здание механика
+
+	;; Проверяем, висит ли красный значёк у механика.
+	if not CheckIfRed(724, 306, 759, 336)
+	{
+		Press "{ESC}"
+		return
+	}
+		
+
 	FClick 600, 460 ; Клик на выбор Механик
 	FClick 1620, 680 ; Клик на кнопку получения инструментов
 	Press "{Esc}"
@@ -325,6 +372,10 @@ CollectTools() {
 
 ; Прокачка стража
 CollectXPGuard() {
+	;; Проверяем, висит ли красный значёк у здания.
+	if not CheckIfRed(738, 281, 783, 324)
+		return
+
 	FClick 625, 230 ; Здание стража
 	FClick 1150, 765 ; Интерфейс стража
 	Press "{Esc}"
@@ -333,9 +384,17 @@ CollectXPGuard() {
 ; Экспедиции
 DoExpeditions() {
 	FClick(1482, 127) ; Клик на здание гильдии
+
+	;; Проверяем, висит ли красный значёк у здания.
+	if not CheckIfRed(405, 443, 435, 475)
+	{
+		Press "{Esc}" ; Выйти в город
+		return
+	}
+
 	FClick(296, 387) ; Клик на здание экспедиций
-	FClick(1305, 296, 2000) ; Клик на кнопку принятия экспедиции
-	FClick(1305, 296) ; Клик на кнопку принятия экспедиции
+	CheckIfGreenAndClick 1184, 299
+	CheckIfGreenAndClick 1184, 299, 3000
 	Press "{Esc}" ; Закрыть окно экспедиций
 	Press "{Esc}" ; Выйти в город
 }
@@ -363,7 +422,7 @@ DoMap() {
 }
 
 CheckSquad() {
-	; return CheckForImage(&FoundX, &FoundY, 646, 946, 844, 1016, "*80 MapBezd.png")
+	; return CheckForImage(646, 946, 844, 1016, "*80 MapBezd.png")
 	return PixelSearch(&FoundX, &FoundY, 646, 946, 816, 1016, 0xF9E7CE, 1)
 }
 
@@ -373,20 +432,20 @@ ClickOnMapMission(x, y) {
 	MouseMove 0, 0
 	if !CheckIfGreenAndClick(966, 855, 250)
 	{
-		if(CheckForImage(&FoundX, &FoundY, 1251, 720, 1491, 790, "*80 FreeOrange.png"))
+		if(CheckForImage(1251, 720, 1491, 790, "*80 FreeOrange.png"))
 		{
 			FClick 1367, 747, 500
 			CheckIfGreenAndClick(815, 613, 5000)
 			return
 		}
 
-		if(CheckForImage(&FoundX, &FoundY, 948, 706, 1219, 807, "*80 Otmena.png")){
+		if(CheckForImage(948, 706, 1219, 807, "*80 Otmena.png")){
 			Press "{Esc}"
 			return
 		}
 			
 
-		if(CheckForImage(&FoundX, &FoundY, 1024, 803, 1164, 874, "*80 NotEnoughSquads.png")){
+		if(CheckForImage(1024, 803, 1164, 874, "*80 NotEnoughSquads.png")){
 			Press "{Esc}"
 			return
 		}
@@ -492,14 +551,14 @@ MapTryFinishMissions() {
 				continue
 			}
 
-			if(CheckForImage(&FoundX, &FoundY, 1251, 720, 1491, 790, "*120 FreeOrange.png"))
+			if(CheckForImage(1251, 720, 1491, 790, "*120 FreeOrange.png"))
 			{
 				FClick 1367, 747, 500
 				CheckIfGreenAndClick(815, 605, 5000)
 				continue
 			}
 	
-			if(CheckForImage(&FoundX, &FoundY, 948, 706, 1219, 807, "*120 Otmena.png")){
+			if(CheckForImage(948, 706, 1219, 807, "*120 Otmena.png")){
 				Press "{Esc}"
 				break
 			}
@@ -529,6 +588,10 @@ CheckIfGreenAndClick(x, y, timeout := 1000){
 	}
 
 	return 0
+}
+
+CheckIfRed(x1, y1, x2, y2) {
+	return PixelSearch(&FoundX, &FoundY, x1, y1, x2, y2, 0xF30000, 1)
 }
 
 FindFirestoneWindowAndActivate() {
@@ -595,7 +658,7 @@ SleepAndWait(m := 1000) {
 	}
 }
 
-CheckForImage(&OutputX, &OutputY, X1, Y1, X2, Y2, image) {
+CheckForImage(X1, Y1, X2, Y2, image) {
 	try
 	{
 		return ImageSearch(&OutputX, &OutputY, X1, Y1, X2, Y2, image)
