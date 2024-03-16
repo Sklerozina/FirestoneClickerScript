@@ -284,7 +284,7 @@ DoResearch() {
 		loop 2
 		{
 			x := 65
-			while x < 1700
+			while x < 1850
 			{
 				MouseMove x, 100
 				if PixelSearch(&OutputX, &OutputY, x, 170, x, 824, 0x0D49DE, 1)
@@ -308,7 +308,7 @@ DoResearch() {
 				SleepAndWait 200
 			}
 
-			loop 30
+			loop 35
 			{
 				Press "{WheelDown}", 30
 			}
