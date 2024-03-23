@@ -158,6 +158,7 @@ DoWork(force := false) {
 				DoExpeditions ; Экспедиции
 				DoResearch
 				Press "{Esc}" ; На главный экран
+				BackToMainScreen ;; Страховка перед заходом на карту
 				DoMap
 			}
 			catch Number
@@ -717,10 +718,11 @@ FindFirestoneWindowAndActivate() {
 
 ; Принудительный возврат на главный экран (Много раз жмёт Esc, потом кликает на закрытие диалога)
 BackToMainScreen(){
-	Press "{Esc}", 500
-	Press "{Esc}", 500
-	Press "{Esc}", 500
-	Press "{Esc}", 500
+	FClick 1398, 279, 250 ;; Клик по окошку "Нравится игра?"
+	Press "{Esc}", 250
+	Press "{Esc}", 250
+	Press "{Esc}", 250
+	Press "{Esc}", 250
 	FClick(1537, 275, 250)
 }
 
