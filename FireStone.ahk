@@ -543,30 +543,30 @@ DoUpgrades() {
 
 	if prestige_mode
 	{
-		FClick(1771, 180, 200)
-		FClick(1758, 875, 200, 5)
-		FClick(1758, 758, 200, 5)
-		FClick(1758, 644, 200, 5)
-		FClick(1758, 527, 200, 5)
-		FClick(1758, 424, 200, 5)
-		FClick(1764, 290, 200, 5)
+		UpgradeHero(1652, 134, 1776, 219, 1771, 180) ; 1
+		UpgradeHero(1652, 817, 1776, 889, 1758, 875, 5) ; 7
+		UpgradeHero(1652, 704, 1776, 776, 1758, 758, 5) ; 6
+		UpgradeHero(1652, 593, 1776, 665, 1758, 644, 5) ; 5
+		UpgradeHero(1652, 479, 1776, 551, 1758, 527, 5) ; 4
+		UpgradeHero(1652, 366, 1776, 438, 1758, 424, 5) ; 3
+		UpgradeHero(1652, 251, 1776, 323, 1764, 290, 5) ; 2
 	} else {
 		loop parse Settings.lvlup_priority {
 			switch A_LoopField {
 				case "1":
-					FClick(1771, 180, 200)
+					UpgradeHero(1652, 134, 1776, 219, 1771, 180) ; 1
 				case "2":
-					FClick(1764, 290, 200, 5)
+					UpgradeHero(1652, 251, 1776, 323, 1764, 290, 5) ; 2
 				case "3":
-					FClick(1758, 424, 200, 5)
+					UpgradeHero(1652, 366, 1776, 438, 1758, 424, 5) ; 3
 				case "4":
-					FClick(1758, 527, 200, 5)
+					UpgradeHero(1652, 479, 1776, 551, 1758, 527, 5) ; 4
 				case "5":
-					FClick(1758, 644, 200, 5)
+					UpgradeHero(1652, 593, 1776, 665, 1758, 644, 5) ; 5
 				case "6":
-					FClick(1758, 758, 200, 5)
+					UpgradeHero(1652, 704, 1776, 776, 1758, 758, 5) ; 6
 				case "7":
-					FClick(1758, 875, 200, 5)
+					UpgradeHero(1652, 817, 1776, 889, 1758, 875, 5) ; 7
 			}
 		}
 	}
@@ -901,6 +901,11 @@ ClickCityIcon() {
 ; Клик на иконку гильдии
 ClickGuildIcon() {
 	FClick 1865, 442 ; Клик на иконку города
+}
+
+UpgradeHero(x1, y1, x2, y2, clickx, clicky, clicks := 1) {
+	if PixelSearch(&OutputX, &OutputY, x1, y1, x2, y2, 0x0AA008, 1)
+		FClick clickx, clicky, 200, clicks
 }
 
 FClick(x, y, wait := 1000, clickcount := 1) {
