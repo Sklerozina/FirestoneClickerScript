@@ -229,6 +229,12 @@ DoOpenBoxes() {
 		
 		FClick x, y, 1000
 
+		;; Проверяем, что сундук и правда открылся, а не ложное срабатывание
+		if not PixelSearch(&OutpuxX, &OutpuxY, 590-10, 86-10, 1301+10, 851+10, 0x9CC4E3, 1) {
+			SleepAndWait 1000
+			continue
+		}
+
 		if PixelSearch(&OutpuxX, &OutpuxY, 1283, 696, 1301, 851, 0x0AA008, 1) { ; x50
 			box_opened := true
 			FClick OutpuxX, OutpuxY
@@ -252,7 +258,7 @@ DoOpenBoxes() {
 			continue
 		}
 
-		loop 30 ;; Ждём распаковку
+		loop 20 ;; Ждём распаковку
 		{
 			;; Проверяем наличие зелёной кнопки
 			if WaitForSearchPixel(835, 804, 1085, 869, 0x0AA008, 1, 250) {
