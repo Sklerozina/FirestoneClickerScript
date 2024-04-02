@@ -2,6 +2,22 @@
 #MaxThreadsPerHotkey 2
 #SingleInstance Force
 
+Settings := {auto_research: ""}
+
+; Считать настройки
+Settings.auto_research := IniRead("settings.ini", "Settings", "auto_research", "None")
+Settings.lvlup_priority := IniRead("settings.ini", "Settings", "lvlup_priority", "None")
+
+if (Settings.auto_research == "None") {
+	IniWrite 0, "settings.ini", "Settings", "auto_research"
+	Settings.auto_research := 0
+}
+	
+if Settings.lvlup_priority == "None" {
+	IniWrite "17", "settings.ini", "Settings", "lvlup_priority"
+	Settings.lvlup_priority := "17"
+}
+
 InstallKeybdHook
 
 SendMode "InputThenPlay"
@@ -156,7 +172,9 @@ DoWork(force := false) {
 				CollectXPGuard ; Страж
 				CollectTools ; Механик
 				DoExpeditions ; Экспедиции
-				DoResearch
+				if Settings.auto_research == 1
+					DoResearch
+				DoOracle
 				Press "{Esc}" ; На главный экран
 				BackToMainScreen ;; Страховка перед заходом на карту
 				DoMap
@@ -442,16 +460,37 @@ DoUpgrades() {
 	global prestige_mode
 
 	Press "{u}", 500
-	FClick(1771, 180, 200)
-	FClick(1758, 875, 200, 5)
+
 	if prestige_mode
 	{
+		FClick(1771, 180, 200)
+		FClick(1758, 875, 200, 5)
 		FClick(1758, 758, 200, 5)
 		FClick(1758, 644, 200, 5)
 		FClick(1758, 527, 200, 5)
 		FClick(1758, 424, 200, 5)
 		FClick(1764, 290, 200, 5)
+	} else {
+		loop parse Settings.lvlup_priority {
+			switch A_LoopField {
+				case "1":
+					FClick(1771, 180, 200)
+				case "2":
+					FClick(1764, 290, 200, 5)
+				case "3":
+					FClick(1758, 424, 200, 5)
+				case "4":
+					FClick(1758, 527, 200, 5)
+				case "5":
+					FClick(1758, 644, 200, 5)
+				case "6":
+					FClick(1758, 758, 200, 5)
+				case "7":
+					FClick(1758, 875, 200, 5)
+			}
+		}
 	}
+
 	Press "{u}"
 }
 
@@ -485,6 +524,49 @@ CollectXPGuard() {
 	FClick 625, 230 ; Здание стража
 	FClick 1150, 765 ; Интерфейс стража
 	Press "{Esc}"
+}
+
+DoOracle() {
+	;; Проверяем, висит ли красный значёк у здания.
+	if not CheckIfRed(1108, 931, 1152, 970)
+		return
+
+	FClick 1026, 911, 500
+
+	;; Забрать ежедневный бесплатный подарок оракула
+	if CheckIfRed(860, 660, 903, 695) {
+		FClick 824, 738, 500
+
+		if PixelGetColor(467, 815, 0x5B5EAA)
+		{
+			FClick 641, 739, 200
+		}
+
+		Press "{ESC}"
+	}
+
+
+	;; Проверяем, висит ли красный значёк у ритуалов.
+	if not CheckIfRed(860, 317, 903, 356)
+		return
+
+	FClick 825, 393, 500
+
+	;; Проверяем зелёные кнопки и кликаем
+	if CheckIfGreenAndClick(1092, 473, 250) { ; Гармония
+		Press "{ESC}"
+		return
+	} 
+
+	if CheckIfGreenAndClick(1504, 479, 250) {  ; Безмятежность
+		Press "{ESC}"
+		return
+	}
+
+	if CheckIfGreenAndClick(1502, 820, 250) {  ; Концентрация
+		Press "{ESC}"
+		return
+	}
 }
 
 ; Экспедиции
@@ -718,10 +800,10 @@ FindFirestoneWindowAndActivate() {
 
 ; Принудительный возврат на главный экран (Много раз жмёт Esc, потом кликает на закрытие диалога)
 BackToMainScreen(){
+	Press "{Esc}", 250
+	Press "{Esc}", 250
+	Press "{Esc}", 250
 	FClick 1398, 279, 250 ;; Клик по окошку "Нравится игра?"
-	Press "{Esc}", 250
-	Press "{Esc}", 250
-	Press "{Esc}", 250
 	Press "{Esc}", 250
 	FClick(1537, 275, 250)
 }
