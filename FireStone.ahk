@@ -7,6 +7,7 @@ Settings := {auto_research: ""}
 ; Считать настройки
 Settings.auto_research := IniRead("settings.ini", "Settings", "auto_research", "None")
 Settings.lvlup_priority := IniRead("settings.ini", "Settings", "lvlup_priority", "None")
+Settings.open_boxes := IniRead("settings.ini", "Settings", "open_boxes", "None")
 
 if (Settings.auto_research == "None") {
 	IniWrite 0, "settings.ini", "Settings", "auto_research"
@@ -16,6 +17,11 @@ if (Settings.auto_research == "None") {
 if Settings.lvlup_priority == "None" {
 	IniWrite "17", "settings.ini", "Settings", "lvlup_priority"
 	Settings.lvlup_priority := "17"
+}
+
+if Settings.open_boxes == "None" {
+	IniWrite 0, "settings.ini", "Settings", "open_boxes"
+	Settings.open_boxes := 0
 }
 
 InstallKeybdHook
@@ -96,15 +102,15 @@ map_big_missons := {1097:522, 459:899, 596:540, 1485:749, 374:972, 836:944, 957:
 ; }
 
 ; ^d:: {
-; 	global firestone_hwid
-; 	firestone_hwid := WinExist("ahk_exe Firestone.exe")
+	; 	global firestone_hwid
+	; 	firestone_hwid := WinExist("ahk_exe Firestone.exe")
 
-; 	If WinExist(firestone_hwid){
-; 		WinActivate
-; 	}
+	; 	If WinExist(firestone_hwid){
+		; 		WinActivate
+	; 	}
 
-; 	; Do Test Things
-; }
+	; 	; Do Test Things
+	; }
 
 ^y:: {
 	global saved_mouse_position_x, saved_mouse_position_y
@@ -176,6 +182,8 @@ DoWork(force := false) {
 					DoResearch
 				DoOracle
 				Press "{Esc}" ; На главный экран
+				if Settings.open_boxes == 1
+					DoOpenBoxes
 				BackToMainScreen ;; Страховка перед заходом на карту
 				DoMap
 			}
@@ -197,6 +205,70 @@ DoWork(force := false) {
 	}
 
 	MouseGetPos(&saved_mouse_position_x, &saved_mouse_position_y)
+}
+
+DoOpenBoxes() {
+	box_coordinates := ["1808:776", "1659:776", "1501:776", "1808:639", "1659:639", "1501:639", "1808:478", "1659:478", "1501:478", "1808:318", "1659:318", "1501:318", "1808:172", "1659:172", " 1501:172"]
+	i := 0
+	For coords in box_coordinates
+	{
+		box_opened := false
+		coords := StrSplit(coords, ":")
+		x := coords[1]
+		y := coords[2]
+
+		i += 1
+		if (PixelSearch(&outputX, &OutputY, x-10, y-10, x+10, y+10, 0x9E7F67, 1)) {
+			; MsgBox "В " . i . " пусто!"
+			continue
+		}
+
+		; MsgBox "Сундук обнаружен в слоте " . i . " по координатам " . x . ":" . y
+		
+		FClick x, y, 1000
+
+		if PixelSearch(&OutpuxX, &OutpuxY, 1283, 696, 1301, 851, 0x0AA008, 1) { ; x50
+			box_opened := true
+			FClick OutpuxX, OutpuxY
+		}
+
+		if PixelSearch(&OutpuxX, &OutpuxY, 1153, 696, 1176, 851, 0x0AA008, 1) { ; x10
+			box_opened := true
+			FClick OutpuxX, OutpuxY
+		}
+
+		if PixelSearch(&OutpuxX, &OutpuxY, 863, 696, 1053, 851, 0x0AA008, 1) { ; x1
+			box_opened := true
+			FClick OutpuxX, OutpuxY
+		}
+
+		MouseMove 0, 0
+
+		if PixelSearch(&OutpuxX, &OutpuxY, 631, 754, 1272, 825, 0x365E91, 1) {
+			; MsgBox "Этот сундук нельзя открыть!"
+			Press "{ESC}"
+			continue
+		}
+
+		loop 30 ;; Ждём распаковку
+		{
+			;; Проверяем наличие зелёной кнопки
+			if WaitForSearchPixel(835, 804, 1085, 869, 0x0AA008, 1, 250) {
+				FClick 953, 833, 500
+			}
+			
+			;; проверяем наличие крестика
+			if WaitForSearchPixel(1817-15, 52-15, 1817+15, 52+15, 0xFF620A, 0, 250) {
+				FClick 1817, 52, 500
+				break
+			}
+				
+			SleepAndWait 1000 ;; продолжаем ждать
+		}
+		
+	}
+
+	Press "{ESC}"
 }
 
 DoPrestigeUpgrades(force := false) {
