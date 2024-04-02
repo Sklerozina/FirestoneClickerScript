@@ -537,7 +537,7 @@ DoOracle() {
 	if CheckIfRed(860, 660, 903, 695) {
 		FClick 824, 738, 500
 
-		if PixelGetColor(467, 815, 0x5B5EAA)
+		if PixelGetColor(467, 815) == 0x5B5EAA
 		{
 			FClick 641, 739, 200
 		}
