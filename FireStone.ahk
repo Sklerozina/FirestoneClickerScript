@@ -755,19 +755,6 @@ DoMapMissions(force := false){
 			MapTryFinishMissions
 		
 		try_finish := false
-		For x, y in map_small_missons.OwnProps()
-		{
-			If !CheckSquad() && force == false
-				break
-	
-			ClickOnMapMission(x, y)
-			try_finish := true
-		}
-
-		if try_finish == true
-			MapTryFinishMissions
-	
-		try_finish := false
 		For x, y in map_big_missons.OwnProps()
 		{
 			If !CheckSquad() && force == false
@@ -776,6 +763,19 @@ DoMapMissions(force := false){
 			ClickOnMapMission(x, y)
 			try_finish := true
 		}
+		
+		if try_finish == true
+			MapTryFinishMissions
+	
+		try_finish := false
+		For x, y in map_small_missons.OwnProps()
+			{
+				If !CheckSquad() && force == false
+					break
+		
+				ClickOnMapMission(x, y)
+				try_finish := true
+			}
 
 		if try_finish == true
 			MapTryFinishMissions
