@@ -553,20 +553,11 @@ DoOracle() {
 	FClick 825, 393, 500
 
 	;; Проверяем зелёные кнопки и кликаем
-	if CheckIfGreenAndClick(1092, 473, 250) { ; Гармония
-		Press "{ESC}"
-		return
-	} 
-
-	if CheckIfGreenAndClick(1504, 479, 250) {  ; Безмятежность
-		Press "{ESC}"
-		return
-	}
-
-	if CheckIfGreenAndClick(1502, 820, 250) {  ; Концентрация
-		Press "{ESC}"
-		return
-	}
+	CheckIfGreenAndClick(1092, 473, 250) ; Гармония
+	CheckIfGreenAndClick(1504, 479, 250) ; Безмятежность
+	CheckIfGreenAndClick(1502, 820, 250) ; Концентрация
+	
+	Press "{ESC}"
 }
 
 ; Экспедиции
