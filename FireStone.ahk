@@ -2,28 +2,6 @@
 #MaxThreadsPerHotkey 2
 #SingleInstance Force
 
-Settings := {auto_research: ""}
-
-; Считать настройки
-Settings.auto_research := IniRead("settings.ini", "Settings", "auto_research", "None")
-Settings.lvlup_priority := IniRead("settings.ini", "Settings", "lvlup_priority", "None")
-Settings.open_boxes := IniRead("settings.ini", "Settings", "open_boxes", "None")
-
-if (Settings.auto_research == "None") {
-	IniWrite 0, "settings.ini", "Settings", "auto_research"
-	Settings.auto_research := 0
-}
-	
-if Settings.lvlup_priority == "None" {
-	IniWrite "17", "settings.ini", "Settings", "lvlup_priority"
-	Settings.lvlup_priority := "17"
-}
-
-if Settings.open_boxes == "None" {
-	IniWrite 0, "settings.ini", "Settings", "open_boxes"
-	Settings.open_boxes := 0
-}
-
 InstallKeybdHook
 
 SendMode "InputThenPlay"
@@ -44,6 +22,7 @@ firestone_hwid := 0
 saved_mouse_position_x := 0
 saved_mouse_position_y := 0
 prestige_mode := false
+Settings := {}
 
 ;; Координаты заданий для карты
 map_world_domination_missions := {954:503, 728:350}
@@ -158,6 +137,7 @@ DoWork(force := false) {
 		Loop hwids.Length
 		{
 			firestone_hwid := hwids[A_Index]
+			Settings := GetSettings(firestone_hwid)
 			If WinExist(firestone_hwid){
 				WinActivate
 			}
@@ -184,8 +164,14 @@ DoWork(force := false) {
 				Press "{Esc}" ; На главный экран
 				if Settings.open_boxes == 1
 					DoOpenBoxes
+
 				BackToMainScreen ;; Страховка перед заходом на карту
+
 				DoMap
+
+				if Settings.auto_complete_quests == 1
+					DoQuests
+
 			}
 			catch Number
 			{
@@ -205,6 +191,29 @@ DoWork(force := false) {
 	}
 
 	MouseGetPos(&saved_mouse_position_x, &saved_mouse_position_y)
+}
+
+DoQuests() {
+	Press "{Q}"
+	MouseMove 0, 0
+	SleepAndWait 1000
+	if CheckIfRed(929, 82, 969, 115) {
+		loop 8
+		{
+			If CheckIfGreen(1572, 256, 1621, 318) {
+				FClick 1486, 283, 1000
+				if CheckIfGreen(1035, 635, 1099, 727) {
+					FClick 1169, 672, 250
+				}
+			} else {
+				MsgBox "Нет!"
+				break
+			}
+			
+		}
+	}
+
+	Press "{ESC}"
 }
 
 DoOpenBoxes() {
@@ -290,6 +299,7 @@ DoPrestigeUpgrades(force := false) {
 		Loop hwids.Length
 		{
 			firestone_hwid := hwids[A_Index]
+			Settings := GetSettings(firestone_hwid)
 			If WinExist(firestone_hwid){
 				WinActivate
 			}
@@ -627,8 +637,10 @@ DoOracle() {
 
 
 	;; Проверяем, висит ли красный значёк у ритуалов.
-	if not CheckIfRed(860, 317, 903, 356)
+	if not CheckIfRed(860, 317, 903, 356) {
+		Press "{ESC}"
 		return
+	}
 
 	FClick 825, 393, 500
 
@@ -867,6 +879,10 @@ CheckIfRed(x1, y1, x2, y2) {
 	return PixelSearch(&FoundX, &FoundY, x1, y1, x2, y2, 0xF30000, 1)
 }
 
+CheckIfGreen(x1, y1, x2, y2) {
+	return PixelSearch(&FoundX, &FoundY, x1, y1, x2, y2, 0x0AA008, 1)
+}
+
 FindFirestoneWindowAndActivate() {
 	global firestone_hwid
 	if !WinExist(firestone_hwid)
@@ -886,7 +902,7 @@ FindFirestoneWindowAndActivate() {
 BackToMainScreen(){
 	Press "{Esc}", 250
 	Press "{Esc}", 250
-	Press "{Esc}", 250
+	Press "{Esc}", 500
 	FClick 1398, 279, 250 ;; Клик по окошку "Нравится игра?"
 	Press "{Esc}", 250
 	FClick(1537, 275, 250)
@@ -983,4 +999,42 @@ Tp(text, timeout := -2000) {
 
 FindAllFirestones() {
 	return WinGetList("ahk_exe Firestone.exe")
+}
+
+GetSettings(hwid) {
+	ProcessPath := WinGetProcessPath(hwid)
+
+	; Считать настройки
+	Settings.auto_research := IniRead("settings.ini", ProcessPath, "auto_research", "None")
+	Settings.lvlup_priority := IniRead("settings.ini", ProcessPath, "lvlup_priority", "None")
+	Settings.open_boxes := IniRead("settings.ini", ProcessPath, "open_boxes", "None")
+	Settings.auto_complete_quests := IniRead("settings.ini", ProcessPath, "auto_complete_quests", "None")
+	Settings.auto_arena := IniRead("settings.ini", ProcessPath, "auto_arena", "None")
+
+	if (Settings.auto_research == "None") {
+		IniWrite 0, "settings.ini", ProcessPath, "auto_research"
+		Settings.auto_research := 0
+	}
+
+	if Settings.lvlup_priority == "None" {
+		IniWrite "17", "settings.ini", ProcessPath, "lvlup_priority"
+		Settings.lvlup_priority := "17"
+	}
+
+	if Settings.open_boxes == "None" {
+		IniWrite 0, "settings.ini", ProcessPath, "open_boxes"
+		Settings.open_boxes := 0
+	}
+
+	if Settings.auto_complete_quests == "None" {
+		IniWrite 0, "settings.ini", ProcessPath, "auto_complete_quests"
+		Settings.auto_complete_quests := 0
+	}
+
+	if Settings.auto_arena == "None" {
+		IniWrite 0, "settings.ini", ProcessPath, "auto_arena"
+		Settings.auto_arena := 0
+	}
+
+	return Settings
 }
