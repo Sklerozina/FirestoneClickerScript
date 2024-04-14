@@ -196,13 +196,36 @@ DoWork(force := false) {
 DoQuests() {
 	Press "{Q}"
 
+	; Дейлики
 	if CheckIfRed(929, 82, 969, 115) {
+		FClick 773, 130
+
 		loop 8
 		{
 			MouseMove 0, 0
 			SleepAndWait 1000
 			If CheckIfGreen(1572, 256, 1621, 318) {
-				FClick 1486, 283, 1000
+				FClick 1486, 283
+				if CheckIfGreen(1035, 635, 1099, 727) {
+					FClick 1169, 672, 250
+				}
+			} else {
+				break
+			}
+			
+		}
+	}
+
+	; Виклики
+	if CheckIfRed(1322, 79, 1364, 113) {
+		FClick 1167, 132
+
+		loop 8
+		{
+			MouseMove 0, 0
+			SleepAndWait 1000
+			If CheckIfGreen(1572, 256, 1621, 318) {
+				FClick 1486, 283
 				if CheckIfGreen(1035, 635, 1099, 727) {
 					FClick 1169, 672, 250
 				}
