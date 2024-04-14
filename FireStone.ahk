@@ -195,18 +195,18 @@ DoWork(force := false) {
 
 DoQuests() {
 	Press "{Q}"
-	MouseMove 0, 0
-	SleepAndWait 1000
+
 	if CheckIfRed(929, 82, 969, 115) {
 		loop 8
 		{
+			MouseMove 0, 0
+			SleepAndWait 1000
 			If CheckIfGreen(1572, 256, 1621, 318) {
 				FClick 1486, 283, 1000
 				if CheckIfGreen(1035, 635, 1099, 727) {
 					FClick 1169, 672, 250
 				}
 			} else {
-				MsgBox "Нет!"
 				break
 			}
 			
