@@ -203,7 +203,7 @@ DoQuests() {
 		loop 8
 		{
 			MouseMove 0, 0
-			SleepAndWait 1000
+			SleepAndWait 2000
 			If CheckIfGreen(1572, 256, 1621, 318) {
 				FClick 1486, 283
 				if CheckIfGreen(1035, 635, 1099, 727) {
@@ -223,7 +223,7 @@ DoQuests() {
 		loop 8
 		{
 			MouseMove 0, 0
-			SleepAndWait 1000
+			SleepAndWait 2000
 			If CheckIfGreen(1572, 256, 1621, 318) {
 				FClick 1486, 283
 				if CheckIfGreen(1035, 635, 1099, 727) {
@@ -671,6 +671,7 @@ DoOracle() {
 	CheckIfGreenAndClick(1092, 473, 250) ; Гармония
 	CheckIfGreenAndClick(1504, 479, 250) ; Безмятежность
 	CheckIfGreenAndClick(1502, 820, 250) ; Концентрация
+	CheckIfGreenAndClick(1092, 820, 250) ; Послушание
 	
 	Press "{ESC}"
 }
