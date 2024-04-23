@@ -549,6 +549,7 @@ DoWMDailys() {
 		SendEvent "{click 1427 575 Down}{Click 265 575 Up}" ; Скролл дейликов в конец
 
 		DoWMMission(280, 700, 540, 770, 405, 740) ; 6
+		DoWMMission(680, 710, 929, 768, 804, 740) ; 7
 
 		Press "{Esc}" ; Вышли на карту
 
