@@ -1027,6 +1027,7 @@ FindAllFirestones() {
 
 GetSettings(hwid) {
 	ProcessPath := WinGetProcessPath(hwid)
+	Settings := Map()
 	defaults := Map(
 		'auto_research', 0,
 		'lvlup_priority', '17',
