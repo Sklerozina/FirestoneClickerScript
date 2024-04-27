@@ -22,7 +22,7 @@ firestone_hwid := 0
 saved_mouse_position_x := 0
 saved_mouse_position_y := 0
 prestige_mode := false
-Settings := {}
+Settings := Map()
 
 ;; Координаты заданий для карты
 map_world_domination_missions := {954:503, 728:350}
@@ -158,18 +158,18 @@ DoWork(force := false) {
 				CollectXPGuard ; Страж
 				CollectTools ; Механик
 				DoExpeditions ; Экспедиции
-				if Settings.auto_research == 1
+				if Settings.Get('auto_research') == 1
 					DoResearch
 				DoOracle
 				Press "{Esc}" ; На главный экран
-				if Settings.open_boxes == 1
+				if Settings.Get('open_boxes') == 1
 					DoOpenBoxes
 
 				BackToMainScreen ;; Страховка перед заходом на карту
 
 				DoMap
 
-				if Settings.auto_complete_quests == 1
+				if Settings.Get('auto_complete_quests') == 1
 					DoQuests
 
 			}
@@ -585,7 +585,7 @@ DoUpgrades() {
 		UpgradeHero(1652, 366, 1776, 438, 1758, 424, 5) ; 3
 		UpgradeHero(1652, 251, 1776, 323, 1764, 290, 5) ; 2
 	} else {
-		loop parse Settings.lvlup_priority {
+		loop parse Settings.Get('lvlup_priority') {
 			switch A_LoopField {
 				case "1":
 					UpgradeHero(1652, 134, 1776, 219, 1771, 180) ; 1
@@ -1028,38 +1028,37 @@ FindAllFirestones() {
 
 GetSettings(hwid) {
 	ProcessPath := WinGetProcessPath(hwid)
+	defaults := Map(
+		'auto_research', 0,
+		'lvlup_priority', '17',
+		'open_boxes', 0,
+		'auto_complete_quests', 0,
+		'auto_arena', 0
+	)
 
 	; Считать настройки
-	Settings.auto_research := IniRead("settings.ini", ProcessPath, "auto_research", "None")
-	Settings.lvlup_priority := IniRead("settings.ini", ProcessPath, "lvlup_priority", "None")
-	Settings.open_boxes := IniRead("settings.ini", ProcessPath, "open_boxes", "None")
-	Settings.auto_complete_quests := IniRead("settings.ini", ProcessPath, "auto_complete_quests", "None")
-	Settings.auto_arena := IniRead("settings.ini", ProcessPath, "auto_arena", "None")
-
-	if (Settings.auto_research == "None") {
-		IniWrite 0, "settings.ini", ProcessPath, "auto_research"
-		Settings.auto_research := 0
+	try {
+		ini := IniRead("settings.ini", ProcessPath)
+	} catch {
+		IniWrite("", 'settings.ini', ProcessPath)
+		ini := IniRead("settings.ini", ProcessPath)
+	}
+	
+	Loop parse, ini, "`n", "`r"
+	{
+		Result := StrSplit(A_LoopField, "=")
+		Settings[Result[1]] := Result[2]
 	}
 
-	if Settings.lvlup_priority == "None" {
-		IniWrite "17", "settings.ini", ProcessPath, "lvlup_priority"
-		Settings.lvlup_priority := "17"
+	pairs := ""
+	for key, value in defaults {
+		if Settings.Has(key)
+			value := Settings.Get(key)
+
+		pairs .= key . "=" . value . "`n"
 	}
 
-	if Settings.open_boxes == "None" {
-		IniWrite 0, "settings.ini", ProcessPath, "open_boxes"
-		Settings.open_boxes := 0
-	}
-
-	if Settings.auto_complete_quests == "None" {
-		IniWrite 0, "settings.ini", ProcessPath, "auto_complete_quests"
-		Settings.auto_complete_quests := 0
-	}
-
-	if Settings.auto_arena == "None" {
-		IniWrite 0, "settings.ini", ProcessPath, "auto_arena"
-		Settings.auto_arena := 0
-	}
+	IniWrite(pairs, 'settings.ini', ProcessPath)
 
 	return Settings
 }
