@@ -370,7 +370,7 @@ DoResearch() {
 	loop 2
 	{
 		; Проверка на оранжевую кнопку, досрочное завершение
-		if CheckForImage(462, 899, 634, 948, "ResearchFree.png")
+		if CheckForImage(462, 899, 634, 948, "*120 images/ResearchFree.png")
 		{
 			FClick 548, 925, 500
 			research_count -= 1
@@ -389,7 +389,7 @@ DoResearch() {
 
 	;; Проверка второго слота
 	; Проверка на оранжевую кнопку, досрочное завершение
-	if CheckForImage(1090, 879, 1301, 958, "ResearchFree.png")
+	if CheckForImage(1090, 879, 1301, 958, "*120 images/ResearchFree.png")
 	{
 		FClick 1201, 916, 500
 		research_count -= 1
@@ -732,7 +732,6 @@ DoMap() {
 }
 
 CheckSquad() {
-	; return CheckForImage(646, 946, 844, 1016, "*80 MapBezd.png")
 	return PixelSearch(&FoundX, &FoundY, 646, 946, 816, 1016, 0xF9E7CE, 1)
 }
 
@@ -742,20 +741,20 @@ ClickOnMapMission(x, y) {
 	MouseMove 0, 0
 	if !CheckIfGreenAndClick(966, 855, 250)
 	{
-		if(CheckForImage(1251, 720, 1491, 790, "*80 FreeOrange.png"))
+		if(CheckForImage(1251, 720, 1491, 790, "*80 images/FreeOrange.png"))
 		{
 			FClick 1367, 747, 500
 			CheckIfGreenAndClick(815, 613, 5000)
 			return
 		}
 
-		if(CheckForImage(948, 706, 1219, 807, "*80 Otmena.png")){
+		if(CheckForImage(948, 706, 1219, 807, "*80 images/Otmena.png")){
 			Press "{Esc}"
 			return
 		}
 			
 
-		if(CheckForImage(1024, 803, 1164, 874, "*80 NotEnoughSquads.png")){
+		if(CheckForImage(1024, 803, 1164, 874, "*80 images/NotEnoughSquads.png")){
 			Press "{Esc}"
 			return
 		}
@@ -861,14 +860,14 @@ MapTryFinishMissions() {
 				continue
 			}
 
-			if(CheckForImage(1251, 720, 1491, 790, "*120 FreeOrange.png"))
+			if(CheckForImage(1251, 720, 1491, 790, "*120 images/FreeOrange.png"))
 			{
 				FClick 1367, 747, 500
 				CheckIfGreenAndClick(815, 605, 5000)
 				continue
 			}
 	
-			if(CheckForImage(948, 706, 1219, 807, "*120 Otmena.png")){
+			if(CheckForImage(948, 706, 1219, 807, "*120 images/Otmena.png")){
 				Press "{Esc}"
 				break
 			}
