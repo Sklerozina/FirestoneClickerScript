@@ -453,8 +453,8 @@ DoResearch() {
 
 DoDailyMagazineReward() {
 	FClick 1300, 343
-	
-	if CheckForImage(390, 818, 785, 925, "magazine_free.png")
+
+	if PixelSearch(&OutputX, &OutputY, 432, 869, 442, 879, 0x5B5EAA, 1)
 	{
 		FClick 592, 743, 200
 	}
