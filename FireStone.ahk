@@ -483,47 +483,65 @@ DoAlchemy() {
 	alchemy_1 := false
 	alchemy_2 := false
 	alchemy_3 := false
+
+	alchemy := [
+		SubStr(Settings.Get('alchemy'), 1, 1),
+		SubStr(Settings.Get('alchemy'), 2, 1),
+		SubStr(Settings.Get('alchemy'), 3, 1)
+	]
 	
 	;; Сначала за пыль и монеты, потом за кровь
 	; За пыль
-	if CheckIfGreenAndClick(1210, 764, 250)
-		alchemy_2 := true
-	else
-	{
-		if CheckIfOrangeAndClick(1270, 740, 250)
+	if (alchemy[2] == "1") {
+		if CheckIfGreenAndClick(1210, 764, 250)
 			alchemy_2 := true
+		else
+		{
+			if CheckIfOrangeAndClick(1270, 740, 250)
+				alchemy_2 := true
+		}
 	}
 
 	; За монеты
-	if CheckIfGreenAndClick(1560, 764, 250)
-		alchemy_3 := true
-	else
-	{
-		if CheckIfOrangeAndClick(1620, 740, 250)
+	if (alchemy[3] == "1") {
+		if CheckIfGreenAndClick(1560, 764, 250)
 			alchemy_3 := true
+		else
+		{
+			if CheckIfOrangeAndClick(1620, 740, 250)
+				alchemy_3 := true
+		}
 	}
 
 	; За кровь
-	if CheckIfGreenAndClick(860, 764, 250)
-		alchemy_1 := true
-	else
-	{
-		if CheckIfOrangeAndClick(920, 740, 250)
+	if (alchemy[1] == "1") {
+		if CheckIfGreenAndClick(860, 764, 250)
 			alchemy_1 := true
+		else
+		{
+			if CheckIfOrangeAndClick(920, 740, 250)
+				alchemy_1 := true
+		}
 	}
 
 	;; Сначала за пыль и монеты, потом за кровь
 	; За пыль
-	if alchemy_2 == true
-		CheckIfGreenAndClick(1210, 764, 2500)
+	if (alchemy[2] == "1") {
+		if alchemy_2 == true
+			CheckIfGreenAndClick(1210, 764, 2500)
+	}
 
 	; За монеты
-	if alchemy_3 == true
-		CheckIfGreenAndClick(1560, 764, 2500)
+	if (alchemy[3] == "1") {
+		if alchemy_3 == true
+			CheckIfGreenAndClick(1560, 764, 2500)
+	}
 
 	; За кровь
-	if alchemy_1 == true
-		CheckIfGreenAndClick(860, 764, 2500)
+	if (alchemy[1] == "1") {
+		if alchemy_1 == true
+			CheckIfGreenAndClick(860, 764, 2500)
+	}
 
 	Press "{Esc}"
 }
@@ -1033,7 +1051,8 @@ GetSettings(hwid) {
 		'lvlup_priority', '17',
 		'open_boxes', 0,
 		'auto_complete_quests', 0,
-		'auto_arena', 0
+		'auto_arena', 0,
+		'alchemy', '111'
 	)
 
 	; Считать настройки
