@@ -322,7 +322,7 @@ DoPrestigeUpgrades(force := false) {
 		Loop hwids.Length
 		{
 			firestone_hwid := hwids[A_Index]
-			Settings := GetSettings(firestone_hwid)
+			GetSettings(firestone_hwid)
 			If WinExist(firestone_hwid){
 				WinActivate
 			}
@@ -942,12 +942,12 @@ FindFirestoneWindowAndActivate() {
 
 ; Принудительный возврат на главный экран (Много раз жмёт Esc, потом кликает на закрытие диалога)
 BackToMainScreen(){
-	Press "{Esc}", 250
-	Press "{Esc}", 250
 	Press "{Esc}", 500
-	FClick 1398, 279, 250 ;; Клик по окошку "Нравится игра?"
-	Press "{Esc}", 250
-	FClick(1537, 275, 250)
+	Press "{Esc}", 500
+	Press "{Esc}", 500
+	Press "{Esc}", 1000
+	FClick 1398, 279, 500 ;; Клик по окошку "Нравится игра?"
+	FClick(1537, 275, 500)
 }
 
 ; Клик на иконку города на главном экране
@@ -1045,7 +1045,7 @@ FindAllFirestones() {
 
 GetSettings(hwid) {
 	ProcessPath := WinGetProcessPath(hwid)
-	Settings := Map()
+
 	defaults := Map(
 		'auto_research', 0,
 		'lvlup_priority', '17',
@@ -1078,6 +1078,4 @@ GetSettings(hwid) {
 	}
 
 	IniWrite(pairs, 'settings.ini', ProcessPath)
-
-	return Settings
 }
