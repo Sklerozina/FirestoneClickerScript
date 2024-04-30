@@ -137,7 +137,7 @@ DoWork(force := false) {
 		Loop hwids.Length
 		{
 			firestone_hwid := hwids[A_Index]
-			Settings := GetSettings(firestone_hwid)
+			GetSettings(firestone_hwid)
 			If WinExist(firestone_hwid){
 				WinActivate
 			}
