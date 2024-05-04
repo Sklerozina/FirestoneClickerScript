@@ -124,7 +124,6 @@ map_big_missons := {1097:522, 459:899, 596:540, 1485:749, 374:972, 836:944, 957:
 DoWork(force := false) {
 	global firestone_hwid, saved_mouse_position_x, saved_mouse_position_y
 	static delay := 300000
-	static daily_magazine_reward := true
 
 	Thread "Priority", 1 ; На всякий случай, чтобы задача не прерывалась другими таймерами
 
@@ -136,8 +135,10 @@ DoWork(force := false) {
 		hwids := FindAllFirestones()
 		Loop hwids.Length
 		{
+			daily_magazine_rewards := false
 			firestone_hwid := hwids[A_Index]
 			GetSettings(firestone_hwid)
+
 			If WinExist(firestone_hwid){
 				WinActivate
 			}
@@ -148,30 +149,42 @@ DoWork(force := false) {
 				BackToMainScreen 
 				SleepAndWait 1000
 				if CheckIfRed(1877, 517, 1912, 555)
-					daily_magazine_reward := false
+					daily_magazine_rewards := true
 				DoUpgrades
 				ClickCityIcon ; зайти в город
-				if daily_magazine_reward == false
+				
+				if daily_magazine_rewards == true {
+					if Settings.Get('auto_arena', 0) == 1
+						SetSetting('arena_today', false)
 					DoDailyMagazineReward
-					daily_magazine_reward := true
+				}
+				
+				if CheckIfRed(814, 910, 848, 949)
+					DoTavern
+
 				DoAlchemy ; Алхимия
 				CollectXPGuard ; Страж
 				CollectTools ; Механик
 				DoExpeditions ; Экспедиции
+
 				if Settings.Get('auto_research') == 1
 					DoResearch
+
 				DoOracle
 				Press "{Esc}" ; На главный экран
-				if Settings.Get('open_boxes') == 1
-					DoOpenBoxes
-
 				BackToMainScreen ;; Страховка перед заходом на карту
 
 				DoMap
 
+				if Settings.Get('open_boxes') == 1
+					DoOpenBoxes
+
 				if Settings.Get('auto_complete_quests') == 1
 					DoQuests
 
+				if Settings.Get('auto_arena', 0) == 1 && Settings.Get('arena_today', false) == false {
+					DoArena
+				}
 			}
 			catch Number
 			{
@@ -191,6 +204,70 @@ DoWork(force := false) {
 	}
 
 	MouseGetPos(&saved_mouse_position_x, &saved_mouse_position_y)
+}
+
+DoTavern() {
+	FClick 717, 911
+	FClick 1731, 42
+
+	while WaitForSearchPixel(344-5, 437-5, 344+5, 437+5, 0x3CA8E1, 1, 1000) {
+		FClick 521, 509
+	}
+
+	Press "{ESC}"
+	Press "{ESC}"
+}
+
+DoArena() {
+	Press "{K}", 2000
+	rerol := true
+
+	loop 20 {
+		MouseMove 0, 0
+		;; Обновляем Арену
+		if rerol {
+			rerol := false
+			if WaitForSearchPixel(834, 143, 891, 197, 0x0AA208, 1, 30000) {
+				FClick 865, 165, 2000
+			} else {
+				Press "{ESC}"
+				return
+			}
+		}
+
+		; Проверяем флаг
+		ru_color1 := PixelGetColor(1050, 236)
+		ru_color2 := PixelGetColor(1050, 248)
+		ru_color3 := PixelGetColor(1050, 263)
+		if (ru_color1 == 0xF2F1F2 && ru_color2 == 0x0053B5 && ru_color3 == 0xD90029) {
+			rerol := true
+			continue
+		}
+
+		;; Жмём кнопку битвы и подтверждения
+		if WaitForSearchPixel(864, 588, 890, 636, 0x0AA008, 1, 30000) {
+			FClick 955, 613
+
+			;; Здесь нужно детектить, что попытки кончились
+			if WaitForSearchPixel(1061, 657, 1063, 703, 0x0AA008, 1, 1000) {
+				; ой, попытки закончились
+				Press "{ESC}"
+				SetSetting('arena_today', true)
+				break
+			}
+
+			FClick 956, 548
+		}
+
+		;; Ждём появление кнопки победы или поражения в конце битвы
+		If WaitForSearchPixel(906, 724, 908, 789, 0x0AA008, 1, 600000) {
+			FClick 956, 756
+		}
+	}
+
+	; Закрываем окно арены
+	Press "{ESC}"
+	SetSetting('arena_today', true)
 }
 
 DoQuests() {
@@ -1043,6 +1120,18 @@ FindAllFirestones() {
 	return WinGetList("ahk_exe Firestone.exe")
 }
 
+SetSetting(key, value, hwid := "") {
+	global firestone_hwid
+
+	if hwid == ""
+		hwid := firestone_hwid
+	
+	ProcessPath := WinGetProcessPath(hwid)
+
+	Settings.Set(key, value)
+	IniWrite(value, 'settings.ini', ProcessPath, key)
+}
+
 GetSettings(hwid) {
 	ProcessPath := WinGetProcessPath(hwid)
 
@@ -1052,6 +1141,7 @@ GetSettings(hwid) {
 		'open_boxes', 0,
 		'auto_complete_quests', 0,
 		'auto_arena', 0,
+		'arena_today', false,
 		'alchemy', '111'
 	)
 
