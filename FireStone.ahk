@@ -199,8 +199,8 @@ DoWork(force := false) {
     }
 	else
 	{
-		delay := 180000
-		SetTimer DoWork, delay ; Если мышь двигалась, то следующий раз будет через 3 минуты
+		delay := 120000
+		SetTimer DoWork, delay ; Если мышь двигалась, то следующий раз будет через 2 минуты
 	}
 
 	MouseGetPos(&saved_mouse_position_x, &saved_mouse_position_y)
@@ -1019,12 +1019,27 @@ FindFirestoneWindowAndActivate() {
 
 ; Принудительный возврат на главный экран (Много раз жмёт Esc, потом кликает на закрытие диалога)
 BackToMainScreen(){
-	Press "{Esc}", 500
-	Press "{Esc}", 500
-	Press "{Esc}", 500
-	Press "{Esc}", 1000
-	FClick 1398, 279, 500 ;; Клик по окошку "Нравится игра?"
-	FClick(1537, 275, 500)
+	game_good := false
+	loop 5 {
+		Press "{ESC}", 500
+		if WaitForSearchPixel(1032, 706, 1059, 780, 0x0AA008, 1, 500) {
+			; Хорошо, мы на главном экране, можно продолжать скрипт
+			FClick 1537, 275, 500
+			game_good := true
+			break
+		}
+	}
+
+	if !game_good {
+		TelegramSend("Игра сломалась!")
+		throw 1
+	}
+
+;	FClick 1398, 279, 500 ;; Клик по окошку "Нравится игра?"
+;	FClick 1537, 275, 500
+
+	; Проверочный ESC
+	
 }
 
 ; Клик на иконку города на главном экране
@@ -1168,4 +1183,29 @@ GetSettings(hwid) {
 	}
 
 	IniWrite(pairs, 'settings.ini', ProcessPath)
+}
+
+TelegramSend(text) {
+	chatid := IniRead('settings.ini', "GLOBAL", "TELEGRAM_CHAT_ID", 0)
+
+	if chatid == 0 {
+		IniWrite("NONE", 'settings.ini', "GLOBAL", "TELEGRAM_CHAT_ID")
+	}
+
+	if chatid == "NONE" || chatid == 0
+		return
+
+	token := "7169992032:AAF341dSqS8K94V-immfgNaHTkjmPIsJoDc"
+	data:= "chat_id=" . chatid .
+		"&text=" . text .
+		"&parse_mode=HTML" .
+		"&disable_web_page_preview=1"
+
+    ; https://learn.microsoft.com/en-us/windows/win32/winhttp/winhttprequest
+    web := ComObject('WinHttp.WinHttpRequest.5.1')
+    web.Open('POST', "https://api.telegram.org/bot" . token . "/sendMessage", True)
+	web.SetRequestHeader("Content-Type", "application/x-www-form-urlencoded")
+    web.Send(data)
+    web.WaitForResponse()
+    return web.ResponseText
 }
