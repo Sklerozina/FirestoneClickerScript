@@ -492,30 +492,17 @@ DoResearch() {
 
 		loop 2
 		{
-			x := 65
-			while x < 1850
-			{
-				MouseMove x, 100
-				if PixelSearch(&OutputX, &OutputY, x, 170, x, 824, 0x0D49DE, 1)
-				{
-					;; попробовать кликнуть
-					FClick OutputX, OutputY
-					;; Подождать окно принятия
-					if WaitForSearchPixel(669, 707, 928, 775, 0x0AA007, 1, 1000)
-					{
-						FClick 795, 738, 500
-
+			;; Scan line 1
+			for y in [226, 718, 348, 596, 472] {
+				if FindResearch(y) {
 						research_count += 1
 					}
-				}
 
 				if (research_count == 2)
 					break 2
-		
-				x += 50
+			}
 		
 				SleepAndWait 200
-			}
 
 			loop 35
 			{
@@ -1056,6 +1043,24 @@ ClickGuildIcon() {
 UpgradeHero(x1, y1, x2, y2, clickx, clicky, clicks := 1) {
 	if PixelSearch(&OutputX, &OutputY, x1, y1, x2, y2, 0x0AA008, 1)
 		FClick clickx, clicky, 200, clicks
+}
+
+FindResearch(y) {
+	MouseMove 20, y
+	if PixelSearch(&OutputX, &OutputY, 20, y, 1900, y, 0x0D49DE, 1)
+	{
+		;; попробовать кликнуть
+		FClick OutputX, OutputY
+		;; Подождать окно принятия
+		if WaitForSearchPixel(669, 707, 928, 775, 0x0AA008, 1, 1000)
+		{
+			FClick 795, 738, 500
+			
+			return true
+		}
+	}
+
+
 }
 
 FClick(x, y, wait := 1000, clickcount := 1) {
