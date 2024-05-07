@@ -821,6 +821,13 @@ ClickOnMapMission(x, y) {
 	FClick x, y, 100
 	; Зелёная кнопка принятия
 	MouseMove 0, 0
+
+	; Смотрим, появилось окно или нет, если не появилось, значит можно не проверять кнопки.
+	; Должно ускорить поиск миссий
+	if !WaitForSearchPixel(414, 206, 424, 216, 0xE1CDAC, 1, 250) {
+		return
+	}
+
 	if !CheckIfGreenAndClick(966, 855, 250)
 	{
 		if(CheckForImage(1251, 720, 1491, 790, "*80 images/FreeOrange.png"))
