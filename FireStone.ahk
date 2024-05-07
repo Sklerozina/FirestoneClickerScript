@@ -502,7 +502,7 @@ DoResearch() {
 					break 2
 			}
 		
-				SleepAndWait 200
+			SleepAndWait 200
 
 			loop 35
 			{
