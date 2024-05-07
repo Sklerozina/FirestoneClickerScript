@@ -2,6 +2,8 @@
 #MaxThreadsPerHotkey 2
 #SingleInstance Force
 
+#Include Settings.ahk
+
 InstallKeybdHook
 
 SendMode "InputThenPlay"
@@ -22,7 +24,8 @@ firestone_hwid := 0
 saved_mouse_position_x := 0
 saved_mouse_position_y := 0
 prestige_mode := false
-Settings := Map()
+Settings('settings.ini')
+CurrentSettings := ""
 
 ;; Координаты заданий для карты
 map_world_domination_missions := {954:503, 728:350}
@@ -137,7 +140,7 @@ DoWork(force := false) {
 		{
 			daily_magazine_rewards := false
 			firestone_hwid := hwids[A_Index]
-			GetSettings(firestone_hwid)
+			GetSettings()
 
 			If WinExist(firestone_hwid){
 				WinActivate
@@ -154,8 +157,10 @@ DoWork(force := false) {
 				ClickCityIcon ; зайти в город
 				
 				if daily_magazine_rewards == true {
-					if Settings.Get('auto_arena', 0) == 1
-						SetSetting('arena_today', false)
+					if Settings.Get('auto_arena', 0) == 1 {
+						CurrentSettings.Set('arena_today', false)
+						Settings.Save()
+					}
 					DoDailyMagazineReward
 				}
 				
@@ -167,7 +172,7 @@ DoWork(force := false) {
 				CollectTools ; Механик
 				DoExpeditions ; Экспедиции
 
-				if Settings.Get('auto_research') == 1
+				if CurrentSettings.Get('auto_research') == 1
 					DoResearch
 
 				DoOracle
@@ -176,13 +181,13 @@ DoWork(force := false) {
 
 				DoMap
 
-				if Settings.Get('open_boxes') == 1
+				if CurrentSettings.Get('open_boxes') == 1
 					DoOpenBoxes
 
-				if Settings.Get('auto_complete_quests') == 1
+				if CurrentSettings.Get('auto_complete_quests') == 1
 					DoQuests
 
-				if Settings.Get('auto_arena', 0) == 1 && Settings.Get('arena_today', false) == false {
+				if CurrentSettings.Get('auto_arena', 0) == 1 && CurrentSettings.Get('arena_today', false) == false {
 					DoArena
 				}
 			}
@@ -252,7 +257,8 @@ DoArena() {
 			if WaitForSearchPixel(1061, 657, 1063, 703, 0x0AA008, 1, 1000) {
 				; ой, попытки закончились
 				Press "{ESC}"
-				SetSetting('arena_today', true)
+				CurrentSettings.Set('arena_today', true)
+				Settings.Save()
 				break
 			}
 
@@ -267,7 +273,6 @@ DoArena() {
 
 	; Закрываем окно арены
 	Press "{ESC}"
-	SetSetting('arena_today', true)
 }
 
 DoQuests() {
@@ -399,7 +404,7 @@ DoPrestigeUpgrades(force := false) {
 		Loop hwids.Length
 		{
 			firestone_hwid := hwids[A_Index]
-			GetSettings(firestone_hwid)
+			GetSettings()
 			If WinExist(firestone_hwid){
 				WinActivate
 			}
@@ -549,9 +554,9 @@ DoAlchemy() {
 	alchemy_3 := false
 
 	alchemy := [
-		SubStr(Settings.Get('alchemy'), 1, 1),
-		SubStr(Settings.Get('alchemy'), 2, 1),
-		SubStr(Settings.Get('alchemy'), 3, 1)
+		SubStr(CurrentSettings.Get('alchemy'), 1, 1),
+		SubStr(CurrentSettings.Get('alchemy'), 2, 1),
+		SubStr(CurrentSettings.Get('alchemy'), 3, 1)
 	]
 	
 	;; Сначала за пыль и монеты, потом за кровь
@@ -667,7 +672,7 @@ DoUpgrades() {
 		UpgradeHero(1652, 366, 1776, 438, 1758, 424, 5) ; 3
 		UpgradeHero(1652, 251, 1776, 323, 1764, 290, 5) ; 2
 	} else {
-		loop parse Settings.Get('lvlup_priority') {
+		loop parse CurrentSettings.Get('lvlup_priority') {
 			switch A_LoopField {
 				case "1":
 					UpgradeHero(1652, 134, 1776, 219, 1771, 180) ; 1
@@ -1148,20 +1153,12 @@ FindAllFirestones() {
 	return WinGetList("ahk_exe Firestone.exe")
 }
 
-SetSetting(key, value, hwid := "") {
-	global firestone_hwid
+GetSettings() {
+	global firestone_hwid, CurrentSettings
 
-	if hwid == ""
-		hwid := firestone_hwid
-	
-	ProcessPath := WinGetProcessPath(hwid)
+	ProcessPath := WinGetProcessPath(firestone_hwid)
 
-	Settings.Set(key, value)
-	IniWrite(value, 'settings.ini', ProcessPath, key)
-}
-
-GetSettings(hwid) {
-	ProcessPath := WinGetProcessPath(hwid)
+	CurrentSettings := Settings.Section(ProcessPath)
 
 	defaults := Map(
 		'auto_research', 0,
@@ -1173,36 +1170,17 @@ GetSettings(hwid) {
 		'alchemy', '111'
 	)
 
-	; Считать настройки
-	try {
-		ini := IniRead("settings.ini", ProcessPath)
-	} catch {
-		IniWrite("", 'settings.ini', ProcessPath)
-		ini := IniRead("settings.ini", ProcessPath)
-	}
-	
-	Loop parse, ini, "`n", "`r"
-	{
-		Result := StrSplit(A_LoopField, "=")
-		Settings[Result[1]] := Result[2]
-	}
-
-	pairs := ""
 	for key, value in defaults {
-		if Settings.Has(key)
-			value := Settings.Get(key)
-
-		pairs .= key . "=" . value . "`n"
+		if !CurrentSettings.Has(key)
+			CurrentSettings.Set(key, value)
 	}
-
-	IniWrite(pairs, 'settings.ini', ProcessPath)
 }
 
 TelegramSend(text) {
-	chatid := IniRead('settings.ini', "GLOBAL", "TELEGRAM_CHAT_ID", 0)
+	chatid :=  Settings.Section('GLOBAL').Get('TELEGRAM_CHAT_ID', 0)
 
 	if chatid == 0 {
-		IniWrite("NONE", 'settings.ini', "GLOBAL", "TELEGRAM_CHAT_ID")
+		Settings.Section('GLOBAL').Set('TELEGRAM_CHAT_ID', 'NONE')
 	}
 
 	if chatid == "NONE" || chatid == 0
@@ -1221,4 +1199,10 @@ TelegramSend(text) {
     web.Send(data)
     web.WaitForResponse()
     return web.ResponseText
+}
+
+OnExit ExitFunc
+
+ExitFunc(ExitReason, ExitCode) {
+	Settings.Save()
 }
