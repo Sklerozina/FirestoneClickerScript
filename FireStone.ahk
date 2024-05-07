@@ -1050,6 +1050,8 @@ FindResearch(y) {
 	{
 		;; попробовать кликнуть
 		FClick OutputX, OutputY
+		MouseMove 0, 0
+		SleepAndWait 250
 		;; Подождать окно принятия
 		if WaitForSearchPixel(669, 707, 928, 775, 0x0AA008, 1, 1000)
 		{
