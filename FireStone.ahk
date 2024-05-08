@@ -140,7 +140,7 @@ DoWork(force := false) {
 		{
 			daily_magazine_rewards := false
 			firestone_hwid := hwids[A_Index]
-			GetSettings()
+			SetCurrentSettings()
 
 			If WinExist(firestone_hwid){
 				WinActivate
@@ -404,7 +404,7 @@ DoPrestigeUpgrades(force := false) {
 		Loop hwids.Length
 		{
 			firestone_hwid := hwids[A_Index]
-			GetSettings()
+			SetCurrentSettings()
 			If WinExist(firestone_hwid){
 				WinActivate
 			}
@@ -1153,7 +1153,7 @@ FindAllFirestones() {
 	return WinGetList("ahk_exe Firestone.exe")
 }
 
-GetSettings() {
+SetCurrentSettings() {
 	global firestone_hwid, CurrentSettings
 
 	ProcessPath := WinGetProcessPath(firestone_hwid)
