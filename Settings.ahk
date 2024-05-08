@@ -1,6 +1,6 @@
 Class Settings {
     static ini_name := ""
-    static settings := Map()
+    static data := Map()
 
     static Call(file_name) {
         this.ini_name := file_name
@@ -11,16 +11,16 @@ Class Settings {
         ini_sections := IniRead(this.ini_name)
 
         Loop parse, ini_sections, "`n", "`r" {
-            this.settings.Set(A_LoopField, Map())
+            this.data.Set(A_LoopField, Map())
         }
 
-        for k in this.settings {
+        for k in this.data {
             pairs := IniRead(this.ini_name, k)
             
             Loop parse, pairs, "`n", "`r"
             {
                 Result := StrSplit(A_LoopField, "=")
-                this.settings[k].Set(Result[1], Result[2])
+                this.data[k].Set(Result[1], Result[2])
             }
         }
 
@@ -28,17 +28,17 @@ Class Settings {
     }
 
     static Section(key) {
-        if !this.settings.Has(key)
-            this.settings.Set(key, Map())
+        if !this.data.Has(key)
+            this.data.Set(key, Map())
 
-        return this.settings.Get(key)
+        return this.data.Get(key)
     }
 
     static Save() {
-        for section in this.settings {
+        for section in this.data {
             pairs := ""
 
-            for key, value in this.settings.Get(section) {
+            for key, value in this.data.Get(section) {
                 pairs .= key . "=" . value . "`n"
             }
 
