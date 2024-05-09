@@ -4,7 +4,7 @@
 
 #Include Settings.ahk
 #Include Tools.ahk
-#Include Firestone\main.ahk
+#Include Firestone\Firestone.ahk
 
 InstallKeybdHook
 
