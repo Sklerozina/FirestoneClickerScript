@@ -6,7 +6,8 @@ Class Firestone {
 	}
 
     static Icons := {
-        Red: Button(0xF30000)
+        Red: Button(0xF30000),
+        Close: Button(0xFF620A)
     }
 
     ; Принудительный возврат на главный экран (Много раз жмёт Esc, потом кликает на закрытие диалога)

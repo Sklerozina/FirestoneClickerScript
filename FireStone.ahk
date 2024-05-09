@@ -19,6 +19,7 @@
 #Include Mechanic.ahk
 #Include Library.ahk
 #Include Quests.ahk
+#Include Bags.ahk
 
 InstallKeybdHook
 
@@ -157,7 +158,7 @@ DoWork(force := false) {
 				DoMap
 
 				if CurrentSettings.Get('open_boxes') == 1
-					DoOpenBoxes
+					Bags.Do()
 
 				if CurrentSettings.Get('auto_complete_quests') == 1
 					Quests.Do()
@@ -184,78 +185,6 @@ DoWork(force := false) {
 	}
 
 	MouseGetPos(&saved_mouse_position_x, &saved_mouse_position_y)
-}
-
-DoOpenBoxes() {
-	Press "{B}"
-	Firestone.Click 1373, 548, 500
-	box_coordinates := ["1808:776", "1659:776", "1501:776", "1808:639", "1659:639", "1501:639", "1808:478", "1659:478", "1501:478", "1808:318", "1659:318", "1501:318", "1808:172", "1659:172", " 1501:172"]
-	i := 0
-	For coords in box_coordinates
-	{
-		box_opened := false
-		coords := StrSplit(coords, ":")
-		x := coords[1]
-		y := coords[2]
-
-		i += 1
-		if (PixelSearch(&outputX, &OutputY, x-10, y-10, x+10, y+10, 0x9E7F67, 1)) {
-			; MsgBox "В " . i . " пусто!"
-			continue
-		}
-
-		; MsgBox "Сундук обнаружен в слоте " . i . " по координатам " . x . ":" . y
-		
-		Firestone.Click x, y, 1000
-
-		;; Проверяем, что сундук и правда открылся, а не ложное срабатывание
-		if not PixelSearch(&OutpuxX, &OutpuxY, 590-10, 86-10, 1301+10, 851+10, 0x9CC4E3, 1) {
-			Tools.Sleep 1000
-			continue
-		}
-
-		if PixelSearch(&OutpuxX, &OutpuxY, 1283, 696, 1301, 851, colors['green_button'], 1) { ; x50
-			box_opened := true
-			Firestone.Click OutpuxX, OutpuxY
-		}
-
-		if PixelSearch(&OutpuxX, &OutpuxY, 1153, 696, 1176, 851, colors['green_button'], 1) { ; x10
-			box_opened := true
-			Firestone.Click OutpuxX, OutpuxY
-		}
-
-		if PixelSearch(&OutpuxX, &OutpuxY, 863, 696, 1053, 851, colors['green_button'], 1) { ; x1
-			box_opened := true
-			Firestone.Click OutpuxX, OutpuxY
-		}
-
-		MouseMove 0, 0
-
-		if PixelSearch(&OutpuxX, &OutpuxY, 631, 754, 1272, 825, 0x365E91, 1) {
-			; MsgBox "Этот сундук нельзя открыть!"
-			Press "{ESC}"
-			continue
-		}
-
-		loop 20 ;; Ждём распаковку
-		{
-			;; Проверяем наличие зелёной кнопки
-			if WaitForSearchPixel(835, 804, 1085, 869, colors['green_button'], 1, 250) {
-				Firestone.Click 953, 833, 500
-			}
-			
-			;; проверяем наличие крестика
-			if WaitForSearchPixel(1817-15, 52-15, 1817+15, 52+15, 0xFF620A, 0, 250) {
-				Firestone.Click 1817, 52, 500
-				break
-			}
-				
-			Tools.Sleep 1000 ;; продолжаем ждать
-		}
-		
-	}
-
-	Press "{ESC}"
 }
 
 DoPrestigeUpgrades(force := false) {
