@@ -150,10 +150,10 @@ DoWork(force := false) {
 				Sleep 1000 ; Заглушка, чтобы пошёл таймер в A_TimeIdlePhysical
 				Firestone.BackToMainScreen()
 				Tools.Sleep 1000
-				if CheckIfRed(1877, 517, 1912, 555)
+				if Firestone.Icons.Red.Check(1877, 517, 1912, 555)
 					daily_magazine_rewards := true
 				DoUpgrades
-				ClickCityIcon ; зайти в город
+				Firestone.City() ; зайти в город
 				
 				if daily_magazine_rewards == true {
 					if CurrentSettings.Get('auto_arena', 0) == 1 {
@@ -163,19 +163,19 @@ DoWork(force := false) {
 					DoDailyMagazineReward
 				}
 				
-				if CheckIfRed(814, 910, 848, 949)
+				if Firestone.Icons.Red.Check(814, 910, 848, 949)
 					DoTavern
 
 				DoAlchemy ; Алхимия
 				CollectXPGuard ; Страж
 				CollectTools ; Механик
-				DoExpeditions ; Экспедиции
+				Guild.Do() ; Экспедиции
 
 				if CurrentSettings.Get('auto_research') == 1
 					DoResearch
 
-				DoOracle
-				Press "{Esc}" ; На главный экран
+				Oracle.Do()
+				Firestone.Esc()
 				Firestone.BackToMainScreen() ;; Страховка перед заходом на карту
 
 				DoMap
@@ -672,43 +672,6 @@ CollectXPGuard() {
 	Firestone.Click 625, 230 ; Здание стража
 	Firestone.Click 1150, 765 ; Интерфейс стража
 	Press "{Esc}"
-}
-
-DoOracle() {
-	;; Проверяем, висит ли красный значёк у здания.
-	if not CheckIfRed(1108, 931, 1152, 970)
-		return
-
-	Firestone.Click 1026, 911, 500
-
-	;; Забрать ежедневный бесплатный подарок оракула
-	if CheckIfRed(860, 660, 903, 695) {
-		Firestone.Click 824, 738, 500
-
-		if PixelGetColor(467, 815) == 0x5B5EAA
-		{
-			Firestone.Click 641, 739, 200
-		}
-
-		Press "{ESC}"
-	}
-
-
-	;; Проверяем, висит ли красный значёк у ритуалов.
-	if not CheckIfRed(860, 317, 903, 356) {
-		Press "{ESC}"
-		return
-	}
-
-	Firestone.Click 825, 393, 500
-
-	;; Проверяем зелёные кнопки и кликаем
-	CheckIfGreenAndClick(1092, 473, 250) ; Гармония
-	CheckIfGreenAndClick(1504, 479, 250) ; Безмятежность
-	CheckIfGreenAndClick(1502, 820, 250) ; Концентрация
-	CheckIfGreenAndClick(1092, 820, 250) ; Послушание
-	
-	Press "{ESC}"
 }
 
 DoMap() {
