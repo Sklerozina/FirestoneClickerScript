@@ -3,6 +3,9 @@
 #SingleInstance Force
 
 #Include Settings.ahk
+#Include Tools.ahk
+#Include Button.ahk
+#Include main.ahk
 
 InstallKeybdHook
 
@@ -26,6 +29,9 @@ saved_mouse_position_y := 0
 prestige_mode := false
 Settings('settings.ini')
 CurrentSettings := ""
+colors := Map(
+	'green_button', 0x0AA008
+)
 
 ;; Координаты заданий для карты
 map_world_domination_missions := {954:503, 728:350}
@@ -110,15 +116,9 @@ map_big_missons := {1097:522, 459:899, 596:540, 1485:749, 374:972, 836:944, 957:
 	{
 		Tp "Запускаю.", -1000
 		MouseGetPos(&saved_mouse_position_x, &saved_mouse_position_y)
-		try
-		{
-			Sleep 1100
-			DoWork(true)
-		}
-		catch Number
-		{
-			; А хз, наверное будет пустым тут
-		}
+		Sleep 1100
+		DoWork(true)
+
 		SetTimer DoWork, 300000
 	}
 }
@@ -150,14 +150,14 @@ DoWork(force := false) {
 			{
 				Sleep 1000 ; Заглушка, чтобы пошёл таймер в A_TimeIdlePhysical
 				BackToMainScreen 
-				SleepAndWait 1000
+				Tools.Sleep 1000
 				if CheckIfRed(1877, 517, 1912, 555)
 					daily_magazine_rewards := true
 				DoUpgrades
 				ClickCityIcon ; зайти в город
 				
 				if daily_magazine_rewards == true {
-					if Settings.Get('auto_arena', 0) == 1 {
+					if CurrentSettings.Get('auto_arena', 0) == 1 {
 						CurrentSettings.Set('arena_today', false)
 						Settings.Save()
 					}
@@ -191,9 +191,9 @@ DoWork(force := false) {
 					DoArena
 				}
 			}
-			catch Number
+			catch String as err
 			{
-				Tp "Прерываю работу."
+				Tp "Прерываю работу. " . err, -2000
 				delay := 180000
 				SetTimer DoWork, delay ; Если мышь двигалась, то следующий раз будет через 3 минуты
 				break
@@ -212,11 +212,11 @@ DoWork(force := false) {
 }
 
 DoTavern() {
-	FClick 717, 911
-	FClick 1731, 42
+	Firestone.Click 717, 911
+	Firestone.Click 1731, 42
 
 	while WaitForSearchPixel(344-5, 437-5, 344+5, 437+5, 0x3CA8E1, 1, 1000) {
-		FClick 521, 509
+		Firestone.Click 521, 509
 	}
 
 	Press "{ESC}"
@@ -233,7 +233,7 @@ DoArena() {
 		if rerol {
 			rerol := false
 			if WaitForSearchPixel(834, 143, 891, 197, 0x0AA208, 1, 30000) {
-				FClick 865, 165, 2000
+				Firestone.Click 865, 165, 2000
 			} else {
 				Press "{ESC}"
 				return
@@ -250,11 +250,11 @@ DoArena() {
 		}
 
 		;; Жмём кнопку битвы и подтверждения
-		if WaitForSearchPixel(864, 588, 890, 636, 0x0AA008, 1, 30000) {
-			FClick 955, 613
+		if WaitForSearchPixel(864, 588, 890, 636, colors['green_button'], 1, 30000) {
+			Firestone.Click 955, 613
 
 			;; Здесь нужно детектить, что попытки кончились
-			if WaitForSearchPixel(1061, 657, 1063, 703, 0x0AA008, 1, 1000) {
+			if WaitForSearchPixel(1061, 657, 1063, 703, colors['green_button'], 1, 1000) {
 				; ой, попытки закончились
 				Press "{ESC}"
 				CurrentSettings.Set('arena_today', true)
@@ -262,12 +262,12 @@ DoArena() {
 				break
 			}
 
-			FClick 956, 548
+			Firestone.Click 956, 548
 		}
 
 		;; Ждём появление кнопки победы или поражения в конце битвы
-		If WaitForSearchPixel(906, 724, 908, 789, 0x0AA008, 1, 600000) {
-			FClick 956, 756
+		If WaitForSearchPixel(906, 724, 908, 789, colors['green_button'], 1, 600000) {
+			Firestone.Click 956, 756
 		}
 	}
 
@@ -280,16 +280,16 @@ DoQuests() {
 
 	; Дейлики
 	if CheckIfRed(929, 82, 969, 115) {
-		FClick 773, 130
+		Firestone.Click 773, 130
 
 		loop 8
 		{
 			MouseMove 0, 0
-			SleepAndWait 2000
+			Tools.Sleep 2000
 			If CheckIfGreen(1572, 256, 1621, 318) {
-				FClick 1486, 283
+				Firestone.Click 1486, 283
 				if CheckIfGreen(1035, 635, 1099, 727) {
-					FClick 1169, 672, 250
+					Firestone.Click 1169, 672, 250
 				}
 			} else {
 				break
@@ -300,16 +300,16 @@ DoQuests() {
 
 	; Виклики
 	if CheckIfRed(1322, 79, 1364, 113) {
-		FClick 1167, 132
+		Firestone.Click 1167, 132
 
 		loop 8
 		{
 			MouseMove 0, 0
-			SleepAndWait 2000
+			Tools.Sleep 2000
 			If CheckIfGreen(1572, 256, 1621, 318) {
-				FClick 1486, 283
+				Firestone.Click 1486, 283
 				if CheckIfGreen(1035, 635, 1099, 727) {
-					FClick 1169, 672, 250
+					Firestone.Click 1169, 672, 250
 				}
 			} else {
 				break
@@ -323,7 +323,7 @@ DoQuests() {
 
 DoOpenBoxes() {
 	Press "{B}"
-	FClick 1373, 548, 500
+	Firestone.Click 1373, 548, 500
 	box_coordinates := ["1808:776", "1659:776", "1501:776", "1808:639", "1659:639", "1501:639", "1808:478", "1659:478", "1501:478", "1808:318", "1659:318", "1501:318", "1808:172", "1659:172", " 1501:172"]
 	i := 0
 	For coords in box_coordinates
@@ -341,27 +341,27 @@ DoOpenBoxes() {
 
 		; MsgBox "Сундук обнаружен в слоте " . i . " по координатам " . x . ":" . y
 		
-		FClick x, y, 1000
+		Firestone.Click x, y, 1000
 
 		;; Проверяем, что сундук и правда открылся, а не ложное срабатывание
 		if not PixelSearch(&OutpuxX, &OutpuxY, 590-10, 86-10, 1301+10, 851+10, 0x9CC4E3, 1) {
-			SleepAndWait 1000
+			Tools.Sleep 1000
 			continue
 		}
 
-		if PixelSearch(&OutpuxX, &OutpuxY, 1283, 696, 1301, 851, 0x0AA008, 1) { ; x50
+		if PixelSearch(&OutpuxX, &OutpuxY, 1283, 696, 1301, 851, colors['green_button'], 1) { ; x50
 			box_opened := true
-			FClick OutpuxX, OutpuxY
+			Firestone.Click OutpuxX, OutpuxY
 		}
 
-		if PixelSearch(&OutpuxX, &OutpuxY, 1153, 696, 1176, 851, 0x0AA008, 1) { ; x10
+		if PixelSearch(&OutpuxX, &OutpuxY, 1153, 696, 1176, 851, colors['green_button'], 1) { ; x10
 			box_opened := true
-			FClick OutpuxX, OutpuxY
+			Firestone.Click OutpuxX, OutpuxY
 		}
 
-		if PixelSearch(&OutpuxX, &OutpuxY, 863, 696, 1053, 851, 0x0AA008, 1) { ; x1
+		if PixelSearch(&OutpuxX, &OutpuxY, 863, 696, 1053, 851, colors['green_button'], 1) { ; x1
 			box_opened := true
-			FClick OutpuxX, OutpuxY
+			Firestone.Click OutpuxX, OutpuxY
 		}
 
 		MouseMove 0, 0
@@ -375,17 +375,17 @@ DoOpenBoxes() {
 		loop 20 ;; Ждём распаковку
 		{
 			;; Проверяем наличие зелёной кнопки
-			if WaitForSearchPixel(835, 804, 1085, 869, 0x0AA008, 1, 250) {
-				FClick 953, 833, 500
+			if WaitForSearchPixel(835, 804, 1085, 869, colors['green_button'], 1, 250) {
+				Firestone.Click 953, 833, 500
 			}
 			
 			;; проверяем наличие крестика
 			if WaitForSearchPixel(1817-15, 52-15, 1817+15, 52+15, 0xFF620A, 0, 250) {
-				FClick 1817, 52, 500
+				Firestone.Click 1817, 52, 500
 				break
 			}
 				
-			SleepAndWait 1000 ;; продолжаем ждать
+			Tools.Sleep 1000 ;; продолжаем ждать
 		}
 		
 	}
@@ -413,12 +413,12 @@ DoPrestigeUpgrades(force := false) {
 			{
 				Sleep 1000 ; Заглушка, чтобы пошёл таймер в A_TimeIdlePhysical
 				BackToMainScreen 
-				SleepAndWait 1000
+				Tools.Sleep 1000
 				DoUpgrades
 			}
-			catch Number
+			catch String as err
 			{
-				Tp "Прерываю работу."
+				Tp "Прерываю работу. " . err
 				break
 			}
 		}
@@ -433,8 +433,8 @@ DoResearch() {
 	if not CheckIfRed(384, 641, 424, 680)
 		return
 
-	FClick 313, 630
-	FClick 1813, 930
+	Firestone.Click 313, 630
+	Firestone.Click 1813, 930
 
 	MouseMove 0, 0
 
@@ -454,38 +454,38 @@ DoResearch() {
 		; Проверка на оранжевую кнопку, досрочное завершение
 		if CheckForImage(462, 899, 634, 948, "*120 images/ResearchFree.png")
 		{
-			FClick 548, 925, 500
+			Firestone.Click 548, 925, 500
 			research_count -= 1
 		}
 
 		; Проверить зелёную кнопку завершения
-		if PixelSearch(&OutputX, &OutputY, 474, 895, 633, 950, 0x0AA008, 1)
+		if PixelSearch(&OutputX, &OutputY, 474, 895, 633, 950, colors['green_button'], 1)
 		{
-			FClick 548, 925, 500
+			Firestone.Click 548, 925, 500
 			research_count -= 1
 		}
 
 		MouseMove 0, 0
-		SleepAndWait 500
+		Tools.Sleep 500
 	}
 
 	;; Проверка второго слота
 	; Проверка на оранжевую кнопку, досрочное завершение
 	if CheckForImage(1090, 879, 1301, 958, "*120 images/ResearchFree.png")
 	{
-		FClick 1201, 916, 500
+		Firestone.Click 1201, 916, 500
 		research_count -= 1
 	}
 
 	; Проверить зелёную кнопку завершения
-	if PixelSearch(&OutputX, &OutputY, 1122, 889, 1283, 951, 0x0AA008, 1)
+	if PixelSearch(&OutputX, &OutputY, 1122, 889, 1283, 951, colors['green_button'], 1)
 	{
-		FClick 1201, 916, 500
+		Firestone.Click 1201, 916, 500
 		research_count -= 1
 	}
 
 	MouseMove 0, 0
-	SleepAndWait 500
+	Tools.Sleep 500
 	
 	;; Добавить проверку на второе исследование
 	if (research_count < 2)
@@ -507,7 +507,7 @@ DoResearch() {
 					break 2
 			}
 		
-			SleepAndWait 200
+			Tools.Sleep 200
 
 			loop 35
 			{
@@ -521,19 +521,19 @@ DoResearch() {
 }
 
 DoDailyMagazineReward() {
-	FClick 1300, 343
+	Firestone.Click 1300, 343
 
 	if PixelSearch(&OutputX, &OutputY, 432, 869, 442, 879, 0x5B5EAA, 1)
 	{
-		FClick 592, 743, 200
+		Firestone.Click 592, 743, 200
 	}
 
 	if CheckIfRed(1425, 25, 1474, 76)
 	{
-		FClick 1381, 91
+		Firestone.Click 1381, 91
 		if PixelSearch(&OutputX, &OutputY, 1261, 796, 1404, 841, 0x4CA02E, 1)
 		{
-			FClick 1324, 811
+			Firestone.Click 1324, 811
 		}
 	}
 
@@ -547,7 +547,7 @@ DoAlchemy() {
 	if not CheckIfRed(570, 808, 614, 851)
 		return
 
-	FClick(480, 790)
+	Firestone.Click(480, 790)
 
 	alchemy_1 := false
 	alchemy_2 := false
@@ -619,12 +619,12 @@ DoWMDailys() {
 	; Здесь можно проверить, светятся ли невыполненные дейлики
 	if (CheckIfRed(1850, 900, 1900, 950))
 	{
-		FClick(1777, 977) ; Ежедневные миссии
-		FClick(720, 779) ; Кнопка выбора, освобождение
+		Firestone.Click(1777, 977) ; Ежедневные миссии
+		Firestone.Click(720, 779) ; Кнопка выбора, освобождение
 		SendEvent "{Click 265 575 Down}{click 1427 575 Up}" ; Скролл дейликов в самое начало
 		SendEvent "{Click 265 575 Down}{click 1427 575 Up}" ; Скролл дейликов в самое начало
 
-		SleepAndWait 500
+		Tools.Sleep 500
 		; Первая миссия
 		DoWMMission(190, 700, 450, 770, 312, 740) ; 1
 		DoWMMission(580, 700, 850, 770, 720, 740) ; 2
@@ -641,10 +641,10 @@ DoWMDailys() {
 		Press "{Esc}" ; Вышли на карту
 
 		; Зайти ещё раз и проверить вторую стопку дейликов
-		FClick(1777, 977, 500) ; Ежедневные миссии
-		if PixelSearch(&Found_X, &Found_Y, 1100, 740, 1340, 810, 0x0AA008, 1) ; 
+		Firestone.Click(1777, 977, 500) ; Ежедневные миссии
+		if PixelSearch(&Found_X, &Found_Y, 1100, 740, 1340, 810, colors['green_button'], 1) ; 
 		{
-			FClick 1235, 770, 500 ; Жмём кнопку для захода в задания подземелий
+			Firestone.Click 1235, 770, 500 ; Жмём кнопку для захода в задания подземелий
 
 			DoWMMission(630, 700, 890, 770, 755, 740) ; 1 подземелье
 			
@@ -701,7 +701,7 @@ CollectTools() {
 	if not CheckIfRed(1325, 839, 1369, 882)
 		return
 	
-	FClick 1230, 800 ; Клик на здание механика
+	Firestone.Click 1230, 800 ; Клик на здание механика
 
 	;; Проверяем, висит ли красный значёк у механика.
 	if not CheckIfRed(724, 306, 759, 336)
@@ -711,8 +711,8 @@ CollectTools() {
 	}
 		
 
-	FClick 600, 460 ; Клик на выбор Механик
-	FClick 1620, 680 ; Клик на кнопку получения инструментов
+	Firestone.Click 600, 460 ; Клик на выбор Механик
+	Firestone.Click 1620, 680 ; Клик на кнопку получения инструментов
 	Press "{Esc}"
 }
 
@@ -722,8 +722,8 @@ CollectXPGuard() {
 	if not CheckIfRed(738, 281, 783, 324)
 		return
 
-	FClick 625, 230 ; Здание стража
-	FClick 1150, 765 ; Интерфейс стража
+	Firestone.Click 625, 230 ; Здание стража
+	Firestone.Click 1150, 765 ; Интерфейс стража
 	Press "{Esc}"
 }
 
@@ -732,15 +732,15 @@ DoOracle() {
 	if not CheckIfRed(1108, 931, 1152, 970)
 		return
 
-	FClick 1026, 911, 500
+	Firestone.Click 1026, 911, 500
 
 	;; Забрать ежедневный бесплатный подарок оракула
 	if CheckIfRed(860, 660, 903, 695) {
-		FClick 824, 738, 500
+		Firestone.Click 824, 738, 500
 
 		if PixelGetColor(467, 815) == 0x5B5EAA
 		{
-			FClick 641, 739, 200
+			Firestone.Click 641, 739, 200
 		}
 
 		Press "{ESC}"
@@ -753,7 +753,7 @@ DoOracle() {
 		return
 	}
 
-	FClick 825, 393, 500
+	Firestone.Click 825, 393, 500
 
 	;; Проверяем зелёные кнопки и кликаем
 	CheckIfGreenAndClick(1092, 473, 250) ; Гармония
@@ -766,16 +766,16 @@ DoOracle() {
 
 ; Экспедиции
 DoExpeditions() {
-	FClick(1482, 127) ; Клик на здание гильдии
+	Firestone.Click(1482, 127) ; Клик на здание гильдии
 
 	;; Забрать заодно кирки
 	if CheckIfRed(739, 284, 780, 324)
 	{
-		FClick 660, 211, 500 ;; Здание магазина
+		Firestone.Click 660, 211, 500 ;; Здание магазина
 
 		if CheckIfRed(161, 668, 196, 709){
-			FClick 211, 721, 500
-			FClick 712, 410, 500
+			Firestone.Click 211, 721, 500
+			Firestone.Click 712, 410, 500
 		}
 
 		Press "{ESC}"
@@ -788,7 +788,7 @@ DoExpeditions() {
 		return
 	}
 
-	FClick(296, 387) ; Клик на здание экспедиций
+	Firestone.Click(296, 387) ; Клик на здание экспедиций
 	CheckIfGreenAndClick 1184, 299
 	MouseMove 0, 0
 	CheckIfGreenAndClick 1184, 299, 3000
@@ -800,9 +800,9 @@ DoMap() {
 	map_status := ''
 
 	Press "{m}"
-	FClick(1834, 583, 500) ; Клик для перехода на карту военной кампании
-	CheckIfGreenAndClick(60, 953, 1000) ; Забрать лут
-	FClick(1832, 438, 500) ; Вернуться обратно на карту миссий
+	Firestone.Click(1834, 583, 500) ; Клик для перехода на карту военной кампании
+	Firestone.Buttons.Green.CheckAndClick(36, 912, 67, 965)  ; Забрать лут
+	Firestone.Click(1832, 438, 500) ; Вернуться обратно на карту миссий
 
 	; Прокликать завершённые задания
 	map_status := MapTryFinishMissions()
@@ -811,7 +811,7 @@ DoMap() {
 	else
 		DoMapMissions
 	
-	FClick(1834, 583, 500) ; Клик для перехода на карту военной кампании
+	Firestone.Click(1834, 583, 500) ; Клик для перехода на карту военной кампании
 
 	DoWMDailys
 
@@ -823,46 +823,47 @@ CheckSquad() {
 }
 
 ClickOnMapMission(x, y) {
-	FClick x, y, 100
+	Firestone.Click x, y, 100
 	; Зелёная кнопка принятия
 	MouseMove 0, 0
 
 	; Смотрим, появилось окно или нет, если не появилось, значит можно не проверять кнопки.
 	; Должно ускорить поиск миссий
-	if !WaitForSearchPixel(414, 206, 424, 216, 0xE1CDAC, 1, 250) {
+	if !Tools.WaitForSearchPixel(414, 206, 424, 216, 0xE1CDAC, 1, 250) {
 		return
 	}
 
-	if !CheckIfGreenAndClick(966, 855, 250)
+	; Проверяем наличие кнопки принятия миссии и кликаем её
+	if !Firestone.Buttons.Green.WaitAndClick(955, 802, 990, 886, 500) ; Ищем кнопку и кликаем, если нет, проверяем другие варианты
 	{
-		if(CheckForImage(1251, 720, 1491, 790, "*80 images/FreeOrange.png"))
+		
+		if(Firestone.Buttons.Orange.CheckAndClick(1251, 720, 1491, 790))
 		{
-			FClick 1367, 747, 500
-			CheckIfGreenAndClick(815, 613, 5000)
+			Firestone.Buttons.Green.WaitAndClick(802, 572, 828, 637, 5000)
 			return
 		}
 
-		if(CheckForImage(948, 706, 1219, 807, "*80 images/Otmena.png")){
-			Press "{Esc}"
+		; Проверяем наличие кнопки отмены
+		if(Firestone.Buttons.Red.Check(967, 713, 1009, 783)){
+			Firestone.Press("{Esc}")
 			return
 		}
-			
 
 		if(CheckForImage(1024, 803, 1164, 874, "*80 images/NotEnoughSquads.png")){
-			Press "{Esc}"
+			Firestone.Press "{Esc}"
 			return
 		}
 
-		CheckIfGreenAndClick(814, 603, 500)
-			
+		; окно подтверждения принятия награды "награды миссии"
+		Firestone.Buttons.Green.CheckAndClick(802, 572, 828, 637)
 	}
 }
 
 DoWMMission(zone_x1, zone_y1, zone_x2, zone_y2, click_x, click_y) {
-	SleepAndWait 500
-	if PixelSearch(&Found_X, &Found_Y, zone_x1, zone_y1, zone_x2, zone_y2, 0x0AA008, 1)
+	Tools.Sleep 500
+	if PixelSearch(&Found_X, &Found_Y, zone_x1, zone_y1, zone_x2, zone_y2, colors['green_button'], 1)
 	{
-		FClick click_x, click_y
+		Firestone.Click click_x, click_y
 		MouseMove(0, 0) ; Убираем мышь, чтобы не светила кнопку
 		if !CheckIfGreenAndClick(926, 734, 120000) ; Ждём появление кнопки подтверждения
 		{
@@ -873,71 +874,31 @@ DoWMMission(zone_x1, zone_y1, zone_x2, zone_y2, click_x, click_y) {
 		return 0
 }
 
+EachMapMissions(missions, force := false, finish := false) {
+	try_finish := false
+	For x, y in missions.OwnProps()
+	{
+		If !CheckSquad() && force == false
+			break
+
+		ClickOnMapMission(x, y)
+		try_finish := true
+	}
+
+	if try_finish == true || finish == true
+		MapTryFinishMissions
+}
+
 DoMapMissions(force := false){
 	; Проверить, есть ли не задания на карте и попытаться их начать.
 	if (CheckSquad() || force == true)
 	{
 		; Мисси при событии "Мировое господство"
-		try_finish := false
-		For x, y in map_world_domination_missions.OwnProps()
-		{
-			If !CheckSquad() && force == false
-				break
-	
-			ClickOnMapMission(x, y)
-			try_finish := true
-		}
-
-		if try_finish == true
-			MapTryFinishMissions
-
-		; Tp "У нас есть задания, которые нужно сделать!"
-		try_finish := false
-		For x, y in map_litle_missons.OwnProps()
-		{
-			If !CheckSquad() && force == false
-				break
-	
-			ClickOnMapMission(x, y)
-			try_finish := true
-		}
-
-		if try_finish == true
-			MapTryFinishMissions
-		
-		try_finish := false
-		For x, y in map_big_missons.OwnProps()
-		{
-			If !CheckSquad() && force == false
-				break
-	
-			ClickOnMapMission(x, y)
-			try_finish := true
-		}
-		
-		if try_finish == true
-			MapTryFinishMissions
-	
-		try_finish := false
-		For x, y in map_small_missons.OwnProps()
-			{
-				If !CheckSquad() && force == false
-					break
-		
-				ClickOnMapMission(x, y)
-				try_finish := true
-			}
-
-		if try_finish == true
-			MapTryFinishMissions
-
-		For x, y in map_medium_missons.OwnProps()
-		{
-			If !CheckSquad() && force == false
-				break
-	
-			ClickOnMapMission(x, y)
-		}
+		EachMapMissions(map_world_domination_missions, force, true)
+		EachMapMissions(map_litle_missons, force, true)
+		EachMapMissions(map_big_missons, force, true)
+		EachMapMissions(map_small_missons, force, true)
+		EachMapMissions(map_medium_missons, force)
 	}
 }
 
@@ -945,28 +906,30 @@ MapTryFinishMissions() {
 	; Попробовать завершить задания, которым осталось меньше 3-х минут
 	loop 20 ; Ограничим цикл, если вдруг что-то пошло не так.
 	{
-		if not PixelSearch(&FoundX, &FoundY, 14, 208, 263, 341, 0xF7E5CB, 1)
+		if not Tools.PixelSearch(14, 208, 263, 341, 0xF7E5CB, 1)
 			break
 		else
 		{
-			FClick 138, 239, 500
-			if (CheckIfGreenAndClick(815, 605, 500)){
+			Firestone.Click 138, 239, 500
+			; окно подтверждения принятия награды "награды миссии"
+			if Firestone.Buttons.Green.CheckAndClick(802, 572, 828, 637) {
 				continue
 			}
 
 			if(CheckForImage(1251, 720, 1491, 790, "*120 images/FreeOrange.png"))
 			{
-				FClick 1367, 747, 500
-				CheckIfGreenAndClick(815, 605, 5000)
+				Firestone.Click 1367, 747, 500
+				Firestone.Buttons.Green.WaitAndClick(802, 572, 828, 637, 5000)
 				continue
 			}
 	
-			if(CheckForImage(948, 706, 1219, 807, "*120 images/Otmena.png")){
-				Press "{Esc}"
+			; Проверяем наличие кнопки отмены
+			if(Firestone.Buttons.Red.Check(967, 713, 1009, 783)){
+				Firestone.Press("{Esc}")
 				break
 			}
 
-			if (PixelSearch(&FoundX, &FoundY, 85, 274, 138, 332, 0xADABAD, 1)) {
+			if (Tools.PixelSearch(85, 274, 138, 332, 0xADABAD, 1)) {
 				return 'hangup'
 			}
 		}
@@ -976,7 +939,7 @@ MapTryFinishMissions() {
 CheckIfOrangeAndClick(x, y, timeout := 1000){
 	if WaitForPixel(x, y, "0xFCAF47 0xFCAC47 0xFBAC46 0xFAAB45 0xF9AB44 0xFBAB47 0xFAAB46 0xF9AB45 0xF8AA44 0xF8A945 0xF9AA45 0xF9A946 0xF9A847", timeout)
 	{
-		FClick(x, y)
+		Firestone.Click(x, y)
 		return 1
 	}
 
@@ -986,7 +949,7 @@ CheckIfOrangeAndClick(x, y, timeout := 1000){
 CheckIfGreenAndClick(x, y, timeout := 1000){
 	if WaitForPixel(x, y, "0x0AA008 0x0B9F05 0x0A9F05 0x0AA005 0x0AA006", timeout)
 	{
-		FClick(x, y)
+		Firestone.Click(x, y)
 		return 1
 	}
 
@@ -998,7 +961,7 @@ CheckIfRed(x1, y1, x2, y2) {
 }
 
 CheckIfGreen(x1, y1, x2, y2) {
-	return PixelSearch(&FoundX, &FoundY, x1, y1, x2, y2, 0x0AA008, 1)
+	return PixelSearch(&FoundX, &FoundY, x1, y1, x2, y2, colors['green_button'], 1)
 }
 
 FindFirestoneWindowAndActivate() {
@@ -1021,15 +984,16 @@ BackToMainScreen(){
 	game_good := false
 	loop 5 {
 		Press "{ESC}", 500
-		if WaitForSearchPixel(1032, 706, 1059, 780, 0x0AA008, 1, 500) {
+		
+		if Firestone.Buttons.Green.Wait(1032, 706, 1059, 780, 250) {
 			; Хорошо, мы на главном экране, можно продолжать скрипт
-			FClick 1537, 275, 500
+			Firestone.Click 1537, 275, 500
 			game_good := true
 			break
 		} else {
 			if WaitForSearchPixel(928, 609, 948, 684, 0xFF7760, 1, 500) {
 				; Хорошо, мы на главном экране, можно продолжать скрипт
-				FClick 1398, 279, 500 ;; Клик по окошку "Нравится игра?"
+				Firestone.Click 1398, 279, 500 ;; Клик по окошку "Нравится игра?"
 			}
 		}
 	}
@@ -1042,18 +1006,12 @@ BackToMainScreen(){
 
 ; Клик на иконку города на главном экране
 ClickCityIcon() {
-	; FClick 1850, 185 ; Клик на иконку города
+	; Firestone.Click 1850, 185 ; Клик на иконку города
 	Press "{t}"
 }
 
-; Клик на иконку гильдии
-ClickGuildIcon() {
-	FClick 1865, 442 ; Клик на иконку города
-}
-
 UpgradeHero(x1, y1, x2, y2, clickx, clicky, clicks := 1) {
-	if PixelSearch(&OutputX, &OutputY, x1, y1, x2, y2, 0x0AA008, 1)
-		FClick clickx, clicky, 200, clicks
+	Firestone.Buttons.Green.CheckAndClick(x1, y1, x2, y2, clickx, clicky, 200, clicks)
 }
 
 FindResearch(y) {
@@ -1061,13 +1019,13 @@ FindResearch(y) {
 	if PixelSearch(&OutputX, &OutputY, 20, y, 1900, y, 0x0D49DE, 1)
 	{
 		;; попробовать кликнуть
-		FClick OutputX, OutputY
+		Firestone.Click OutputX, OutputY
 		MouseMove 0, 0
-		SleepAndWait 250
+		Tools.Sleep 250
 		;; Подождать окно принятия
-		if WaitForSearchPixel(669, 707, 928, 775, 0x0AA008, 1, 1000)
+		if Tools.WaitForSearchPixel(669, 707, 928, 775, colors['green_button'], 1, 1000)
 		{
-			FClick 795, 738, 500
+			Firestone.Click 795, 738, 500
 			
 			return true
 		}
@@ -1076,33 +1034,11 @@ FindResearch(y) {
 
 }
 
-FClick(x, y, wait := 1000, clickcount := 1) {
-	FindFirestoneWindowAndActivate
-	loop clickcount
-	{
-		Click x, y
-		SleepAndWait(wait)
-	}
-}
-
 Press(key, wait := 1000) {
 	FindFirestoneWindowAndActivate
 
 	Send key
-	SleepAndWait(wait)
-}
-
-SleepAndWait(m := 1000) {
-	MouseGetPos(&Mx1, &My1)
-
-	Sleep m
-
-	MouseGetPos(&Mx2, &My2)
-
-	; Если мышка двигалась пока спали, пропускаем задачу
-	If((Mx1 != Mx2) && (My1 != My2) || A_TimeIdlePhysical <= m) {
-		throw 1
-	}
+	Tools.Sleep(wait)
 }
 
 CheckForImage(X1, Y1, X2, Y2, image) {
@@ -1122,7 +1058,7 @@ WaitForPixel(x, y, colors, timeout := 300000) {
 		{
 			return 1
 		}
-		SleepAndWait 500
+		Tools.Sleep 500
 		t += 500
 	}
 
@@ -1137,7 +1073,7 @@ WaitForSearchPixel(x1, y1, x2, y2, color, variation := 0, timeout := 300000) {
 		{
 			return 1
 		}
-		SleepAndWait 500
+		Tools.Sleep 500
 		t += 500
 	}
 
