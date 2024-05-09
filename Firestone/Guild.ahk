@@ -31,9 +31,9 @@ Class Guild {
         }
     
         Firestone.Click(296, 387) ; Клик на здание экспедиций
-        Firestone.Button.Green.WaitAndClick(1187, 258, 1216, 345)
+        Firestone.Buttons.Green.WaitAndClick(1187, 258, 1216, 345, 1000)
         MouseMove 0, 0
-        Firestone.Button.Green.WaitAndClick(1187, 258, 1216, 345)
+        Firestone.Buttons.Green.WaitAndClick(1187, 258, 1216, 345, 1000)
         Firestone.Esc() ; Закрыть окно экспедиций
     }
 }
