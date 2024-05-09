@@ -61,44 +61,6 @@ map_big_missons := {1097:522, 459:899, 596:540, 1485:749, 374:972, 836:944, 957:
 	}
 }
 
-; ^m:: {
-; 	global firestone_hwid
-; 	hwids := FindAllFirestones()
-; 	Loop hwids.Length
-; 	{
-; 		firestone_hwid := hwids[A_Index]
-; 		If WinExist(firestone_hwid){
-; 			WinActivate
-; 		}
-
-; 		try
-; 		{
-; 			BackToMainScreen
-; 			Press "{m}"
-; 			; Прокликать завершённые задания
-; 			MapFinishMissions
-; 			DoMapMissions
-; 			Press "{Esc}" ; На главный экран
-; 		}
-; 		catch Number
-; 		{
-; 			ToolTip "Прерываю работу."
-; 			SetTimer () => ToolTip(), -2000
-; 		}
-; 	}
-; }
-
-; ^d:: {
-	; 	global firestone_hwid
-	; 	firestone_hwid := WinExist("ahk_exe Firestone.exe")
-
-	; 	If WinExist(firestone_hwid){
-		; 		WinActivate
-	; 	}
-
-	; 	; Do Test Things
-	; }
-
 ^y:: {
 	global saved_mouse_position_x, saved_mouse_position_y
     static toggled := false
@@ -152,7 +114,7 @@ DoWork(force := false) {
 				Tools.Sleep 1000
 				if Firestone.Icons.Red.Check(1877, 517, 1912, 555)
 					daily_magazine_rewards := true
-				DoUpgrades
+				HerosUpgrades.Do(CurrentSettings.Get('lvlup_priority'), prestige_mode)
 				Firestone.City() ; зайти в город
 				
 				if daily_magazine_rewards == true {
@@ -361,7 +323,7 @@ DoPrestigeUpgrades(force := false) {
 				Sleep 1000 ; Заглушка, чтобы пошёл таймер в A_TimeIdlePhysical
 				Firestone.BackToMainScreen()
 				Tools.Sleep 1000
-				DoUpgrades
+				HerosUpgrades.Do(CurrentSettings.Get('lvlup_priority'), prestige_mode)
 			}
 			catch String as err
 			{
@@ -604,44 +566,6 @@ DoWMDailys() {
 	}
 }
 
-DoUpgrades() {
-	global prestige_mode
-
-	Press "{u}", 500
-
-	if prestige_mode
-	{
-		UpgradeHero(1652, 134, 1776, 219, 1771, 180) ; 1
-		UpgradeHero(1652, 817, 1776, 889, 1758, 875, 5) ; 7
-		UpgradeHero(1652, 704, 1776, 776, 1758, 758, 5) ; 6
-		UpgradeHero(1652, 593, 1776, 665, 1758, 644, 5) ; 5
-		UpgradeHero(1652, 479, 1776, 551, 1758, 527, 5) ; 4
-		UpgradeHero(1652, 366, 1776, 438, 1758, 424, 5) ; 3
-		UpgradeHero(1652, 251, 1776, 323, 1764, 290, 5) ; 2
-	} else {
-		loop parse CurrentSettings.Get('lvlup_priority') {
-			switch A_LoopField {
-				case "1":
-					UpgradeHero(1652, 134, 1776, 219, 1771, 180) ; 1
-				case "2":
-					UpgradeHero(1652, 251, 1776, 323, 1764, 290, 5) ; 2
-				case "3":
-					UpgradeHero(1652, 366, 1776, 438, 1758, 424, 5) ; 3
-				case "4":
-					UpgradeHero(1652, 479, 1776, 551, 1758, 527, 5) ; 4
-				case "5":
-					UpgradeHero(1652, 593, 1776, 665, 1758, 644, 5) ; 5
-				case "6":
-					UpgradeHero(1652, 704, 1776, 776, 1758, 758, 5) ; 6
-				case "7":
-					UpgradeHero(1652, 817, 1776, 889, 1758, 875, 5) ; 7
-			}
-		}
-	}
-
-	Press "{u}"
-}
-
 ; Сбор инструментов
 CollectTools() {
 	;; Проверяем, висит ли красный значёк у здания.
@@ -827,10 +751,6 @@ FindFirestoneWindowAndActivate() {
 		; "Окно перестало быть активным! Перываю работу."
 		throw 1
 	}
-}
-
-UpgradeHero(x1, y1, x2, y2, clickx, clicky, clicks := 1) {
-	Firestone.Buttons.Green.CheckAndClick(x1, y1, x2, y2, clickx, clicky, 200, clicks)
 }
 
 FindResearch(y) {
