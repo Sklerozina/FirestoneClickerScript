@@ -6,6 +6,16 @@
 #Include Tools.ahk
 #Include Firestone\Firestone.ahk
 
+#Include Firestone
+#Include Button.ahk
+#Include Arena.ahk
+#Include Guild.ahk
+#Include Oracle.ahk
+#Include HeroesUpgrades.ahk
+#Include Magazine.ahk
+#Include Tavern.ahk
+#Include Alchemy.ahk
+
 InstallKeybdHook
 
 SendMode "InputThenPlay"

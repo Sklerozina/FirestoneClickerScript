@@ -1,11 +1,3 @@
-#Include Button.ahk
-#Include Arena.ahk
-#Include Guild.ahk
-#Include Oracle.ahk
-#Include HeroesUpgrades.ahk
-#Include Magazine.ahk
-#Include Tavern.ahk
-
 Class Firestone {
 	static Buttons := {
 		Green: Button(0x0AA008),
