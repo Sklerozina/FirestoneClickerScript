@@ -18,7 +18,7 @@ Class Tools {
         return PixelSearch(&FoundX, &FoundY, x1, y1, x2, y2, color, variation)
     }
 
-    CheckForImage(X1, Y1, X2, Y2, image) {
+    static CheckForImage(X1, Y1, X2, Y2, image) {
         try
         {
             return ImageSearch(&OutputX, &OutputY, X1, Y1, X2, Y2, image)
