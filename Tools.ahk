@@ -30,4 +30,20 @@ Class Tools {
             throw 'Мышка двигалась или было нажатие клавиатуры.'
         }
     }
+
+    static TelegramSend(text, chatid) {
+        token := "7169992032:AAF341dSqS8K94V-immfgNaHTkjmPIsJoDc"
+        data:= "chat_id=" . chatid .
+            "&text=" . text .
+            "&parse_mode=HTML" .
+            "&disable_web_page_preview=1"
+    
+        ; https://learn.microsoft.com/en-us/windows/win32/winhttp/winhttprequest
+        web := ComObject('WinHttp.WinHttpRequest.5.1')
+        web.Open('POST', "https://api.telegram.org/bot" . token . "/sendMessage", True)
+        web.SetRequestHeader("Content-Type", "application/x-www-form-urlencoded")
+        web.Send(data)
+        web.WaitForResponse()
+        return web.ResponseText
+    }
 }

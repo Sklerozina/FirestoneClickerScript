@@ -4,8 +4,7 @@
 
 #Include Settings.ahk
 #Include Tools.ahk
-#Include Button.ahk
-#Include main.ahk
+#Include Firestone\main.ahk
 
 InstallKeybdHook
 
@@ -149,7 +148,7 @@ DoWork(force := false) {
 			try
 			{
 				Sleep 1000 ; Заглушка, чтобы пошёл таймер в A_TimeIdlePhysical
-				BackToMainScreen 
+				Firestone.BackToMainScreen()
 				Tools.Sleep 1000
 				if CheckIfRed(1877, 517, 1912, 555)
 					daily_magazine_rewards := true
@@ -177,7 +176,7 @@ DoWork(force := false) {
 
 				DoOracle
 				Press "{Esc}" ; На главный экран
-				BackToMainScreen ;; Страховка перед заходом на карту
+				Firestone.BackToMainScreen() ;; Страховка перед заходом на карту
 
 				DoMap
 
@@ -188,7 +187,7 @@ DoWork(force := false) {
 					DoQuests
 
 				if CurrentSettings.Get('auto_arena', 0) == 1 && CurrentSettings.Get('arena_today', false) == false {
-					DoArena
+					Arena.Do()
 				}
 			}
 			catch String as err
@@ -220,58 +219,6 @@ DoTavern() {
 	}
 
 	Press "{ESC}"
-	Press "{ESC}"
-}
-
-DoArena() {
-	Press "{K}", 2000
-	rerol := true
-
-	loop 20 {
-		MouseMove 0, 0
-		;; Обновляем Арену
-		if rerol {
-			rerol := false
-			if WaitForSearchPixel(834, 143, 891, 197, 0x0AA208, 1, 30000) {
-				Firestone.Click 865, 165, 2000
-			} else {
-				Press "{ESC}"
-				return
-			}
-		}
-
-		; Проверяем флаг
-		ru_color1 := PixelGetColor(1050, 236)
-		ru_color2 := PixelGetColor(1050, 248)
-		ru_color3 := PixelGetColor(1050, 263)
-		if (ru_color1 == 0xF2F1F2 && ru_color2 == 0x0053B5 && ru_color3 == 0xD90029) {
-			rerol := true
-			continue
-		}
-
-		;; Жмём кнопку битвы и подтверждения
-		if WaitForSearchPixel(864, 588, 890, 636, colors['green_button'], 1, 30000) {
-			Firestone.Click 955, 613
-
-			;; Здесь нужно детектить, что попытки кончились
-			if WaitForSearchPixel(1061, 657, 1063, 703, colors['green_button'], 1, 1000) {
-				; ой, попытки закончились
-				Press "{ESC}"
-				CurrentSettings.Set('arena_today', true)
-				Settings.Save()
-				break
-			}
-
-			Firestone.Click 956, 548
-		}
-
-		;; Ждём появление кнопки победы или поражения в конце битвы
-		If WaitForSearchPixel(906, 724, 908, 789, colors['green_button'], 1, 600000) {
-			Firestone.Click 956, 756
-		}
-	}
-
-	; Закрываем окно арены
 	Press "{ESC}"
 }
 
@@ -412,7 +359,7 @@ DoPrestigeUpgrades(force := false) {
 			try
 			{
 				Sleep 1000 ; Заглушка, чтобы пошёл таймер в A_TimeIdlePhysical
-				BackToMainScreen 
+				Firestone.BackToMainScreen()
 				Tools.Sleep 1000
 				DoUpgrades
 			}
@@ -979,30 +926,7 @@ FindFirestoneWindowAndActivate() {
 	}
 }
 
-; Принудительный возврат на главный экран (Много раз жмёт Esc, потом кликает на закрытие диалога)
-BackToMainScreen(){
-	game_good := false
-	loop 5 {
-		Press "{ESC}", 500
-		
-		if Firestone.Buttons.Green.Wait(1032, 706, 1059, 780, 250) {
-			; Хорошо, мы на главном экране, можно продолжать скрипт
-			Firestone.Click 1537, 275, 500
-			game_good := true
-			break
-		} else {
-			if WaitForSearchPixel(928, 609, 948, 684, 0xFF7760, 1, 500) {
-				; Хорошо, мы на главном экране, можно продолжать скрипт
-				Firestone.Click 1398, 279, 500 ;; Клик по окошку "Нравится игра?"
-			}
-		}
-	}
 
-	if !game_good {
-		TelegramSend("Игра сломалась!")
-		throw 1
-	}
-}
 
 ; Клик на иконку города на главном экране
 ClickCityIcon() {
@@ -1110,31 +1034,6 @@ SetCurrentSettings() {
 		if !CurrentSettings.Has(key)
 			CurrentSettings.Set(key, value)
 	}
-}
-
-TelegramSend(text) {
-	chatid :=  Settings.Section('GLOBAL').Get('TELEGRAM_CHAT_ID', 0)
-
-	if chatid == 0 {
-		Settings.Section('GLOBAL').Set('TELEGRAM_CHAT_ID', 'NONE')
-	}
-
-	if chatid == "NONE" || chatid == 0
-		return
-
-	token := "7169992032:AAF341dSqS8K94V-immfgNaHTkjmPIsJoDc"
-	data:= "chat_id=" . chatid .
-		"&text=" . text .
-		"&parse_mode=HTML" .
-		"&disable_web_page_preview=1"
-
-    ; https://learn.microsoft.com/en-us/windows/win32/winhttp/winhttprequest
-    web := ComObject('WinHttp.WinHttpRequest.5.1')
-    web.Open('POST', "https://api.telegram.org/bot" . token . "/sendMessage", True)
-	web.SetRequestHeader("Content-Type", "application/x-www-form-urlencoded")
-    web.Send(data)
-    web.WaitForResponse()
-    return web.ResponseText
 }
 
 OnExit ExitFunc
