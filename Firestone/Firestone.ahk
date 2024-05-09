@@ -3,6 +3,7 @@
 #Include Guild.ahk
 #Include Oracle.ahk
 #Include HeroesUpgrades.ahk
+#Include Magazine.ahk
 
 Class Firestone {
 	static Buttons := {

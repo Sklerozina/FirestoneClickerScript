@@ -114,6 +114,7 @@ DoWork(force := false) {
 				Tools.Sleep 1000
 				if Firestone.Icons.Red.Check(1877, 517, 1912, 555)
 					daily_magazine_rewards := true
+				
 				HerosUpgrades.Do(CurrentSettings.Get('lvlup_priority'), prestige_mode)
 				Firestone.City() ; зайти в город
 				
@@ -122,7 +123,8 @@ DoWork(force := false) {
 						CurrentSettings.Set('arena_today', false)
 						Settings.Save()
 					}
-					DoDailyMagazineReward
+
+					Magazine.Do()
 				}
 				
 				if Firestone.Icons.Red.Check(814, 910, 848, 949)
@@ -427,28 +429,6 @@ DoResearch() {
 	
 
 	Press "{ESC}"
-}
-
-DoDailyMagazineReward() {
-	Firestone.Click 1300, 343
-
-	if PixelSearch(&OutputX, &OutputY, 432, 869, 442, 879, 0x5B5EAA, 1)
-	{
-		Firestone.Click 592, 743, 200
-	}
-
-	if CheckIfRed(1425, 25, 1474, 76)
-	{
-		Firestone.Click 1381, 91
-		if PixelSearch(&OutputX, &OutputY, 1261, 796, 1404, 841, 0x4CA02E, 1)
-		{
-			Firestone.Click 1324, 811
-		}
-	}
-
-	Press "{ESC}"
-
-	return true
 }
 
 DoAlchemy() {
