@@ -18,6 +18,7 @@
 #Include Guard.ahk
 #Include Mechanic.ahk
 #Include Library.ahk
+#Include Quests.ahk
 
 InstallKeybdHook
 
@@ -159,7 +160,7 @@ DoWork(force := false) {
 					DoOpenBoxes
 
 				if CurrentSettings.Get('auto_complete_quests') == 1
-					DoQuests
+					Quests.Do()
 
 				if CurrentSettings.Get('auto_arena', 0) == 1 && CurrentSettings.Get('arena_today', false) == false {
 					Arena.Do()
@@ -183,52 +184,6 @@ DoWork(force := false) {
 	}
 
 	MouseGetPos(&saved_mouse_position_x, &saved_mouse_position_y)
-}
-
-DoQuests() {
-	Press "{Q}"
-
-	; Дейлики
-	if CheckIfRed(929, 82, 969, 115) {
-		Firestone.Click 773, 130
-
-		loop 8
-		{
-			MouseMove 0, 0
-			Tools.Sleep 2000
-			If CheckIfGreen(1572, 256, 1621, 318) {
-				Firestone.Click 1486, 283
-				if CheckIfGreen(1035, 635, 1099, 727) {
-					Firestone.Click 1169, 672, 250
-				}
-			} else {
-				break
-			}
-			
-		}
-	}
-
-	; Виклики
-	if CheckIfRed(1322, 79, 1364, 113) {
-		Firestone.Click 1167, 132
-
-		loop 8
-		{
-			MouseMove 0, 0
-			Tools.Sleep 2000
-			If CheckIfGreen(1572, 256, 1621, 318) {
-				Firestone.Click 1486, 283
-				if CheckIfGreen(1035, 635, 1099, 727) {
-					Firestone.Click 1169, 672, 250
-				}
-			} else {
-				break
-			}
-			
-		}
-	}
-
-	Press "{ESC}"
 }
 
 DoOpenBoxes() {
