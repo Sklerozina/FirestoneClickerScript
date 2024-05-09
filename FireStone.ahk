@@ -16,6 +16,7 @@
 #Include Tavern.ahk
 #Include Alchemy.ahk
 #Include Guard.ahk
+#Include Mechanic.ahk
 
 InstallKeybdHook
 
@@ -141,7 +142,7 @@ DoWork(force := false) {
 				Tavern.Do()
 				Alchemy.Do(CurrentSettings.Get('alchemy'))
 				Guard.Do()
-				CollectTools ; Механик
+				Mechanic.Do() ; Механик
 				Guild.Do() ; Экспедиции
 
 				if CurrentSettings.Get('auto_research') == 1
@@ -470,27 +471,6 @@ DoWMDailys() {
 			Press "{Esc}"
 		}
 	}
-}
-
-; Сбор инструментов
-CollectTools() {
-	;; Проверяем, висит ли красный значёк у здания.
-	if not CheckIfRed(1325, 839, 1369, 882)
-		return
-	
-	Firestone.Click 1230, 800 ; Клик на здание механика
-
-	;; Проверяем, висит ли красный значёк у механика.
-	if not CheckIfRed(724, 306, 759, 336)
-	{
-		Press "{ESC}"
-		return
-	}
-		
-
-	Firestone.Click 600, 460 ; Клик на выбор Механик
-	Firestone.Click 1620, 680 ; Клик на кнопку получения инструментов
-	Press "{Esc}"
 }
 
 DoMap() {
