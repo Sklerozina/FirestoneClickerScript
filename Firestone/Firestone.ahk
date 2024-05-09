@@ -21,7 +21,7 @@ Class Firestone {
     static BackToMainScreen(){
         game_good := false
         loop 5 {
-            Press "{ESC}", 500
+            this.Esc(500)
             
             if this.Buttons.Green.Wait(1032, 706, 1059, 780, 250) {
                 ; Хорошо, мы на главном экране, можно продолжать скрипт
