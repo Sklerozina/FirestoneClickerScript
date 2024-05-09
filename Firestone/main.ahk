@@ -1,6 +1,7 @@
 #Include Button.ahk
 #Include Arena.ahk
 #Include Guild.ahk
+#Include Oracle.ahk
 
 Class Firestone {
 	static Buttons := {
