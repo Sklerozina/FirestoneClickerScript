@@ -17,6 +17,7 @@
 #Include Alchemy.ahk
 #Include Guard.ahk
 #Include Mechanic.ahk
+#Include Library.ahk
 
 InstallKeybdHook
 
@@ -146,7 +147,7 @@ DoWork(force := false) {
 				Guild.Do() ; Экспедиции
 
 				if CurrentSettings.Get('auto_research') == 1
-					DoResearch
+					Library.Do()
 
 				Oracle.Do()
 				Firestone.Esc()
@@ -335,101 +336,6 @@ DoPrestigeUpgrades(force := false) {
 	
 	MouseGetPos(&saved_mouse_position_x, &saved_mouse_position_y)
 }
-
-DoResearch() {
-	research_count := 0
-	;; Проверяем, висит ли красный значёк у здания.
-	if not CheckIfRed(384, 641, 424, 680)
-		return
-
-	Firestone.Click 313, 630
-	Firestone.Click 1813, 930
-
-	MouseMove 0, 0
-
-	if PixelSearch(&OutputX, &OutputY, 445, 939, 461, 976, 0x285483, 1)
-	{
-		research_count += 1
-	}
-
-	if PixelSearch(&OutputX, &OutputY, 1090, 939, 1105, 976, 0x285483, 1)
-	{
-		research_count += 1
-	}
-	
-	;; Проверка первого слота
-	loop 2
-	{
-		; Проверка на оранжевую кнопку, досрочное завершение
-		if CheckForImage(462, 899, 634, 948, "*120 images/ResearchFree.png")
-		{
-			Firestone.Click 548, 925, 500
-			research_count -= 1
-		}
-
-		; Проверить зелёную кнопку завершения
-		if PixelSearch(&OutputX, &OutputY, 474, 895, 633, 950, colors['green_button'], 1)
-		{
-			Firestone.Click 548, 925, 500
-			research_count -= 1
-		}
-
-		MouseMove 0, 0
-		Tools.Sleep 500
-	}
-
-	;; Проверка второго слота
-	; Проверка на оранжевую кнопку, досрочное завершение
-	if CheckForImage(1090, 879, 1301, 958, "*120 images/ResearchFree.png")
-	{
-		Firestone.Click 1201, 916, 500
-		research_count -= 1
-	}
-
-	; Проверить зелёную кнопку завершения
-	if PixelSearch(&OutputX, &OutputY, 1122, 889, 1283, 951, colors['green_button'], 1)
-	{
-		Firestone.Click 1201, 916, 500
-		research_count -= 1
-	}
-
-	MouseMove 0, 0
-	Tools.Sleep 500
-	
-	;; Добавить проверку на второе исследование
-	if (research_count < 2)
-	{
-		loop 50
-		{
-			Press "{WheelUp}", 30
-		}
-
-		loop 2
-		{
-			;; Scan line 1
-			for y in [226, 718, 348, 596, 472] {
-				if FindResearch(y) {
-						research_count += 1
-					}
-
-				if (research_count == 2)
-					break 2
-			}
-		
-			Tools.Sleep 200
-
-			loop 35
-			{
-				Press "{WheelDown}", 30
-			}
-		}
-	}
-	
-
-	Press "{ESC}"
-}
-
-
 
 DoWMDailys() {
 	; Здесь можно проверить, светятся ли невыполненные дейлики
@@ -625,24 +531,6 @@ FindFirestoneWindowAndActivate() {
 	{
 		; "Окно перестало быть активным! Перываю работу."
 		throw 1
-	}
-}
-
-FindResearch(y) {
-	MouseMove 20, y
-	if PixelSearch(&OutputX, &OutputY, 20, y, 1900, y, 0x0D49DE, 1)
-	{
-		;; попробовать кликнуть
-		Firestone.Click OutputX, OutputY
-		MouseMove 0, 0
-		Tools.Sleep 250
-		;; Подождать окно принятия
-		if Tools.WaitForSearchPixel(669, 707, 928, 775, colors['green_button'], 1, 1000)
-		{
-			Firestone.Click 795, 738, 500
-			
-			return true
-		}
 	}
 }
 
