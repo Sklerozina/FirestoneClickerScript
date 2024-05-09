@@ -18,6 +18,15 @@ Class Tools {
         return PixelSearch(&FoundX, &FoundY, x1, y1, x2, y2, color, variation)
     }
 
+    CheckForImage(X1, Y1, X2, Y2, image) {
+        try
+        {
+            return ImageSearch(&OutputX, &OutputY, X1, Y1, X2, Y2, image)
+        }
+        catch as exc
+            MsgBox "Возникла неожиданная ошибка с поиском изображения:`n" exc.Message
+    }
+
     static Sleep(m := 1000) {
         MouseGetPos(&Mx1, &My1)
     
