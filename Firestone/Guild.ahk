@@ -24,11 +24,8 @@ Class Guild {
 
     static Expeditions() {
         ;; Проверяем, висит ли красный значёк у здания.
-        if not Firestone.Icons.Red.Check(405, 443, 435, 475)
-        {
-            Firestone.Esc() ; Выйти в город
+        if !Firestone.Icons.Red.Check(405, 443, 435, 475)
             return
-        }
     
         Firestone.Click(296, 387) ; Клик на здание экспедиций
         Firestone.Buttons.Green.WaitAndClick(1185, 267, 1229, 328, 1000)
