@@ -138,7 +138,7 @@ DoWork(force := false) {
 				}
 				
 				Tavern.Do()
-				DoAlchemy ; Алхимия
+				Alchemy.Do(CurrentSettings.Get('alchemy'))
 				CollectXPGuard ; Страж
 				CollectTools ; Механик
 				Guild.Do() ; Экспедиции
@@ -427,78 +427,7 @@ DoResearch() {
 	Press "{ESC}"
 }
 
-DoAlchemy() {
-	;; Проверяем, висит ли красный значёк у здания.
-	if not CheckIfRed(570, 808, 614, 851)
-		return
 
-	Firestone.Click(480, 790)
-
-	alchemy_1 := false
-	alchemy_2 := false
-	alchemy_3 := false
-
-	alchemy := [
-		SubStr(CurrentSettings.Get('alchemy'), 1, 1),
-		SubStr(CurrentSettings.Get('alchemy'), 2, 1),
-		SubStr(CurrentSettings.Get('alchemy'), 3, 1)
-	]
-	
-	;; Сначала за пыль и монеты, потом за кровь
-	; За пыль
-	if (alchemy[2] == "1") {
-		if CheckIfGreenAndClick(1210, 764, 250)
-			alchemy_2 := true
-		else
-		{
-			if CheckIfOrangeAndClick(1270, 740, 250)
-				alchemy_2 := true
-		}
-	}
-
-	; За монеты
-	if (alchemy[3] == "1") {
-		if CheckIfGreenAndClick(1560, 764, 250)
-			alchemy_3 := true
-		else
-		{
-			if CheckIfOrangeAndClick(1620, 740, 250)
-				alchemy_3 := true
-		}
-	}
-
-	; За кровь
-	if (alchemy[1] == "1") {
-		if CheckIfGreenAndClick(860, 764, 250)
-			alchemy_1 := true
-		else
-		{
-			if CheckIfOrangeAndClick(920, 740, 250)
-				alchemy_1 := true
-		}
-	}
-
-	;; Сначала за пыль и монеты, потом за кровь
-	; За пыль
-	if (alchemy[2] == "1") {
-		if alchemy_2 == true
-			CheckIfGreenAndClick(1210, 764, 2500)
-	}
-
-	; За монеты
-	if (alchemy[3] == "1") {
-		if alchemy_3 == true
-			CheckIfGreenAndClick(1560, 764, 2500)
-	}
-
-	; За кровь
-	if (alchemy[1] == "1") {
-		if alchemy_1 == true
-			CheckIfGreenAndClick(860, 764, 2500)
-	}
-
-	Press "{Esc}"
-}
 
 DoWMDailys() {
 	; Здесь можно проверить, светятся ли невыполненные дейлики
