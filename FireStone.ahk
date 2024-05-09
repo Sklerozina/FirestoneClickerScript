@@ -15,6 +15,7 @@
 #Include Magazine.ahk
 #Include Tavern.ahk
 #Include Alchemy.ahk
+#Include Guard.ahk
 
 InstallKeybdHook
 
@@ -139,7 +140,7 @@ DoWork(force := false) {
 				
 				Tavern.Do()
 				Alchemy.Do(CurrentSettings.Get('alchemy'))
-				CollectXPGuard ; Страж
+				Guard.Do()
 				CollectTools ; Механик
 				Guild.Do() ; Экспедиции
 
@@ -489,17 +490,6 @@ CollectTools() {
 
 	Firestone.Click 600, 460 ; Клик на выбор Механик
 	Firestone.Click 1620, 680 ; Клик на кнопку получения инструментов
-	Press "{Esc}"
-}
-
-; Прокачка стража
-CollectXPGuard() {
-	;; Проверяем, висит ли красный значёк у здания.
-	if not CheckIfRed(738, 281, 783, 324)
-		return
-
-	Firestone.Click 625, 230 ; Здание стража
-	Firestone.Click 1150, 765 ; Интерфейс стража
 	Press "{Esc}"
 }
 
