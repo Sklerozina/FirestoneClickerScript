@@ -711,38 +711,6 @@ DoOracle() {
 	Press "{ESC}"
 }
 
-; Экспедиции
-DoExpeditions() {
-	Firestone.Click(1482, 127) ; Клик на здание гильдии
-
-	;; Забрать заодно кирки
-	if CheckIfRed(739, 284, 780, 324)
-	{
-		Firestone.Click 660, 211, 500 ;; Здание магазина
-
-		if CheckIfRed(161, 668, 196, 709){
-			Firestone.Click 211, 721, 500
-			Firestone.Click 712, 410, 500
-		}
-
-		Press "{ESC}"
-	}
-
-	;; Проверяем, висит ли красный значёк у здания.
-	if not CheckIfRed(405, 443, 435, 475)
-	{
-		Press "{Esc}" ; Выйти в город
-		return
-	}
-
-	Firestone.Click(296, 387) ; Клик на здание экспедиций
-	CheckIfGreenAndClick 1184, 299
-	MouseMove 0, 0
-	CheckIfGreenAndClick 1184, 299, 3000
-	Press "{Esc}" ; Закрыть окно экспедиций
-	Press "{Esc}" ; Выйти в город
-}
-
 DoMap() {
 	map_status := ''
 
@@ -883,34 +851,6 @@ MapTryFinishMissions() {
 	}
 }
 
-CheckIfOrangeAndClick(x, y, timeout := 1000){
-	if WaitForPixel(x, y, "0xFCAF47 0xFCAC47 0xFBAC46 0xFAAB45 0xF9AB44 0xFBAB47 0xFAAB46 0xF9AB45 0xF8AA44 0xF8A945 0xF9AA45 0xF9A946 0xF9A847", timeout)
-	{
-		Firestone.Click(x, y)
-		return 1
-	}
-
-	return 0
-}
-
-CheckIfGreenAndClick(x, y, timeout := 1000){
-	if WaitForPixel(x, y, "0x0AA008 0x0B9F05 0x0A9F05 0x0AA005 0x0AA006", timeout)
-	{
-		Firestone.Click(x, y)
-		return 1
-	}
-
-	return 0
-}
-
-CheckIfRed(x1, y1, x2, y2) {
-	return PixelSearch(&FoundX, &FoundY, x1, y1, x2, y2, 0xF30000, 1)
-}
-
-CheckIfGreen(x1, y1, x2, y2) {
-	return PixelSearch(&FoundX, &FoundY, x1, y1, x2, y2, colors['green_button'], 1)
-}
-
 FindFirestoneWindowAndActivate() {
 	global firestone_hwid
 	if !WinExist(firestone_hwid)
@@ -924,14 +864,6 @@ FindFirestoneWindowAndActivate() {
 		; "Окно перестало быть активным! Перываю работу."
 		throw 1
 	}
-}
-
-
-
-; Клик на иконку города на главном экране
-ClickCityIcon() {
-	; Firestone.Click 1850, 185 ; Клик на иконку города
-	Press "{t}"
 }
 
 UpgradeHero(x1, y1, x2, y2, clickx, clicky, clicks := 1) {
@@ -954,54 +886,6 @@ FindResearch(y) {
 			return true
 		}
 	}
-
-
-}
-
-Press(key, wait := 1000) {
-	FindFirestoneWindowAndActivate
-
-	Send key
-	Tools.Sleep(wait)
-}
-
-CheckForImage(X1, Y1, X2, Y2, image) {
-	try
-	{
-		return ImageSearch(&OutputX, &OutputY, X1, Y1, X2, Y2, image)
-	}
-	catch as exc
-		MsgBox "Возникла неожиданная ошибка с поиском изображения:`n" exc.Message
-}
-
-WaitForPixel(x, y, colors, timeout := 300000) {
-	t := 0
-	while t <= timeout
-	{
-		if InStr(colors, String(PixelGetColor(x, y)))
-		{
-			return 1
-		}
-		Tools.Sleep 500
-		t += 500
-	}
-
-	return 0
-}
-
-WaitForSearchPixel(x1, y1, x2, y2, color, variation := 0, timeout := 300000) {
-	t := 0
-	while t <= timeout
-	{
-		if PixelSearch(&OutputX, &OutputY, x1, y1, x2, y2, color, variation)
-		{
-			return 1
-		}
-		Tools.Sleep 500
-		t += 500
-	}
-
-	return 0
 }
 
 Tp(text, timeout := -2000) {

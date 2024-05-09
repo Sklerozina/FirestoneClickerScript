@@ -1,5 +1,6 @@
 #Include Button.ahk
 #Include Arena.ahk
+#Include Guild.ahk
 
 Class Firestone {
 	static Buttons := {
@@ -7,6 +8,10 @@ Class Firestone {
 		Red: Button(0xE7473F),
 		Orange: Button(0xFBAC46)
 	}
+
+    static Icons := {
+        Red: Button(0xF30000)
+    }
 
     ; Принудительный возврат на главный экран (Много раз жмёт Esc, потом кликает на закрытие диалога)
     static BackToMainScreen(){
@@ -29,8 +34,17 @@ Class Firestone {
 
         if !game_good {
             this.TelegramSend("Игра сломалась!")
-            throw 1
+            throw 'Игра сломалась!'
         }
+    }
+
+    ; Кнопка города
+    static City() {
+        this.Press("{t}")
+    }
+
+    static Esc(wait := 1000) {
+        this.Press("{ESC}", wait := 1000)
     }
 
 	static Click(x, y, wait := 1000, clickcount := 1) {
