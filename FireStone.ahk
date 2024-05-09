@@ -114,7 +114,7 @@ DoWork(force := false) {
 				Tools.Sleep 1000
 				if Firestone.Icons.Red.Check(1877, 517, 1912, 555)
 					daily_magazine_rewards := true
-				
+
 				HerosUpgrades.Do(CurrentSettings.Get('lvlup_priority'), prestige_mode)
 				Firestone.City() ; зайти в город
 				
@@ -127,9 +127,7 @@ DoWork(force := false) {
 					Magazine.Do()
 				}
 				
-				if Firestone.Icons.Red.Check(814, 910, 848, 949)
-					DoTavern
-
+				Tavern.Do()
 				DoAlchemy ; Алхимия
 				CollectXPGuard ; Страж
 				CollectTools ; Механик
@@ -172,18 +170,6 @@ DoWork(force := false) {
 	}
 
 	MouseGetPos(&saved_mouse_position_x, &saved_mouse_position_y)
-}
-
-DoTavern() {
-	Firestone.Click 717, 911
-	Firestone.Click 1731, 42
-
-	while WaitForSearchPixel(344-5, 437-5, 344+5, 437+5, 0x3CA8E1, 1, 1000) {
-		Firestone.Click 521, 509
-	}
-
-	Press "{ESC}"
-	Press "{ESC}"
 }
 
 DoQuests() {
