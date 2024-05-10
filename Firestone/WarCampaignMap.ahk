@@ -182,9 +182,9 @@ Class WarCampaignMap {
         if Firestone.Buttons.Green.CheckAndClick(zone_x1, zone_y1, zone_x2, zone_y2)
         {
             MouseMove(0, 0) ; Убираем мышь, чтобы не светила кнопку
-            if !Firestone.Buttons.WaitAndClick(926, 734, 956, 764 120000) ; Ждём появление кнопки подтверждения
+            if !Firestone.Buttons.Green.WaitAndClick(926, 734, 956, 764, 120000) ; Ждём появление кнопки подтверждения
             {
-                throw 1
+                throw 'Военная кампания, кнопка завершения боя так и не появилась!'
             }
         }
         else
