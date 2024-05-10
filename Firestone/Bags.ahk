@@ -44,14 +44,14 @@ Class Bags {
                 Firestone.Esc()
                 continue
             }
-    
-            if Firestone.Buttons.Green.CheckAndClick(1283, 696, 1301, 851) ; x50
+
+            if Firestone.Buttons.Green.FindAndClick(1283, 696, 1301, 851) ; x50
                 box_opened := true
-            else if Firestone.Buttons.Green.CheckAndClick(1153, 696, 1176, 851) ; x25
+            else if Firestone.Buttons.Green.FindAndClick(1153, 696, 1176, 851) ; x25
                 box_opened := true
-            else if Firestone.Buttons.Green.CheckAndClick(863, 696, 1053, 851) ; x10
+            else if Firestone.Buttons.Green.FindAndClick(863, 696, 1053, 851) ; x10
                 box_opened := true
-    
+
             MouseMove 0, 0
 
             loop 20 ;; Ждём распаковку
