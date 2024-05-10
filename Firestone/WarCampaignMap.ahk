@@ -73,8 +73,8 @@ Class WarCampaignMap {
             If !this.CheckSquad() && force == false
                 break
     
-            this.ClickOnMapMission(x, y)
-            try_finish := true
+            if this.ClickOnMapMission(x, y)
+                try_finish := true
         }
     
         if try_finish == true || finish == true
@@ -86,10 +86,10 @@ Class WarCampaignMap {
         if (this.CheckSquad() || force == true)
         {
             ; Мисси при событии "Мировое господство"
-            this.EachMapMissions(this.map_world_domination_missions, force, true)
-            this.EachMapMissions(this.map_litle_missons, force, true)
-            this.EachMapMissions(this.map_big_missons, force, true)
-            this.EachMapMissions(this.map_small_missons, force, true)
+            this.EachMapMissions(this.map_world_domination_missions, force)
+            this.EachMapMissions(this.map_litle_missons, force)
+            this.EachMapMissions(this.map_big_missons, force)
+            this.EachMapMissions(this.map_small_missons, force)
             this.EachMapMissions(this.map_medium_missons, force)
         }
     }
@@ -105,7 +105,7 @@ Class WarCampaignMap {
         ; Смотрим, появилось окно или нет, если не появилось, значит можно не проверять кнопки.
         ; Должно ускорить поиск миссий
         if !Tools.WaitForSearchPixel(414, 206, 424, 216, 0xE1CDAC, 1, 250) {
-            return
+            return false
         }
 
         MouseMove 0, 0
@@ -117,25 +117,27 @@ Class WarCampaignMap {
             if(Firestone.Buttons.Orange.CheckAndClick(1251, 720, 1491, 790))
             {
                 Firestone.Buttons.Green.WaitAndClick(802, 572, 828, 637, 5000)
-                return
+                return true
             }
     
             ; Проверяем наличие кнопки отмены
             if(Firestone.Buttons.Red.Check(967, 713, 1009, 783))
             {
                 Firestone.Press("{Esc}")
-                return
+                return true
             }
     
             if(Tools.CheckForImage(1024, 803, 1164, 874, "*80 images/NotEnoughSquads.png"))
             {
                 Firestone.Esc()
-                return
+                return true
             }
     
             ; окно подтверждения принятия награды "награды миссии"
             Firestone.Buttons.Green.CheckAndClick(802, 572, 828, 637)
         }
+
+        return false
     }
 
     static DoWMDailys() {
