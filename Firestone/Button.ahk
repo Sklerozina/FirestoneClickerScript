@@ -7,6 +7,10 @@ Class Button {
 		return Tools.PixelSearch(x1, y1, x2, y2, this.color, 1)
 	}
 
+	Find(x1, y1, x2, y2, &FoundX, &FoundY) {
+		return Tools.PixelSearch(x1, y1, x2, y2, this.color, 1, &FoundX, &FoundY)
+	}
+
 	Wait(x1, y1, x2, y2, timeout := 30000) {
 		return Tools.WaitForSearchPixel(x1, y1, x2, y2, this.color, 1, timeout)
 	}
@@ -20,6 +24,16 @@ Class Button {
 				click_y := y1 + ((y2 - y1) / 2)
 			}
 			
+			Firestone.Click(click_x, click_y, wait?, clickcount?)
+			return true
+		}
+
+		return false
+	}
+
+	FindAndClick(x1, y1, x2, y2, wait?, clickcount?) {
+		if this.Find(x1, y1, x2, y2, &click_x, &click_y)
+		{
 			Firestone.Click(click_x, click_y, wait?, clickcount?)
 			return true
 		}
