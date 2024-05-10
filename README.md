@@ -1,8 +1,8 @@
-Кликер для игры [Firestone](https://store.steampowered.com/app/1013320/Firestone/), убирающий некоторую рутину и дающий возможность не сидеть у компа 24/7.
+Кликер для игры Firestone [Steam](https://store.steampowered.com/app/1013320/Firestone/) или [Epic Games](https://store.epicgames.com/ru/p/firestone-online-idle-rpg-bfd04b), убирающий некоторую рутину и дающий возможность не сидеть у компа 24/7.
 
-Игра должна быть в разрешении 1920x1018, без рамок, например с помощью [Borderless Gaming](https://github.com/Codeusa/Borderless-Gaming/releases) приложения.
-Любое движение мышью иили нажатие клавиатуры прерывает выполнения скрипта на время.
-Запускать нужно FireStone.ahk в основной директории.
+Игра должна быть в разрешении 1920x1018, без рамок, например с помощью [Borderless Gaming](https://github.com/Codeusa/Borderless-Gaming/releases) приложения.  
+Любое движение мышью или нажатие клавиатуры прерывает выполнения скрипта на время.  
+Запускать нужно FireStone.ahk в основной директории.  
 
 CTRL + Y, запустить или выключить  
 CTRL + Num 1, включить режим престижа (качать всех героев) или вернуться в обычный режим.  
@@ -10,9 +10,9 @@ CTRL + SHIFT + E, перезагрузить скрипт (при обновле
 
 Скрипт выполняет свою работу каждые 5 минут.
 
-The game must be in 1920x1018 resolution, borderless windows, e.g. using [Borderless Gaming](https://github.com/Codeusa/Borderless-Gaming/releases) app.
-Any mouse movement or keyboard press interrupts script execution for a while.
-Run FireStone.ahk from main directory.
+The game must be in 1920x1018 resolution, borderless windows, e.g. using [Borderless Gaming](https://github.com/Codeusa/Borderless-Gaming/releases) app.  
+Any mouse movement or keyboard press interrupts script execution for a while.  
+Run FireStone.ahk from main directory.  
 
 CTRL + Y, run or stop  
 CTRL + Num 1, Enable prestige mode (Upgrade all heroes) or switch to normal mode  
@@ -20,23 +20,26 @@ CTRL + SHIFT + E, reload script
 
 The script does its job every 5 minutes.
 
+## Требования
+Установить [AutoHotKey v2](https://www.autohotkey.com), [скачать](https://www.autohotkey.com/download/ahk-v2.exe)
+
 ## Умеет
 * Делать экспедиции
 * Забирать инструменты у механика
 * Забирать лут с карты военной кампании
 * Прокачивать стража (бесплатная прокачка каждые несколько часов)
 * Забирать и ставить алхимию (все 3 или на выбор)
-* Завершать и ставить новые мисси на карте в порядке приоритета (Подарки, 20 минут, 3-6 часов, 40 минут, 1 час)
+* Завершать и ставить новые миссии на карте в порядке приоритета (Подарки, 20 минут, 3-6 часов, 40 минут, 1 час)
 * Делать ежедневные задание военной кампании
 * Делать арену (опционально)
 * Открывать сумки (опционально)
-* Прокачивать усиления героев в приоритете выставленным в конфиге
-* Режим престижа, прокачивает всех героев каждую 1 минуту
+* Прокачивать усиления героев в приоритете выставленном в конфиге
+* Режим престижа, прокачивает всех героев каждую минуту
 * Забирать ежедневные подарки в магазине и награды дня
 * Делать ритуалы Оракула и забирать ежедневный подарок
 * Обменивать пиво на жетоны
 * Забирать бесплатные кирки
-* Забирать награды в профиле за ежедневную активность и еженедельную
+* Забирать награды в профиле за ежедневную и еженедельную активность
 * Ставить исследования Firestone в библиотеке (опционально и пока не очень по умному)
 * Отправлять в Telegram уведомления, в случае, если не получается попать на главный экран игры.
 
