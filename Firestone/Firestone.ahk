@@ -14,6 +14,7 @@ Class Firestone {
     static BackToMainScreen(){
         game_good := false
         loop 5 {
+            MouseMove 0, 0
             this.Esc(250)
             
             if this.Buttons.Green.Wait(1032, 706, 1059, 780, 250) {
