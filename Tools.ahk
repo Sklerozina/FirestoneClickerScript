@@ -14,7 +14,7 @@ Class Tools {
         return false
     }
 
-    static PixelSearch(x1, y1, x2, y2, color, variation) {
+    static PixelSearch(x1, y1, x2, y2, color, variation, &FoundX?, &FoundY?) {
         return PixelSearch(&FoundX, &FoundY, x1, y1, x2, y2, color, variation)
     }
 
