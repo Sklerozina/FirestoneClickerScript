@@ -63,15 +63,20 @@ Class Firestone {
 	}
 
     static TelegramSend(text) {
-        chatid :=  Settings.Section('GLOBAL').Get('TELEGRAM_CHAT_ID', 0)
+        chatid :=  Settings.Section('GENERAL').Get('TELEGRAM_CHAT_ID', 0)
+        token := Settings.Section('GENERAL').Get('BOT_TOKEN', "")
     
         if chatid == 0 {
-            Settings.Section('GLOBAL').Set('TELEGRAM_CHAT_ID', 'NONE')
+            Settings.Section('GENERAL').Set('TELEGRAM_CHAT_ID', 'NONE')
+        }
+
+        if token == "" {
+            Settings.Section('GENERAL').Set('BOT_TOKEN', "")
         }
     
-        if chatid == "NONE" || chatid == 0
+        if chatid == "NONE" || chatid == 0 || token == ""
             return
     
-        return Tools.TelegramSend(text, chatid)
+        return Tools.TelegramSend(text, chatid, token)
     }
 }

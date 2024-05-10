@@ -40,8 +40,7 @@ Class Tools {
         }
     }
 
-    static TelegramSend(text, chatid) {
-        token := "7169992032:AAF341dSqS8K94V-immfgNaHTkjmPIsJoDc"
+    static TelegramSend(text, chatid, token) {
         data:= "chat_id=" . chatid .
             "&text=" . text .
             "&parse_mode=HTML" .
