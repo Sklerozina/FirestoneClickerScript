@@ -4,11 +4,21 @@
 Любое движение мышью иили нажатие клавиатуры прерывает выполнения скрипта на время.
 Запускать нужно FireStone.ahk в основной директории.
 
+CTRL + Y, запустить или выключить
+CTRL + Num 1, включить режим престижа (качать всех героев) или вернуться в обычный режим.
+CTRL + SHIFT + E, перезагрузить скрипт (при обновлении например)
+
+Скрипт выполняет свою работу каждые 5 минут.
+
 The game must be in 1920x1018 resolution, borderless windows, e.g. using [Borderless Gaming](https://github.com/Codeusa/Borderless-Gaming/releases) app.
 Any mouse movement or keyboard press interrupts script execution for a while.
 Run FireStone.ahk from main directory.
 
-Скрипт выполняет свою работу каждые 5 минут.
+CTRL + Y, run or stop
+CTRL + Num 1, Enable prestige mode (Upgrade all heroes) or switch to normal mode
+CTRL + SHIFT + E, reload script
+
+The script does its job every 5 minutes.
 
 ## Умеет
 * Делать экспедиции
