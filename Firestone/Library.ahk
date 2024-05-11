@@ -66,15 +66,23 @@ Class Library {
     
             loop 2
             {
-                ; Scan line
-                for y in [226, 718, 348, 596, 472] {
-                    if this.FindResearch(y)
-                        this.research_count += 1
-    
-                    if (this.research_count == 2)
-                        break 2
+                columns := [
+                    [30, 485],
+                    [486, 949],
+                    [950, 1414],
+                    [1415, 1884]
+                ]
+                
+                for column in columns {
+                    for y in [226, 718, 348, 596, 472] {
+                        if this.FindResearch(y, column[1], column[2])
+                            this.research_count += 1
+
+                        if (this.research_count == 2)
+                            break 2
+                    }
                 }
-            
+
                 Tools.Sleep 200
     
                 loop 35
@@ -100,9 +108,9 @@ Class Library {
         return false
     }
 
-    static FindResearch(y) {
-        MouseMove 20, y
-        if PixelSearch(&OutputX, &OutputY, 20, y, 1900, y, 0x0D49DE, 1)
+    static FindResearch(row_y, from, to) {
+        MouseMove 20, row_y
+        if PixelSearch(&OutputX, &OutputY, from, row_y, to, row_y, 0x0D49DE, 1)
         {
             ; попробовать кликнуть
             Firestone.Click(OutputX, OutputY)

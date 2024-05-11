@@ -42,7 +42,7 @@ Class Firestone {
     }
 
     static Esc(wait := 1000) {
-        this.Press("{ESC}", wait := 1000)
+        this.Press("{ESC}", wait)
     }
 
 	static Click(x, y, wait := 1000, clickcount := 1) {

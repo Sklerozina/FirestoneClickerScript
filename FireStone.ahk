@@ -91,7 +91,7 @@ DoWork(force := false) {
 	global firestone_hwid, saved_mouse_position_x, saved_mouse_position_y
 	static delay := 300000
 
-	Thread "Priority", 1 ; На всякий случай, чтобы задача не прерывалась другими таймерами
+	; Thread "Priority", 1 ; На всякий случай, чтобы задача не прерывалась другими таймерами
 
 	; Если мышка двигалась или нажималась клавиатура пока спали, пропускаем задачу
 	MouseGetPos(&Mx, &My)
