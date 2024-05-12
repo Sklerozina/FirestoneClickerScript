@@ -15,9 +15,9 @@ Class Firestone {
         game_good := false
         loop 5 {
             MouseMove 0, 0
-            this.Esc(250)
+            this.Esc(500)
             
-            if this.Buttons.Green.Wait(1032, 706, 1059, 780, 1000) {
+            if this.Buttons.Green.Wait(1032, 706, 1059, 780, 500) {
                 ; Хорошо, мы на главном экране, можно продолжать скрипт
                 this.Click 1537, 275, 500
                 game_good := true
