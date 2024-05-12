@@ -4,6 +4,13 @@ Class Library {
         2, [1132, 880, 1165, 950]
     )
 
+    static columns := [
+        [30, 485],
+        [486, 949],
+        [950, 1414],
+        [1415, 1884]
+    ]
+
     static research_count := 0
 
     static Do() {
@@ -59,36 +66,38 @@ Class Library {
         ;; Добавить проверку на второе исследование
         if (this.research_count < 2)
         {
-            loop 50
+            i := 1
+            loop 3
             {
-                Firestone.Press("{WheelUp}", 30)
-            }
-    
-            loop 2
-            {
-                columns := [
-                    [30, 485],
-                    [486, 949],
-                    [950, 1414],
-                    [1415, 1884]
-                ]
+                ; двигаем в начало, если это второй цикл, таким образом экономим время
+                if i == 2
+                {
+                    loop 50
+                    {
+                        Firestone.Press("{WheelUp}", 30)
+                    }
+                }
+                else if i == 3 ; Двигаем дальше, если это 3-й цикл
+                {
+                    loop 35
+                        {
+                            Firestone.Press("{WheelDown}", 30)
+                        }
+                }
                 
-                for column in columns {
+                for column in this.columns {
                     for y in [226, 718, 348, 596, 472] {
                         if this.FindResearch(y, column[1], column[2])
                             this.research_count += 1
 
                         if (this.research_count == 2)
-                            break 2
+                            break 3
                     }
                 }
 
                 Tools.Sleep 200
-    
-                loop 35
-                {
-                    Firestone.Press("{WheelDown}", 30)
-                }
+
+                i += 1
             }
         }
     }
@@ -109,7 +118,6 @@ Class Library {
     }
 
     static FindResearch(row_y, from, to) {
-        MouseMove 20, row_y
         if PixelSearch(&OutputX, &OutputY, from, row_y, to, row_y, 0x0D49DE, 1)
         {
             ; попробовать кликнуть
