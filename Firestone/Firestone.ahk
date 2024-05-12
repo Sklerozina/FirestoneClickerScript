@@ -55,6 +55,21 @@ Class Firestone {
 		}
 	}
 
+    static ScrollUp(times := 10) {
+        this.Scroll("{WheelUp}", times)
+    }
+
+    static ScrollDown(times := 10) {
+        this.Scroll("{WheelDown}", times)
+    }
+
+    static Scroll(UpOrDown, times) {
+        loop times
+        {
+            Firestone.Press(UpOrDown, 30)
+        }
+    }
+
 	static Press(key, wait := 1000) {
 		FindFirestoneWindowAndActivate
 	
