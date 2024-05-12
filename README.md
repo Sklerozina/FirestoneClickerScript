@@ -1,6 +1,6 @@
 Кликер для игры Firestone [Steam](https://store.steampowered.com/app/1013320/Firestone/) или [Epic Games](https://store.epicgames.com/ru/p/firestone-online-idle-rpg-bfd04b), убирающий некоторую рутину и дающий возможность не сидеть у компа 24/7.
 
-Игра должна быть в разрешении 1920x1018, без рамок, например с помощью [Borderless Gaming](https://github.com/Codeusa/Borderless-Gaming/releases) приложения.  
+Игра должна быть в разрешении 1920x1018, без рамок. Скрипт должен самостоятельно убрать рамку и сделать нужный размер окна.  
 Любое движение мышью или нажатие клавиатуры прерывает выполнения скрипта на время.  
 Запускать нужно FireStone.ahk в основной директории.  
 
@@ -10,7 +10,7 @@ CTRL + SHIFT + E, перезагрузить скрипт (при обновле
 
 Скрипт выполняет свою работу каждые 5 минут.
 
-The game must be in 1920x1018 resolution, borderless windows, e.g. using [Borderless Gaming](https://github.com/Codeusa/Borderless-Gaming/releases) app.  
+The game must be in 1920x1018 resolution, borderless window. The script should remove the border and make the desired window size on its own.  
 Any mouse movement or keyboard press interrupts script execution for a while.  
 Run FireStone.ahk from main directory.  
 
