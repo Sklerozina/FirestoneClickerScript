@@ -77,6 +77,29 @@ Class Firestone {
 		Tools.Sleep(wait)
 	}
 
+    static FindAllWindows(){
+        SetWinDelay(500)
+
+        hwids := WinGetList("ahk_exe Firestone.exe")
+
+        Loop hwids.Length
+        {
+            firestone_hwid := hwids[A_Index]
+            if (WinGetStyle(firestone_hwid) != 336265216)
+            {
+                WinSetStyle(-0xC40000, firestone_hwid)
+            }
+
+            WinGetPos(&x, &y, &w, &h, firestone_hwid)
+            if (x != 0 || y != 0 || w != 1920 || h != 1018)
+            {
+                WinMove 0, 0, 1920, 1018, firestone_hwid
+            }
+        }
+
+        return hwids
+    }
+
     static TelegramSend(text) {
         chatid :=  Settings.Section('GENERAL').Get('TELEGRAM_CHAT_ID', 0)
         token := Settings.Section('GENERAL').Get('BOT_TOKEN', "")

@@ -34,9 +34,6 @@ SetDefaultMouseSpeed 25
 	Reload
 }
 
-; Игра должна быть в разрешении 1920x1018,
-; без рамок, например с помощью Borderless Gaming приложения
-
 hwids := 0
 firestone_hwid := 0
 saved_mouse_position_x := 0
@@ -98,7 +95,7 @@ DoWork(force := false) {
 
 	; Если мышка двигалась или нажималась клавиатура пока спали, пропускаем задачу
 	If((A_TimeIdlePhysical >= delay && saved_mouse_position_x == Mx && saved_mouse_position_y == My) || force == true) {
-		hwids := FindAllFirestones()
+		hwids := Firestone.FindAllWindows()
 		Loop hwids.Length
 		{
 			daily_magazine_rewards := false
@@ -181,7 +178,7 @@ DoPrestigeUpgrades(force := false) {
 
 	; Если мышка двигалась или нажималась клавиатура пока спали, пропускаем задачу
 	If((A_TimeIdle >= 60000 && saved_mouse_position_x == Mx && saved_mouse_position_y == My) || force == true) {
-		hwids := FindAllFirestones()
+		hwids := Firestone.FindAllWindows()
 		Loop hwids.Length
 		{
 			firestone_hwid := hwids[A_Index]
@@ -226,10 +223,6 @@ FindFirestoneWindowAndActivate() {
 Tp(text, timeout := -2000) {
 	ToolTip text
 	SetTimer () => ToolTip(), timeout
-}
-
-FindAllFirestones() {
-	return WinGetList("ahk_exe Firestone.exe")
 }
 
 SetCurrentSettings() {
