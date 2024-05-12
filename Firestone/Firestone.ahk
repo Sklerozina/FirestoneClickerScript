@@ -84,16 +84,43 @@ Class Firestone {
 
         Loop hwids.Length
         {
-            firestone_hwid := hwids[A_Index]
-            if (WinGetStyle(firestone_hwid) != 336265216)
+            border := false
+            winsize := false
+            i := 0
+            hwid_num := A_Index
+            loop 5
             {
-                WinSetStyle(-0xC40000, firestone_hwid)
-            }
+                i += 1
+                firestone_hwid := hwids[hwid_num]
+                if (WinGetStyle(firestone_hwid) != 336265216)
+                {
+                    WinSetStyle(-0xC40000, firestone_hwid)
+                }
+                else
+                {
+                    border := true
+                }
 
-            WinGetPos(&x, &y, &w, &h, firestone_hwid)
-            if (x != 0 || y != 0 || w != 1920 || h != 1018)
-            {
-                WinMove 0, 0, 1920, 1018, firestone_hwid
+                WinGetPos(&x, &y, &w, &h, firestone_hwid)
+                if (x != 0 || y != 0 || w != 1920 || h != 1018)
+                {
+                    WinMove 0, 0, 1920, 1018, firestone_hwid
+                }
+                else
+                {
+                    winsize := true
+                }
+
+                if border && winsize
+                    break
+                
+                if i >= 5
+                {
+                    MsgBox("Не могу сделать окну нужный размер или убрать рамку!")
+                    Exit
+                }
+
+                Sleep 500
             }
         }
 
