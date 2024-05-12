@@ -146,8 +146,8 @@ Class WarCampaignMap {
         {
             Firestone.Click(1777, 977) ; Ежедневные миссии
             Firestone.Click(720, 779) ; Кнопка выбора, освобождение
-            SendEvent "{Click 265 575 Down}{click 1427 575 Up}" ; Скролл дейликов в самое начало
-            SendEvent "{Click 265 575 Down}{click 1427 575 Up}" ; Скролл дейликов в самое начало
+            MouseMove 513, 489
+            Firestone.ScrollUp(60)
     
             Tools.Sleep 500
             ; Первая миссия
@@ -157,8 +157,8 @@ Class WarCampaignMap {
             this.DoWMMission(1380, 700, 1640, 770) ; 4
             this.DoWMMission(1777, 700, 1800, 770) ; 5
     
-            SendEvent "{click 1427 575 Down}{Click 265 575 Up}" ; Скролл дейликов в конец
-            SendEvent "{click 1427 575 Down}{Click 265 575 Up}" ; Скролл дейликов в конец
+            MouseMove 513, 489
+            Firestone.ScrollDown(60)
     
             this.DoWMMission(280, 700, 540, 770) ; 6
             this.DoWMMission(680, 710, 929, 768) ; 7

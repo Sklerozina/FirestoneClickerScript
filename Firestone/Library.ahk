@@ -72,17 +72,11 @@ Class Library {
                 ; двигаем в начало, если это второй цикл, таким образом экономим время
                 if i == 2
                 {
-                    loop 50
-                    {
-                        Firestone.Press("{WheelUp}", 30)
-                    }
+                    Firestone.ScrollUp(50)
                 }
                 else if i == 3 ; Двигаем дальше, если это 3-й цикл
                 {
-                    loop 35
-                        {
-                            Firestone.Press("{WheelDown}", 30)
-                        }
+                    Firestone.ScrollDown(35)
                 }
                 
                 for column in this.columns {
