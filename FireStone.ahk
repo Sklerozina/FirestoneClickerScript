@@ -213,6 +213,7 @@ Tp(text, timeout := -2000) {
 SetCurrentSettings() {
 	global firestone_hwid, CurrentSettings
 
+	Settings.Reload()
 	ProcessPath := WinGetProcessPath(firestone_hwid)
 
 	CurrentSettings := Settings.Section(ProcessPath)
@@ -231,6 +232,8 @@ SetCurrentSettings() {
 		if !CurrentSettings.Has(key)
 			CurrentSettings.Set(key, value)
 	}
+
+	Settings.Save()
 }
 
 OnExit ExitFunc

@@ -27,6 +27,27 @@ Class Settings {
         return this
     }
 
+    static Reload() {
+        ini_sections := IniRead(this.ini_name)
+
+        Loop parse, ini_sections, "`n", "`r" {
+            if !this.data.Has(A_LoopField)
+                this.data.Set(A_LoopField, Map())
+        }
+
+        for k in this.data {
+            pairs := IniRead(this.ini_name, k)
+            
+            Loop parse, pairs, "`n", "`r"
+            {
+                Result := StrSplit(A_LoopField, "=")
+                this.data[k].Set(Result[1], Result[2])
+            }
+        }
+
+        return this
+    }
+
     static Section(key) {
         if !this.data.Has(key)
             this.data.Set(key, Map())
