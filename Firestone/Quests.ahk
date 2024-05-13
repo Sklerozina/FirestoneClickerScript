@@ -30,7 +30,8 @@ Class Quests {
     
         loop 8
         {
-            this.Complete()
+            if !this.Complete()
+                break
         }
     }
 
