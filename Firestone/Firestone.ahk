@@ -107,7 +107,9 @@ Class Firestone {
             loop 5
             {
                 i += 1
-                    
+                
+                this.RestoreWindow(hwid)
+
                 if this.SetWindowBorderless(hwid) && this.SetWindowSize(hwid)
                     break
                 
@@ -120,6 +122,13 @@ Class Firestone {
                 Sleep 500
             }
         }
+    }
+
+    static RestoreWindow(hwid) {
+        minmax := WinGetMinMax(hwid)
+        if minmax != 0
+            WinRestore(hwid)
+    
     }
 
     static SetWindowBorderless(hwid) {
