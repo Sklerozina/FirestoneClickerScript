@@ -126,15 +126,21 @@ Class WarCampaignMap {
                 Firestone.Press("{Esc}")
                 return true
             }
-    
-            if(Tools.CheckForImage(1024, 803, 1164, 874, "*80 images/NotEnoughSquads.png"))
-            {
-                Firestone.Esc()
+
+            ; Возможно клик был по выполненной миссии, проверяем наличие кнопки
+            if Firestone.Buttons.Green.CheckAndClick(802, 572, 828, 637) 
                 return true
-            }
     
+            ; if(Tools.CheckForImage(1024, 803, 1164, 874, "*80 images/NotEnoughSquads.png"))
+            ; {
+            ;     Firestone.Esc()
+            ;     return true
+            ; }
+
+            Firestone.Esc() ; если дошли сюда, то какое-то окно мы точно открыли
+
             ; окно подтверждения принятия награды "награды миссии"
-            Firestone.Buttons.Green.CheckAndClick(802, 572, 828, 637)
+            
         }
 
         return false
