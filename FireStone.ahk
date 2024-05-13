@@ -34,6 +34,8 @@ SetDefaultMouseSpeed 25
 	Reload
 }
 
+AppVersion := "v0.0.1-alpha"
+
 hwids := 0
 firestone_hwid := 0
 saved_mouse_position_x := 0
