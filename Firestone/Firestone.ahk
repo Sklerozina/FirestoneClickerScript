@@ -10,6 +10,53 @@ Class Firestone {
         Close: Button(0xFF620A)
     }
 
+    static Window := unset
+
+    static hwid := unset
+    static hwids := unset
+    static CurrentSettings := unset
+    static saved_mouse_position_x := 0
+    static saved_mouse_position_y := 0
+    static prestige_mode := false
+
+    static Set(hwid) {
+        this.hwid := hwid
+
+        this.Window := FirestoneWindow(hwid)
+
+        this.SetCurrentSettings()
+    }
+
+    static SetCurrentSettings() {
+        Settings.Reload()
+        ProcessPath := WinGetProcessPath(this.Window.hwid)
+    
+        this.CurrentSettings := Settings.Section(ProcessPath)
+    
+        defaults := Map(
+            'auto_research', 0,
+            'lvlup_priority', '17',
+            'open_boxes', 0,
+            'auto_complete_quests', 0,
+            'auto_arena', 0,
+            'arena_today', false,
+            'alchemy', '111'
+        )
+    
+        for key, value in defaults {
+            if !this.CurrentSettings.Has(key)
+                this.CurrentSettings.Set(key, value)
+        }
+    
+        Settings.Save()
+    }
+
+    static FindAllWindows(){
+        hwids := WinGetList("ahk_exe Firestone.exe")
+
+        return hwids
+    }
+
     ; Принудительный возврат на главный экран (Много раз жмёт Esc, потом кликает на закрытие диалога)
     static BackToMainScreen(){
         game_good := false
@@ -46,7 +93,7 @@ Class Firestone {
     }
 
 	static Click(x, y, wait := 1000, clickcount := 1) {
-		this.IsActive()
+		this.Window.IsActive()
 
 		loop clickcount
 		{
@@ -71,84 +118,11 @@ Class Firestone {
     }
 
 	static Press(key, wait := 1000) {
-		this.IsActive()
+		this.Window.IsActive()
 	
 		Send key
 		Tools.Sleep(wait)
 	}
-
-    static IsActive() {
-        global firestone_hwid
-        if !WinExist(firestone_hwid)
-        {
-            throw 'Окно с игрой не найдено!'
-        }
-    
-        if !WinActive(firestone_hwid)
-        {
-            throw 'Окно перестало быть активным!'
-        }
-    }
-
-    static FindAllWindows(){
-        SetWinDelay(500)
-
-        hwids := WinGetList("ahk_exe Firestone.exe")
-        this.BorderlessAndResizeAll(hwids)
-
-        return hwids
-    }
-
-    static BorderlessAndResizeAll(hwids) {
-        Loop hwids.Length
-        {
-            i := 0
-            hwid := hwids[A_Index]
-            loop 5
-            {
-                i += 1
-                
-                this.RestoreWindow(hwid)
-
-                if this.SetWindowBorderless(hwid) && this.SetWindowSize(hwid)
-                    break
-                
-                if i >= 5
-                {
-                    MsgBox("Не могу сделать окну нужный размер или убрать рамку!")
-                    Exit
-                }
-
-                Sleep 500
-            }
-        }
-    }
-
-    static RestoreWindow(hwid) {
-        minmax := WinGetMinMax(hwid)
-        if minmax != 0
-            WinRestore(hwid)
-    
-    }
-
-    static SetWindowBorderless(hwid) {
-        if (WinGetStyle(hwid) != 336265216)
-            WinSetStyle(-0xC40000, hwid)
-        else
-            return true
-
-        return false
-    }
-
-    static SetWindowSize(hwid) {
-        WinGetPos(&x, &y, &w, &h, hwid)
-        if (x != 0 || y != 0 || w != 1920 || h != 1018)
-            WinMove(0, 0, 1920, 1018, hwid)
-        else
-            return true
-
-        return false
-    }
 
     static TelegramSend(text) {
         chatid :=  Settings.Section('GENERAL').Get('TELEGRAM_CHAT_ID', 0)

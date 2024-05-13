@@ -32,7 +32,7 @@ Class Arena {
                 if Firestone.Buttons.Green.Wait(1061, 657, 1063, 703, 1000) {
                     ; ой, попытки закончились
                     Firestone.Press "{ESC}"
-                    CurrentSettings.Set('arena_today', true)
+                    Firestone.CurrentSettings.Set('arena_today', true)
                     Settings.Save()
                     break
                 }

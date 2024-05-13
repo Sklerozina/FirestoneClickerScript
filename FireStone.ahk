@@ -7,6 +7,7 @@
 #Include Firestone\Firestone.ahk
 
 #Include Firestone
+#Include FirestoneWindow.ahk
 #Include Button.ahk
 #Include Arena.ahk
 #Include Guild.ahk
@@ -36,8 +37,6 @@ SetDefaultMouseSpeed 25
 
 AppVersion := "v0.0.1-alpha"
 
-hwids := 0
-firestone_hwid := 0
 saved_mouse_position_x := 0
 saved_mouse_position_y := 0
 prestige_mode := false
@@ -87,7 +86,7 @@ CurrentSettings := ""
 
 ; Запускается по таймеру
 DoWork(force := false) {
-	global firestone_hwid, saved_mouse_position_x, saved_mouse_position_y
+	global saved_mouse_position_x, saved_mouse_position_y
 	static delay := 300000
 
 	; Thread "Priority", 1 ; На всякий случай, чтобы задача не прерывалась другими таймерами
@@ -98,15 +97,10 @@ DoWork(force := false) {
 	; Если мышка двигалась или нажималась клавиатура пока спали, пропускаем задачу
 	If((A_TimeIdlePhysical >= delay && saved_mouse_position_x == Mx && saved_mouse_position_y == My) || force == true) {
 		hwids := Firestone.FindAllWindows()
-		Loop hwids.Length
+		for hwid in hwids
 		{
 			daily_magazine_rewards := false
-			firestone_hwid := hwids[A_Index]
-			SetCurrentSettings()
-
-			If WinExist(firestone_hwid){
-				WinActivate
-			}
+			Firestone.Set(hwid)
 
 			try
 			{
@@ -116,12 +110,12 @@ DoWork(force := false) {
 				if Firestone.Icons.Red.Check(1877, 517, 1912, 555)
 					daily_magazine_rewards := true
 
-				HerosUpgrades.Do(CurrentSettings.Get('lvlup_priority'), prestige_mode)
+				HerosUpgrades.Do(Firestone.CurrentSettings.Get('lvlup_priority'), prestige_mode)
 				Firestone.City() ; зайти в город
 				
 				if daily_magazine_rewards == true {
-					if CurrentSettings.Get('auto_arena', 0) == 1 {
-						CurrentSettings.Set('arena_today', false)
+					if Firestone.CurrentSettings.Get('auto_arena', 0) == 1 {
+						Firestone.CurrentSettings.Set('arena_today', false)
 						Settings.Save()
 					}
 
@@ -129,12 +123,12 @@ DoWork(force := false) {
 				}
 				
 				Tavern.Do()
-				Alchemy.Do(CurrentSettings.Get('alchemy'))
+				Alchemy.Do(Firestone.CurrentSettings.Get('alchemy'))
 				Guard.Do()
 				Mechanic.Do() ; Механик
 				Guild.Do() ; Экспедиции
 
-				if CurrentSettings.Get('auto_research') == 1
+				if Firestone.CurrentSettings.Get('auto_research') == 1
 					Library.Do()
 				
 				Oracle.Do()
@@ -143,13 +137,13 @@ DoWork(force := false) {
 
 				WarCampaignMap.Do()
 
-				if CurrentSettings.Get('open_boxes') == 1
+				if Firestone.CurrentSettings.Get('open_boxes') == 1
 					Bags.Do()
 
-				if CurrentSettings.Get('auto_complete_quests') == 1
+				if Firestone.CurrentSettings.Get('auto_complete_quests') == 1
 					Quests.Do()
 
-				if CurrentSettings.Get('auto_arena', 0) == 1 && CurrentSettings.Get('arena_today', false) == false {
+				if Firestone.CurrentSettings.Get('auto_arena', 0) == 1 && Firestone.CurrentSettings.Get('arena_today', false) == false {
 					Arena.Do()
 				}
 			}
@@ -174,27 +168,23 @@ DoWork(force := false) {
 }
 
 DoPrestigeUpgrades(force := false) {
-	global firestone_hwid, saved_mouse_position_x, saved_mouse_position_y
+	global saved_mouse_position_x, saved_mouse_position_y
 
 	MouseGetPos(&Mx, &My)
 
 	; Если мышка двигалась или нажималась клавиатура пока спали, пропускаем задачу
 	If((A_TimeIdle >= 60000 && saved_mouse_position_x == Mx && saved_mouse_position_y == My) || force == true) {
 		hwids := Firestone.FindAllWindows()
-		Loop hwids.Length
+		for hwid in hwids
 		{
-			firestone_hwid := hwids[A_Index]
-			SetCurrentSettings()
-			If WinExist(firestone_hwid){
-				WinActivate
-			}
+			Firestone.Set(hwid)
 
 			try
 			{
 				Sleep 1000 ; Заглушка, чтобы пошёл таймер в A_TimeIdlePhysical
 				Firestone.BackToMainScreen()
 				Tools.Sleep 1000
-				HerosUpgrades.Do(CurrentSettings.Get('lvlup_priority'), prestige_mode)
+				HerosUpgrades.Do(Firestone.CurrentSettings.Get('lvlup_priority'), prestige_mode)
 			}
 			catch String as err
 			{
@@ -210,32 +200,6 @@ DoPrestigeUpgrades(force := false) {
 Tp(text, timeout := -2000) {
 	ToolTip text
 	SetTimer () => ToolTip(), timeout
-}
-
-SetCurrentSettings() {
-	global firestone_hwid, CurrentSettings
-
-	Settings.Reload()
-	ProcessPath := WinGetProcessPath(firestone_hwid)
-
-	CurrentSettings := Settings.Section(ProcessPath)
-
-	defaults := Map(
-		'auto_research', 0,
-		'lvlup_priority', '17',
-		'open_boxes', 0,
-		'auto_complete_quests', 0,
-		'auto_arena', 0,
-		'arena_today', false,
-		'alchemy', '111'
-	)
-
-	for key, value in defaults {
-		if !CurrentSettings.Has(key)
-			CurrentSettings.Set(key, value)
-	}
-
-	Settings.Save()
 }
 
 OnExit ExitFunc
