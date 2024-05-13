@@ -81,37 +81,21 @@ Class Firestone {
         SetWinDelay(500)
 
         hwids := WinGetList("ahk_exe Firestone.exe")
+        this.BorderlessAndResizeAll(hwids)
 
+        return hwids
+    }
+
+    static BorderlessAndResizeAll(hwids) {
         Loop hwids.Length
         {
-            border := false
-            winsize := false
             i := 0
-            hwid_num := A_Index
+            hwid := hwids[A_Index]
             loop 5
             {
                 i += 1
-                firestone_hwid := hwids[hwid_num]
-                if (WinGetStyle(firestone_hwid) != 336265216)
-                {
-                    WinSetStyle(-0xC40000, firestone_hwid)
-                }
-                else
-                {
-                    border := true
-                }
-
-                WinGetPos(&x, &y, &w, &h, firestone_hwid)
-                if (x != 0 || y != 0 || w != 1920 || h != 1018)
-                {
-                    WinMove 0, 0, 1920, 1018, firestone_hwid
-                }
-                else
-                {
-                    winsize := true
-                }
-
-                if border && winsize
+                    
+                if this.SetWindowBorderless(hwid) && this.SetWindowSize(hwid)
                     break
                 
                 if i >= 5
@@ -123,8 +107,25 @@ Class Firestone {
                 Sleep 500
             }
         }
+    }
 
-        return hwids
+    static SetWindowBorderless(hwid) {
+        if (WinGetStyle(hwid) != 336265216)
+            WinSetStyle(-0xC40000, hwid)
+        else
+            return true
+
+        return false
+    }
+
+    static SetWindowSize(hwid) {
+        WinGetPos(&x, &y, &w, &h, hwid)
+        if (x != 0 || y != 0 || w != 1920 || h != 1018)
+            WinMove(0, 0, 1920, 1018, hwid)
+        else
+            return true
+
+        return false
     }
 
     static TelegramSend(text) {
