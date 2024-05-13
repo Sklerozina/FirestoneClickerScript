@@ -15,7 +15,8 @@ Class HerosUpgrades {
         if prestige_mode
         {
             this.UpgradeHero(1) ; 1
-            for slot in [1, 2, 3, 4, 5, 6, 7] {
+            for slot in [1, 7, 6, 5, 4, 3, 2]
+            {
                 this.UpgradeHero(slot, 5) ; 1
             }
         } else {
