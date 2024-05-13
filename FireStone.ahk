@@ -205,21 +205,6 @@ DoPrestigeUpgrades(force := false) {
 	MouseGetPos(&saved_mouse_position_x, &saved_mouse_position_y)
 }
 
-FindFirestoneWindowAndActivate() {
-	global firestone_hwid
-	if !WinExist(firestone_hwid)
-	{
-		; "Окно с игрой не найдено! Перываю работу."
-		throw 1
-	}
-
-	if !WinActive(firestone_hwid)
-	{
-		; "Окно перестало быть активным! Перываю работу."
-		throw 1
-	}
-}
-
 Tp(text, timeout := -2000) {
 	ToolTip text
 	SetTimer () => ToolTip(), timeout

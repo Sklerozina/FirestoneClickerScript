@@ -46,7 +46,7 @@ Class Firestone {
     }
 
 	static Click(x, y, wait := 1000, clickcount := 1) {
-		FindFirestoneWindowAndActivate
+		this.IsActive()
 
 		loop clickcount
 		{
@@ -71,11 +71,24 @@ Class Firestone {
     }
 
 	static Press(key, wait := 1000) {
-		FindFirestoneWindowAndActivate
+		this.IsActive()
 	
 		Send key
 		Tools.Sleep(wait)
 	}
+
+    static IsActive() {
+        global firestone_hwid
+        if !WinExist(firestone_hwid)
+        {
+            throw 'Окно с игрой не найдено!'
+        }
+    
+        if !WinActive(firestone_hwid)
+        {
+            throw 'Окно перестало быть активным!'
+        }
+    }
 
     static FindAllWindows(){
         SetWinDelay(500)
