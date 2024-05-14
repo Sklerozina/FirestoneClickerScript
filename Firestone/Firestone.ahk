@@ -61,6 +61,7 @@ Class Firestone {
     static BackToMainScreen(){
         game_good := false
         loop 5 {
+            Firestone.Window.Activate() ; В попытках победить баг или не баг, когда игра как бы теряет фокус но Ahk это не замечает
             MouseMove 0, 0
             this.Esc(500)
             
