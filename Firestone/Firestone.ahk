@@ -104,25 +104,21 @@ Class Firestone {
 	}
 
     static ScrollUp(times := 10) {
-        this.Scroll("{WheelUp}", times)
+        this.Press("{WheelUp}", 30, times)
     }
 
     static ScrollDown(times := 10) {
-        this.Scroll("{WheelDown}", times)
+        this.Press("{WheelDown}", 30, times)
     }
 
-    static Scroll(UpOrDown, times) {
-        loop times
-        {
-            Firestone.Press(UpOrDown, 30)
-        }
-    }
-
-	static Press(key, wait := 1000) {
+	static Press(key, wait := 1000, times := 1) {
 		this.Window.IsActive()
 	
-		Send key
-		Tools.Sleep(wait)
+        loop times
+        {
+            Send key
+		    Tools.Sleep(wait)
+        }
 	}
 
     static TelegramSend(text) {
