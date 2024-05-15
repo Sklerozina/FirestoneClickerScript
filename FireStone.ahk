@@ -22,6 +22,7 @@
 #Include Quests.ahk
 #Include Bags.ahk
 #Include WarCampaignMap.ahk
+#Include FirestoneMenu.ahk
 
 InstallKeybdHook
 
@@ -30,38 +31,35 @@ SendMode "InputThenPlay"
 
 SetDefaultMouseSpeed 25
 
-^+e:: {
-	MsgBox "Скрипт перезапущен."
-	Reload
-}
-
 AppVersion := "v0.0.1-alpha"
 
 saved_mouse_position_x := 0
 saved_mouse_position_y := 0
 prestige_mode := false
 Settings('settings.ini')
-CurrentSettings := ""
+FirestoneMenu.Create()
+
+^+e:: {
+	MsgBox "Скрипт перезапущен."
+	Reload
+}
+
+~RButton::{
+    if WinActive("ahk_exe Firestone.exe")
+        FirestoneMenu.Menu.Show()
+}
 
 ; Сменить режим апгрейда героев
 ^NumpadEnd::
-^Numpad1::
-{
-	global prestige_mode
-
-	prestige_mode := !prestige_mode
-	if prestige_mode {
-		Tp "Режим престижа"
-		SetTimer DoPrestigeUpgrades, 60000
-	}
-	else
-	{
-		Tp "Обычный режим"
-		SetTimer DoPrestigeUpgrades, 0
-	}
+^Numpad1:: {
+	PrestigeModeOnOff
 }
 
 ^y:: {
+	RunOnOff
+}
+
+RunOnOff() {
 	global saved_mouse_position_x, saved_mouse_position_y
     static toggled := false
 	
@@ -69,6 +67,7 @@ CurrentSettings := ""
 
 	if !toggled {
 		Tp "Скрипт приостановлен."
+		FirestoneMenu.Menu.Rename('1&', 'Включить')
 		Sleep 2000
 		Exit
 	}
@@ -76,11 +75,29 @@ CurrentSettings := ""
 	if toggled
 	{
 		Tp "Запускаю.", -1000
+		FirestoneMenu.Menu.Rename('1&', 'Выключить')
 		MouseGetPos(&saved_mouse_position_x, &saved_mouse_position_y)
 		Sleep 1100
 		DoWork(true)
 
 		SetTimer DoWork, 300000
+	}
+}
+
+PrestigeModeOnOff() {
+	global prestige_mode
+
+	prestige_mode := !prestige_mode
+	if prestige_mode {
+		Tp "Режим престижа"
+		FirestoneMenu.Menu.Rename('2&', 'Обычный режим')
+		SetTimer DoPrestigeUpgrades, 60000
+	}
+	else
+	{
+		Tp "Обычный режим"
+		FirestoneMenu.Menu.Rename('2&', 'Режим престижа')
+		SetTimer DoPrestigeUpgrades, 0
 	}
 }
 
