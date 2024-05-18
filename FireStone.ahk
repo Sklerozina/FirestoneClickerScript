@@ -36,7 +36,7 @@ AppVersion := "v0.0.1-alpha"
 saved_mouse_position_x := 0
 saved_mouse_position_y := 0
 prestige_mode := false
-Settings('settings.ini')
+Settings := Ini('settings.ini')
 FirestoneMenu.Create()
 
 ^+e:: {
@@ -133,7 +133,6 @@ DoWork(force := false) {
 				if daily_magazine_rewards == true {
 					if Firestone.CurrentSettings.Get('auto_arena', 0) == 1 {
 						Firestone.CurrentSettings.Set('arena_today', false)
-						Settings.Save()
 					}
 
 					Magazine.Do()
@@ -217,10 +216,4 @@ DoPrestigeUpgrades(force := false) {
 Tp(text, timeout := -2000) {
 	ToolTip text
 	SetTimer () => ToolTip(), timeout
-}
-
-OnExit ExitFunc
-
-ExitFunc(ExitReason, ExitCode) {
-	Settings.Save()
 }

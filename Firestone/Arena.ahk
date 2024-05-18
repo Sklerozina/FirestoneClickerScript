@@ -33,7 +33,6 @@ Class Arena {
                     ; ой, попытки закончились
                     Firestone.Press "{ESC}"
                     Firestone.CurrentSettings.Set('arena_today', true)
-                    Settings.Save()
                     break
                 }
     

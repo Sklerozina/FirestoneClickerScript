@@ -1,9 +1,9 @@
-Class Settings {
-    static ini_name := ""
-    static data := Map()
+Class Ini {
+    ini_name := ""
 
-    static Call(file_name) {
+    __New(file_name) {
         this.ini_name := file_name
+        this.data := Map()
 
         if !FileExist(this.ini_name)
             FileAppend("", this.ini_name)
@@ -11,7 +11,7 @@ Class Settings {
         ini_sections := IniRead(this.ini_name)
 
         Loop parse, ini_sections, "`n", "`r" {
-            this.data.Set(A_LoopField, Map())
+            this.data.Set(A_LoopField, IniSection(A_LoopField, this.ini_name))
         }
 
         for k in this.data {
@@ -20,19 +20,19 @@ Class Settings {
             Loop parse, pairs, "`n", "`r"
             {
                 Result := StrSplit(A_LoopField, "=")
-                this.data[k].Set(Result[1], Result[2])
+                this.data[k][Result[1]] := Result[2]
             }
         }
 
         return this
     }
 
-    static Reload() {
+    Reload() {
         ini_sections := IniRead(this.ini_name)
 
         Loop parse, ini_sections, "`n", "`r" {
             if !this.data.Has(A_LoopField)
-                this.data.Set(A_LoopField, Map())
+                this.data.Set(A_LoopField, IniSection(A_LoopField, this.ini_name))
         }
 
         for k in this.data {
@@ -41,29 +41,35 @@ Class Settings {
             Loop parse, pairs, "`n", "`r"
             {
                 Result := StrSplit(A_LoopField, "=")
-                this.data[k].Set(Result[1], Result[2])
+                this.data[k][Result[1]] := Result[2]
             }
         }
 
         return this
     }
 
-    static Section(key) {
+    Section(key) {
         if !this.data.Has(key)
-            this.data.Set(key, Map())
+            this.data.Set(key, IniSection(key, this.ini_name))
 
         return this.data.Get(key)
     }
+}
 
-    static Save() {
-        for section in this.data {
-            pairs := ""
+Class IniSection extends Map {
+    __New(name, ini_name) {
+        this.name := name
+        this.ini_name := ini_name
+    }
 
-            for key, value in this.data.Get(section) {
-                pairs .= key . "=" . value . "`n"
-            }
-
-            IniWrite(pairs, this.ini_name, section)
+    Set(Key1, Val1) {
+        if !super.Has(Key1) || Val1 != super.Get(Key1)
+        {
+            MsgBox 'пишу'
+            IniWrite(Val1, this.ini_name, this.name, Key1)
         }
+
+        super.Set(Key1, Val1)
+        return this
     }
 }

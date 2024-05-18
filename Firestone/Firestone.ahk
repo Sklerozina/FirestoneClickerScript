@@ -47,8 +47,6 @@ Class Firestone {
             if !this.CurrentSettings.Has(key)
                 this.CurrentSettings.Set(key, value)
         }
-    
-        Settings.Save()
     }
 
     static FindAllWindows(){
