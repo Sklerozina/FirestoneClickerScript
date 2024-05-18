@@ -40,6 +40,7 @@ Class Firestone {
             'open_boxes', 0,
             'auto_complete_quests', 0,
             'auto_arena', 0,
+            'daily_arena', false,
             'daily_tavern', false,
             'alchemy', '111'
         )

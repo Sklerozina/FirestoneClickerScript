@@ -166,7 +166,7 @@ DoWork(force := false) {
 				
 				if daily_reset == true {
 					if Firestone.CurrentSettings.Get('auto_arena', 0) == 1 {
-						Firestone.CurrentSettings.Set('arena_today', false)
+						Firestone.CurrentSettings.Set('daily_arena', false)
 					}
 					Firestone.CurrentSettings.Set('daily_tavern', false)
 
@@ -194,7 +194,7 @@ DoWork(force := false) {
 				if Firestone.CurrentSettings.Get('auto_complete_quests') == 1
 					Quests.Do()
 
-				if Firestone.CurrentSettings.Get('auto_arena', 0) == 1 && Firestone.CurrentSettings.Get('arena_today', false) == false {
+				if Firestone.CurrentSettings.Get('auto_arena', 0) == 1 && Firestone.CurrentSettings.Get('daily_arena', false) == false {
 					Arena.Do()
 				}
 

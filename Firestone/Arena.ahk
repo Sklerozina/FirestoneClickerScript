@@ -43,7 +43,7 @@ Class Arena {
                     DebugLog.Log("Кнопка найдена, арена на сегодня всё")
                     ; ой, попытки закончились
                     Firestone.Press "{ESC}"
-                    Firestone.CurrentSettings.Set('arena_today', true)
+                    Firestone.CurrentSettings.Set('daily_arena', true)
                     break
                 }
                 else
