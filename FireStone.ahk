@@ -168,6 +168,7 @@ DoWork(force := false) {
 					if Firestone.CurrentSettings.Get('auto_arena', 0) == 1 {
 						Firestone.CurrentSettings.Set('arena_today', false)
 					}
+					Firestone.CurrentSettings.Set('daily_tavern', false)
 
 					Magazine.Do()
 				}

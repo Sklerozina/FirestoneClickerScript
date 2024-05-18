@@ -2,7 +2,8 @@ Class Firestone {
 	static Buttons := {
 		Green: Button(0x0AA008),
 		Red: Button(0xE7473F),
-		Orange: Button(0xFBAC46)
+		Orange: Button(0xFBAC46),
+        Blue: Button(0x1289FF)
 	}
 
     static Icons := {
@@ -39,7 +40,7 @@ Class Firestone {
             'open_boxes', 0,
             'auto_complete_quests', 0,
             'auto_arena', 0,
-            'arena_today', false,
+            'daily_tavern', false,
             'alchemy', '111'
         )
     
