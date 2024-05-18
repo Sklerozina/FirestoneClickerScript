@@ -4,6 +4,7 @@
 
 #Include Settings.ahk
 #Include Tools.ahk
+#Include Logs.ahk
 #Include Firestone\Firestone.ahk
 
 #Include Firestone
@@ -32,12 +33,20 @@ SendMode "InputThenPlay"
 SetDefaultMouseSpeed 25
 
 AppVersion := "v0.0.1-alpha"
+A_IconTip := "Firestone Clicker " AppVersion
 
 saved_mouse_position_x := 0
 saved_mouse_position_y := 0
 prestige_mode := false
 Settings := Ini('settings.ini')
 FirestoneMenu.Create()
+
+DebugLog := Logs('Logs\')
+If Settings.Section('GENERAL').Get('debug', 0) {
+	FirestoneMenu.Menu.Rename("Включить логи", 'Выключить логи')
+	DebugLog.Enable()
+}
+	
 
 ^+e:: {
 	MsgBox "Скрипт перезапущен."
@@ -47,6 +56,10 @@ FirestoneMenu.Create()
 ~RButton::{
     if WinActive("ahk_exe Firestone.exe")
         FirestoneMenu.Menu.Show()
+}
+
+^+l:: {
+	LogsOnOff
 }
 
 ; Сменить режим апгрейда героев
@@ -59,6 +72,22 @@ FirestoneMenu.Create()
 	RunOnOff
 }
 
+LogsOnOff() {
+	if DebugLog.enabled	{
+		Tp 'Логирование выключено'
+		FirestoneMenu.Menu.Rename('Выключить логи', "Включить логи")
+		DebugLog.Disable()
+		Settings.Section('GENERAL').Set('debug', 0)
+		Settings.Save()
+	} else {
+		Tp 'Логирование включено'
+		FirestoneMenu.Menu.Rename("Включить логи", 'Выключить логи')
+		DebugLog.Enable()
+		Settings.Section('GENERAL').Set('debug', 1)
+		Settings.Save()
+	}
+}
+
 RunOnOff() {
 	global saved_mouse_position_x, saved_mouse_position_y
     static toggled := false
@@ -67,7 +96,7 @@ RunOnOff() {
 
 	if !toggled {
 		Tp "Скрипт приостановлен."
-		FirestoneMenu.Menu.Rename('1&', 'Включить')
+		FirestoneMenu.Menu.Rename('Выключить', 'Включить')
 		Sleep 2000
 		Exit
 	}
@@ -75,7 +104,7 @@ RunOnOff() {
 	if toggled
 	{
 		Tp "Запускаю.", -1000
-		FirestoneMenu.Menu.Rename('1&', 'Выключить')
+		FirestoneMenu.Menu.Rename('Включить', 'Выключить')
 		MouseGetPos(&saved_mouse_position_x, &saved_mouse_position_y)
 		Sleep 1100
 		DoWork(true)
@@ -90,13 +119,13 @@ PrestigeModeOnOff() {
 	prestige_mode := !prestige_mode
 	if prestige_mode {
 		Tp "Режим престижа"
-		FirestoneMenu.Menu.Rename('2&', 'Обычный режим')
+		FirestoneMenu.Menu.Rename('Режим престижа', 'Обычный режим')
 		SetTimer DoPrestigeUpgrades, 60000
 	}
 	else
 	{
 		Tp "Обычный режим"
-		FirestoneMenu.Menu.Rename('2&', 'Режим престижа')
+		FirestoneMenu.Menu.Rename('Обычный режим', 'Режим престижа')
 		SetTimer DoPrestigeUpgrades, 0
 	}
 }
@@ -113,10 +142,12 @@ DoWork(force := false) {
 
 	; Если мышка двигалась или нажималась клавиатура пока спали, пропускаем задачу
 	If((A_TimeIdlePhysical >= delay && saved_mouse_position_x == Mx && saved_mouse_position_y == My) || force == true) {
+		DebugLog.Log('====`nНачинаю работу!', "`n`n")
 		hwids := Firestone.FindAllWindows()
 		for hwid in hwids
 		{
-			daily_magazine_rewards := false
+			DebugLog.Log('Окно ' . WinGetProcessPath(hwid), "`n")
+			daily_reset := false
 			Firestone.Set(hwid)
 
 			try
@@ -125,12 +156,15 @@ DoWork(force := false) {
 				Firestone.BackToMainScreen()
 				Tools.Sleep 1000
 				if Firestone.Icons.Red.Check(1877, 517, 1912, 555)
-					daily_magazine_rewards := true
+				{
+					DebugLog.Log("Сброс дейликов! Новый день!")
+					daily_reset := true
+				}
 
 				HerosUpgrades.Do(Firestone.CurrentSettings.Get('lvlup_priority'), prestige_mode)
 				Firestone.City() ; зайти в город
 				
-				if daily_magazine_rewards == true {
+				if daily_reset == true {
 					if Firestone.CurrentSettings.Get('auto_arena', 0) == 1 {
 						Firestone.CurrentSettings.Set('arena_today', false)
 					}
@@ -162,9 +196,12 @@ DoWork(force := false) {
 				if Firestone.CurrentSettings.Get('auto_arena', 0) == 1 && Firestone.CurrentSettings.Get('arena_today', false) == false {
 					Arena.Do()
 				}
+
+				DebugLog.Log('==== Закончил работу!', "`n")
 			}
 			catch String as err
 			{
+				DebugLog.Log("Прерываю работу. " . err . " (From Catch)")
 				Tp "Прерываю работу. " . err, -2000
 				delay := 180000
 				SetTimer DoWork, delay ; Если мышь двигалась, то следующий раз будет через 3 минуты
@@ -176,6 +213,7 @@ DoWork(force := false) {
     }
 	else
 	{
+		DebugLog.Log('Мышь двигалась или были нажатия клавиатуры. Работа отложена.', "`n")
 		delay := 120000
 		SetTimer DoWork, delay ; Если мышь двигалась, то следующий раз будет через 2 минуты
 	}
@@ -190,9 +228,11 @@ DoPrestigeUpgrades(force := false) {
 
 	; Если мышка двигалась или нажималась клавиатура пока спали, пропускаем задачу
 	If((A_TimeIdle >= 60000 && saved_mouse_position_x == Mx && saved_mouse_position_y == My) || force == true) {
+		DebugLog.Log('====`nНачинаю работу! Режим престижа!', "`n`n")
 		hwids := Firestone.FindAllWindows()
 		for hwid in hwids
 		{
+			DebugLog.Log('Окно ' . WinGetProcessPath(hwid), "`n")
 			Firestone.Set(hwid)
 
 			try
@@ -204,11 +244,15 @@ DoPrestigeUpgrades(force := false) {
 			}
 			catch String as err
 			{
-				Tp "Прерываю работу. " . err
+				DebugLog.Log("Прерываю работу. " . err . " (From Catch)")
+				Tp "Прерываю работу. " . err, -2000
 				break
 			}
 		}
     }
+	else {
+		DebugLog.Log('Режим престижа. Мышь двигалась или были нажатия клавиатуры. Работа отложена.', "`n")
+	}
 	
 	MouseGetPos(&saved_mouse_position_x, &saved_mouse_position_y)
 }

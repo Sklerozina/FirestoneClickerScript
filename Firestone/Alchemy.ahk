@@ -6,6 +6,8 @@ Class Alchemy {
     )
 
     static Do(alchemy_settings) {
+        DebugLog.Log("Алхимия", "`n")
+        
         ;; Проверяем, висит ли красный значёк у здания.
         if !Firestone.Icons.Red.Check(570, 808, 614, 851)
             return
@@ -29,6 +31,7 @@ Class Alchemy {
         {
             if (alchemy_up[a] == "1")
             {
+                DebugLog.Log("== Слот " a " ==")
                 if this.Click(a)
                 {
                     slot_ok.Set(a, true)
@@ -42,6 +45,7 @@ Class Alchemy {
         {
             if (alchemy_up[a] == "1") && slot_ok.Get(a) == true
             {
+                DebugLog.Log("Слот " a)
                 if this.Click(a, 2500)
                 {
                     slot_ok.Set(a, true)
@@ -55,13 +59,19 @@ Class Alchemy {
 
     static Click(slot, timeout := 500) {
         coords := this.buttons.Get(slot)
+        DebugLog.Log("Поиск зелёной кнопки... (" coords[1] "x" coords[2] " - " coords[3] "x" coords[4] ")")
 
         ; Пробуем найти и нажать зелёную кнопку
         if !Firestone.Buttons.Green.WaitAndClick(coords[1], coords[2], coords[3], coords[4], timeout)
         {
+            DebugLog.Log("Кнопка не найдена, ищем оранжевую кнопку...")
             if Firestone.Buttons.Orange.CheckAndClick(coords[1], coords[2], coords[3], coords[4], timeout)
             {
                 return true
+            }
+            else
+            {
+                DebugLog.Log("Кнопка не найдена")
             }
         }
         else

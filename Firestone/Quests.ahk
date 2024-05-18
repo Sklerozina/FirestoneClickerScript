@@ -1,5 +1,6 @@
 Class Quests {
     static Do() {
+        DebugLog.Log("Квесты в профиле", "`n")
         Firestone.Press("{Q}")
         
         this.CheckDaily()
@@ -10,6 +11,7 @@ Class Quests {
 
     static CheckDaily() {
         ; Дейлики
+        DebugLog.Log("Проверяем дейлики...")
         if !Firestone.Icons.Red.Check(929, 82, 969, 115)
             return
         
@@ -23,6 +25,7 @@ Class Quests {
     }
 
     static CheckWeekly() {
+        DebugLog.Log("Проверяем виклики...")
         if !Firestone.Icons.Red.Check(1322, 79, 1364, 113)
             return
 

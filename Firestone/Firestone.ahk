@@ -57,26 +57,46 @@ Class Firestone {
 
     ; Принудительный возврат на главный экран (Много раз жмёт Esc, потом кликает на закрытие диалога)
     static BackToMainScreen(){
+        DebugLog.Log('Возврат на главный экран', "`n")
         game_good := false
-        loop 5 {
+        i := 1
+        loop 8 {
+            DebugLog.Log('Попытка ' . i++)
+
+            if i == 6
+            {
+                ; К этому моменту мы уже должны быть на главном
+                DebugLog.Log("Клик в центр экрана, вдруг поможет")
+                Firestone.Click(912, 481)
+            }
+
             Firestone.Window.Activate() ; В попытках победить баг или не баг, когда игра как бы теряет фокус но Ahk это не замечает
             MouseMove 0, 0
             this.Esc(500)
             
             if this.Buttons.Green.Wait(1032, 706, 1059, 780, 500) {
+                DebugLog.Log('Кнопка найдена')
                 ; Хорошо, мы на главном экране, можно продолжать скрипт
                 this.Click 1537, 275, 500
                 game_good := true
                 break
             } else {
+                DebugLog.Log('Кнопка не найдена')
+                DebugLog.Log('Проверяем не появлось ли окно `"Вам нравится игра?`"')
                 if Tools.WaitForSearchPixel(928, 609, 948, 684, 0xFF7760, 1, 500) {
+                    DebugLog.Log('Окно обнаружено')
                     ; Хорошо, мы на главном экране, можно продолжать скрипт
                     this.Click 1398, 279, 500 ;; Клик по окошку "Нравится игра?"
+                }
+                else
+                {
+                    DebugLog.Log('Окно не обнаружено')
                 }
             }
         }
 
         if !game_good {
+            DebugLog.Log('Игра сломалась!')
             this.TelegramSend("Игра сломалась!")
             throw 'Игра сломалась!'
         }
@@ -92,6 +112,7 @@ Class Firestone {
     }
 
 	static Click(x, y, wait := 1000, clickcount := 1) {
+        DebugLog.Log("Клик: (" . Round(x) . "x" . Round(y) . ")")
 		this.Window.IsActive()
 
 		loop clickcount
@@ -110,6 +131,7 @@ Class Firestone {
     }
 
 	static Press(key, wait := 1000, times := 1) {
+        DebugLog.Log(key . " (" . times . ")")
 		this.Window.IsActive()
 	
         loop times

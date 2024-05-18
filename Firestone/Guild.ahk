@@ -1,5 +1,6 @@
 Class Guild {
     static Do() {
+        DebugLog.Log("Гильдия", "`n")
         Firestone.Click(1482, 127) ; Клик на здание гильдии
         
         this.CollectPicks() ; Забрать заодно кирки
@@ -9,6 +10,7 @@ Class Guild {
     }
 
     static CollectPicks() {
+        DebugLog.Log("== Сбор кирок ==")
         if Firestone.Icons.Red.Check(739, 284, 780, 324)
         {
             Firestone.Click 660, 211, 500 ;; Здание магазина
@@ -23,6 +25,8 @@ Class Guild {
     }
 
     static Expeditions() {
+        DebugLog.Log("== Экспедиции ==")
+        
         ;; Проверяем, висит ли красный значёк у здания.
         if !Firestone.Icons.Red.Check(405, 443, 435, 475)
             return

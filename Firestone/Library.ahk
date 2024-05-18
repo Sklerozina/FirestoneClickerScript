@@ -14,6 +14,8 @@ Class Library {
     static research_count := 0
 
     static Do() {
+        DebugLog.Log("Библиотека", "`n")
+        
         ; Проверяем, висит ли красный значок у здания.
         if !Firestone.Icons.Red.Check(384, 641, 424, 680)
             return
@@ -27,18 +29,20 @@ Class Library {
 
     static Research() {
         this.research_count := 0
-        
+        DebugLog.Log("== Исследования Firestone ==")
         Firestone.Click(1813, 930) ; Переход в Firestone исследования
     
         MouseMove 0, 0
 
         if Tools.PixelSearch(445, 939, 461, 976, 0x285483, 1)
         {
+            DebugLog.Log("Найдено активное исследование в слоте 1")
             this.research_count += 1
         }
     
         if Tools.PixelSearch(1090, 939, 1105, 976, 0x285483, 1)
         {
+            DebugLog.Log("Найдено активное исследование в слоте 2")
             this.research_count += 1
         }
         
@@ -57,7 +61,11 @@ Class Library {
         ; if CheckForImage(1090, 879, 1301, 958, "*120 images/ResearchFree.png")
         if this.research_count > 0 {
             if this.CheckSlot(2)
+            {
+                DebugLog.Log("Исследование завершено")
                 this.research_count -= 1
+            }
+                
     
             MouseMove 0, 0
             Tools.Sleep 500
@@ -66,6 +74,7 @@ Class Library {
         ;; Добавить проверку на второе исследование
         if (this.research_count < 2)
         {
+            DebugLog.Log("Поиск новых исследований...")
             i := 1
             loop 3
             {
@@ -82,7 +91,11 @@ Class Library {
                 for column in this.columns {
                     for y in [226, 718, 348, 596, 472] {
                         if this.FindResearch(y, column[1], column[2])
+                        {
+                            DebugLog.Log("Начинаем новое исследование")
                             this.research_count += 1
+                        }
+                            
 
                         if (this.research_count == 2)
                             break 3
@@ -101,6 +114,7 @@ Class Library {
 
         ; Проверка на оранжевую кнопку, досрочное завершение
         ;if CheckForImage(462, 899, 634, 948, "*120 images/ResearchFree.png") ; Пока не удаляю, на случай, если по цвету не будет работать
+        DebugLog.Log("Пробуем завершить исследование в слоте " slot "...")
         if Firestone.Buttons.Orange.CheckAndClick(coords[1], coords[2], coords[3], coords[4])
             return true
 

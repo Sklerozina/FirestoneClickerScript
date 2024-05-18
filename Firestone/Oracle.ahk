@@ -1,5 +1,7 @@
 Class Oracle {
     static Do() {
+        DebugLog.Log("Оракул", "`n")
+        
         ; Проверяем, висит ли красный значёк у здания.
         if !Firestone.Icons.Red.Check(1114, 935, 1152, 970)
             return
@@ -16,6 +18,7 @@ Class Oracle {
     static CollectdailyReward() {
         ; Забрать ежедневный бесплатный подарок оракула
         if Firestone.Icons.Red.Check(860, 660, 903, 695) {
+            DebugLog.Log("Сбор бесплатной ежедневной награды")
             Firestone.Click(824, 738, 500)
 
             if PixelGetColor(467, 815) == 0x5B5EAA
@@ -28,6 +31,7 @@ Class Oracle {
     }
 
     static Rituals() {
+        DebugLog.Log("== Ритуалы ==")
         ;; Проверяем, висит ли красный значёк у ритуалов.
         if !Firestone.Icons.Red.Check(860, 317, 903, 356) {
             Firestone.Esc()
@@ -45,6 +49,7 @@ Class Oracle {
         ]
         clicks := 0
 
+        DebugLog.Log("Поиск новых ритуалов или завершение...")
         loop 2 {
             for ritual in rituals {
                 if Firestone.Buttons.Green.CheckAndClick(ritual[1], ritual[2], ritual[3], ritual[4])

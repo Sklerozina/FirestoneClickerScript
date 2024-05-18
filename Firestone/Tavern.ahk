@@ -1,5 +1,6 @@
 Class Tavern {
     static Do() {
+        DebugLog.Log("Таверна", "`n")
         if !Firestone.Icons.Red.Check(814, 910, 848, 949) ; У Таверны нет значка, выходим
             return
 
@@ -11,6 +12,7 @@ Class Tavern {
     }
 
     static CollectTokens() {
+        DebugLog.Log("== Обмен пива ==")
         Firestone.Click(1731, 42) ; Клик по иконке плюса для обмена пива
     
         while Tools.WaitForSearchPixel(344-5, 437-5, 344+5, 437+5, 0x3CA8E1, 1, 1000) {

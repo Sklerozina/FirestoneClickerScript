@@ -7,6 +7,8 @@ Class FirestoneMenu {
         this.Menu.Add()
         this.Menu.Add("Включить", this.OnOff) ; вкл/выкл
         this.Menu.Add("Режим престижа", this.PrestigeModeOnOff)
+        this.Menu.Add()
+        this.Menu.Add("Включить логи", this.LogsOnOff)
     }
 
     static OnOff(Item, *) {
@@ -15,5 +17,9 @@ Class FirestoneMenu {
 
     static PrestigeModeOnOff(Item, *) {
         PrestigeModeOnOff()
+    }
+
+    static LogsOnOff(Item, *) {
+        LogsOnOff()
     }
 }

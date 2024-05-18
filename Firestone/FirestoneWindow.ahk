@@ -34,17 +34,22 @@ Class FirestoneWindow {
         If WinExist(this.hwid)
             WinActivate
         else
+        {
+            DebugLog.Log('Окно с игрой не найдено!')
             throw 'Окно с игрой не найдено!'
+        }
     }
 
     IsActive() {
         if !WinExist(this.hwid)
         {
+            DebugLog.Log('Окно с игрой не найдено!')
             throw 'Окно с игрой не найдено!'
         }
     
         if !WinActive(this.hwid)
         {
+            DebugLog.Log('Окно перестало быть активным!')
             throw 'Окно перестало быть активным!'
         }
     }

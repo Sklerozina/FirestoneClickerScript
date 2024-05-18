@@ -10,6 +10,7 @@ Class HerosUpgrades {
     )
 
     static Do(lvlup_priority := "1765432", prestige_mode := false) {   
+        DebugLog.Log("Прокачка героев", "`n")
         Firestone.Press("{u}", 500)
     
         if prestige_mode
@@ -45,6 +46,7 @@ Class HerosUpgrades {
 
     static UpgradeHero(slot, clicks := 1) {
         coords := this.coords.Get(slot)
-        Firestone.Buttons.Green.CheckAndClick(coords[1], coords[2], coords[3], coords[4],,, 200, clicks)
+        if Firestone.Buttons.Green.CheckAndClick(coords[1], coords[2], coords[3], coords[4],,, 200, clicks)
+            DebugLog.Log('Прокачал слот ' . slot)
     }
 }

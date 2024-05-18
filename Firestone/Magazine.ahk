@@ -1,12 +1,15 @@
 Class Magazine {
     static Do() {
+        DebugLog.Log("Магазин", "`n")
         Firestone.Click(1300, 343)
     
+        DebugLog.Log("== Подарок ==")
         if Tools.PixelSearch(432, 869, 442, 879, 0x5B5EAA, 1)
         {
             Firestone.Click(592, 743, 200)
         }
     
+        DebugLog.Log("== Ежедневная отметка ==")
         if Firestone.Icons.Red.Check(1425, 25, 1474, 76)
         {
             Firestone.Click(1381, 91)
