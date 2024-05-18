@@ -65,7 +65,6 @@ Class IniSection extends Map {
     Set(Key1, Val1) {
         if !super.Has(Key1) || Val1 != super.Get(Key1)
         {
-            MsgBox 'пишу'
             IniWrite(Val1, this.ini_name, this.name, Key1)
         }
 
