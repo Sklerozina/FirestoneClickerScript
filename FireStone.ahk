@@ -32,7 +32,7 @@ SendMode "InputThenPlay"
 
 SetDefaultMouseSpeed 25
 
-AppVersion := "v0.0.1-alpha"
+AppVersion := "v0.0.2-alpha"
 A_IconTip := "Firestone Clicker " AppVersion
 
 saved_mouse_position_x := 0
