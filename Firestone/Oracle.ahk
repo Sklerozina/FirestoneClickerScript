@@ -51,6 +51,10 @@ Class Oracle {
     }
 
     static Blessings() {
+        ; Если автоматические благословения отключены, выходим
+        if !Firestone.CurrentSettings.Get('auto_blessings', 0)
+            return
+
         DebugLog.Log("== Благословения ==")
         ; Красный значок у вкладки благословений
         if !Firestone.Icons.Red.Check(868, 491, 903, 525) {
