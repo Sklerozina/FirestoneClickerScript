@@ -47,6 +47,14 @@ If Settings.Section('GENERAL').Get('debug', 0) {
 	DebugLog.Enable()
 }
 	
+~^+C:: {
+	if !WinActive("ahk_exe Firestone.exe")
+		return
+
+	MouseGetPos(&x, &y)
+	A_Clipboard := x ", " y
+	Tp "Координаты курсора скопированы в буфер обмена"
+}
 
 ^+e:: {
 	MsgBox "Скрипт перезапущен."
