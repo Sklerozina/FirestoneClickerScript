@@ -42,7 +42,8 @@ Class Firestone {
             'auto_arena', 0,
             'daily_arena', false,
             'daily_tavern', false,
-            'alchemy', '111'
+            'alchemy', '111',
+            'oracle_blessings_priority', 0
         )
     
         for key, value in defaults {
