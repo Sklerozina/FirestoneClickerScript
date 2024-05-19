@@ -78,13 +78,11 @@ LogsOnOff() {
 		FirestoneMenu.Menu.Rename('Выключить логи', "Включить логи")
 		DebugLog.Disable()
 		Settings.Section('GENERAL').Set('debug', 0)
-		Settings.Save()
 	} else {
 		Tp 'Логирование включено'
 		FirestoneMenu.Menu.Rename("Включить логи", 'Выключить логи')
 		DebugLog.Enable()
 		Settings.Section('GENERAL').Set('debug', 1)
-		Settings.Save()
 	}
 }
 
