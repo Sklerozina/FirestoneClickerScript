@@ -42,6 +42,8 @@ Class Bags {
                 continue
             }
 
+            MouseMove 0, 0
+
             if Tools.PixelSearch(631, 754, 1272, 825, 0x365E91, 1)
             {
                 DebugLog.Log("Этот сундук нельзя открыть!")
@@ -56,8 +58,6 @@ Class Bags {
                 box_opened := true
             else if Firestone.Buttons.Green.FindAndClick(863, 696, 1053, 851) ; x10
                 box_opened := true
-
-            MouseMove 0, 0
 
             start_time := A_TickCount
             DebugLog.Log("Ожидаем распаковку...")
