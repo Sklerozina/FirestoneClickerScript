@@ -72,7 +72,7 @@ Class Bags {
                     
                 Tools.Sleep 1000 ;; продолжаем ждать
             }
-            DebugLog.Log("Распаковка заняла " (A_TickCount - start_time) / 1000 " милисекунд" )
+            DebugLog.Log("Распаковка заняла " Round((A_TickCount - start_time) / 1000) " секунд" )
         }
     }
 }

@@ -242,7 +242,7 @@ Class WarCampaignMap {
                 throw 'Военная кампания, кнопка завершения боя так и не появилась!'
             }
             else
-                DebugLog.Log("Бой длился " (A_TickCount - start_time) / 1000 " секунд" )
+                DebugLog.Log("Бой длился " Round((A_TickCount - start_time) / 1000) " секунд" )
         }
         else
             return 0
