@@ -45,6 +45,8 @@ Class Firestone {
             'alchemy', '111',
             'auto_blessings', 0,
             'oracle_blessings_priority', 0,
+            'auto_tavern', 0,
+            'auto_tavern_daily_roll', 0,
         )
     
         for key, value in defaults {
@@ -61,6 +63,7 @@ Class Firestone {
 
     ; Принудительный возврат на главный экран (Много раз жмёт Esc, потом кликает на закрытие диалога)
     static BackToMainScreen(){
+        ono_rabotaet := false
         DebugLog.Log('Возврат на главный экран', "`n")
         game_good := false
         i := 1
@@ -69,12 +72,16 @@ Class Firestone {
 
             if i == 6
             {
+                ono_rabotaet := true
                 ; К этому моменту мы уже должны быть на главном
-                DebugLog.Log("Клик в центр экрана, вдруг поможет")
-                Firestone.Click(912, 481)
+                DebugLog.Log("Свернуть и развернуть, вдруг поможет?")
+                WinMinimize()
+                Tools.Sleep(1000)
+                WinRestore
+                Tools.Sleep(1000)
+                Firestone.Window.Activate()
             }
-
-            Firestone.Window.Activate() ; В попытках победить баг или не баг, когда игра как бы теряет фокус но Ahk это не замечает
+            
             MouseMove 0, 0
             this.Esc(500)
             
@@ -83,6 +90,8 @@ Class Firestone {
                 ; Хорошо, мы на главном экране, можно продолжать скрипт
                 this.Click 1537, 275, 500
                 game_good := true
+                if ono_rabotaet
+                    this.TelegramSend("Офигеть, оно работает!")
                 break
             } else {
                 DebugLog.Log('Кнопка не найдена')

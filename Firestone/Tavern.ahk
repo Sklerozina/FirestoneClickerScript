@@ -9,8 +9,12 @@ Class Tavern {
     ]
 
     static Do() {
+        if Firestone.CurrentSettings.Get('auto_tavern') == 0
+            return
+
         DebugLog.Log("Таверна", "`n")
-        if !Firestone.Icons.Red.Check(814, 910, 848, 949) && Firestone.CurrentSettings.Get('daily_tavern') ; У Таверны нет значка, выходим
+         ; У Таверны нет значка, выходим
+        if !Firestone.Icons.Red.Check(814, 910, 848, 949)
             return
 
         Firestone.Click(717, 911) ; Заходим в Таверну из города
@@ -22,7 +26,8 @@ Class Tavern {
     }
 
     static DailyRoll() {
-        if !Firestone.CurrentSettings.Get('daily_tavern')
+        ; Крутил при условии, что не крутили таверну сегодня, включен обмен пива на токены, включены крутки
+        if Firestone.CurrentSettings.Get('daily_tavern') == 0 && Firestone.CurrentSettings.Get('auto_tavern_daily_roll') == 1
         {
             DebugLog.Log("== Ежедневные 10 круток ==")
             if Firestone.Buttons.Green.WaitAndClick(931, 913, 941, 965, 1000) 
