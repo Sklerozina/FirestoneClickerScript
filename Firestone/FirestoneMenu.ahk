@@ -1,25 +1,19 @@
-Class FirestoneMenu {
-    static Menu := Menu()
-
-    static Create() {
-        this.Menu.Add(AppVersion, (*) => (false))
-        this.Menu.Disable(AppVersion)
-        this.Menu.Add()
-        this.Menu.Add("Включить", this.OnOff) ; вкл/выкл
-        this.Menu.Add("Режим престижа", this.PrestigeModeOnOff)
-        this.Menu.Add()
-        this.Menu.Add("Включить логи", this.LogsOnOff)
-    }
-
-    static OnOff(Item, *) {
-        RunOnOff()
-    }
-
-    static PrestigeModeOnOff(Item, *) {
-        PrestigeModeOnOff()
-    }
-
-    static LogsOnOff(Item, *) {
-        LogsOnOff()
+Class FirestoneMenu extends Menu {
+    __New() {
+        this.Add(AppVersion, (*) => (0))
+        this.Disable(AppVersion)
+        this.Add()
+        this.Add("Включить", (*) => (
+            RunOnOff()
+        )) ; вкл/выкл
+        this.Add("Режим престижа", (*) => (
+            PrestigeModeOnOff()
+        ))
+        this.Add()
+        this.Add("Включить логи", (*) => (
+            LogsOnOff()
+        ))
+        this.Add()
+        this.Add("Закрыть меню", (*) => (0))
     }
 }

@@ -12,6 +12,7 @@ Class Firestone {
     }
 
     static Window := unset
+    static Menu := FirestoneMenu()
 
     static hwid := unset
     static hwids := unset

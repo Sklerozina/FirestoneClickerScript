@@ -2,6 +2,9 @@
 #MaxThreadsPerHotkey 2
 #SingleInstance Force
 
+AppVersion := "v0.0.4-alpha"
+A_IconTip := "Firestone Clicker " AppVersion
+
 #Include Settings.ahk
 #Include Tools.ahk
 #Include Logs.ahk
@@ -32,18 +35,15 @@ SendMode "InputThenPlay"
 
 SetDefaultMouseSpeed 25
 
-AppVersion := "v0.0.3-alpha"
-A_IconTip := "Firestone Clicker " AppVersion
-
 saved_mouse_position_x := 0
 saved_mouse_position_y := 0
 prestige_mode := false
 Settings := Ini('settings.ini')
-FirestoneMenu.Create()
+
 
 DebugLog := Logs('Logs\')
 If Settings.Section('GENERAL').Get('debug', 0) {
-	FirestoneMenu.Menu.Rename("Включить логи", 'Выключить логи')
+	Firestone.Menu.Rename("Включить логи", 'Выключить логи')
 	DebugLog.Enable()
 }
 	
@@ -63,7 +63,7 @@ If Settings.Section('GENERAL').Get('debug', 0) {
 
 ~RButton::{
     if WinActive("ahk_exe Firestone.exe")
-        FirestoneMenu.Menu.Show()
+        Firestone.Menu.Show()
 }
 
 ^+l:: {
@@ -83,12 +83,12 @@ If Settings.Section('GENERAL').Get('debug', 0) {
 LogsOnOff() {
 	if DebugLog.enabled	{
 		Tp 'Логирование выключено'
-		FirestoneMenu.Menu.Rename('Выключить логи', "Включить логи")
+		Firestone.Menu.Rename('Выключить логи', "Включить логи")
 		DebugLog.Disable()
 		Settings.Section('GENERAL').Set('debug', 0)
 	} else {
 		Tp 'Логирование включено'
-		FirestoneMenu.Menu.Rename("Включить логи", 'Выключить логи')
+		Firestone.Menu.Rename("Включить логи", 'Выключить логи')
 		DebugLog.Enable()
 		Settings.Section('GENERAL').Set('debug', 1)
 	}
@@ -102,7 +102,7 @@ RunOnOff() {
 
 	if !toggled {
 		Tp "Скрипт приостановлен."
-		FirestoneMenu.Menu.Rename('Выключить', 'Включить')
+		Firestone.Menu.Rename('Выключить', 'Включить')
 		Sleep 2000
 		Exit
 	}
@@ -110,7 +110,7 @@ RunOnOff() {
 	if toggled
 	{
 		Tp "Запускаю.", -1000
-		FirestoneMenu.Menu.Rename('Включить', 'Выключить')
+		Firestone.Menu.Rename('Включить', 'Выключить')
 		MouseGetPos(&saved_mouse_position_x, &saved_mouse_position_y)
 		Sleep 1100
 		DoWork(true)
@@ -125,13 +125,13 @@ PrestigeModeOnOff() {
 	prestige_mode := !prestige_mode
 	if prestige_mode {
 		Tp "Режим престижа"
-		FirestoneMenu.Menu.Rename('Режим престижа', 'Обычный режим')
+		Firestone.Menu.Rename('Режим престижа', 'Обычный режим')
 		SetTimer DoPrestigeUpgrades, 60000
 	}
 	else
 	{
 		Tp "Обычный режим"
-		FirestoneMenu.Menu.Rename('Обычный режим', 'Режим престижа')
+		Firestone.Menu.Rename('Обычный режим', 'Режим престижа')
 		SetTimer DoPrestigeUpgrades, 0
 	}
 }
