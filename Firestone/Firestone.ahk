@@ -116,6 +116,11 @@ Class Firestone {
         }
     }
 
+    ResetDailys() {
+        Firestone.CurrentSettings.Set('daily_arena', false)
+        Firestone.CurrentSettings.Set('daily_tavern', false)
+    }
+
     ; Кнопка города
     static City() {
         this.Press("{t}")

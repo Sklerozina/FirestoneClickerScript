@@ -6,7 +6,10 @@ Class Magazine {
         DebugLog.Log("== Подарок ==")
         if Tools.PixelSearch(432, 869, 442, 879, 0x5B5EAA, 1)
         {
-            Firestone.Click(592, 743, 200)
+            Firestone.Click(592, 743, 1000)
+            
+            if !Tools.PixelSearch(432, 869, 442, 879, 0x5B5EAA, 1)
+                Firestone.ResetDailys()
         }
     
         DebugLog.Log("== Ежедневная отметка ==")

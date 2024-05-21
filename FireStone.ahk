@@ -153,7 +153,6 @@ DoWork(force := false) {
 		for hwid in hwids
 		{
 			DebugLog.Log('Окно ' . WinGetProcessPath(hwid), "`n")
-			daily_reset := false
 			Firestone.Set(hwid)
 
 			try
@@ -161,21 +160,13 @@ DoWork(force := false) {
 				Sleep 1000 ; Заглушка, чтобы пошёл таймер в A_TimeIdlePhysical
 				Firestone.BackToMainScreen()
 				Tools.Sleep 1000
-				if Firestone.Icons.Red.Check(1877, 517, 1912, 555)
-				{
-					DebugLog.Log("Сброс дейликов! Новый день!")
-					daily_reset := true
-				}
 
 				HerosUpgrades.Do(Firestone.CurrentSettings.Get('lvlup_priority'), prestige_mode)
 				Firestone.City() ; зайти в город
 				
-				if daily_reset == true {
-					if Firestone.CurrentSettings.Get('auto_arena', 0) == 1 {
-						Firestone.CurrentSettings.Set('daily_arena', false)
-					}
-					Firestone.CurrentSettings.Set('daily_tavern', false)
-
+				if Firestone.Icons.Red.Check(1877, 517, 1912, 555)
+				{
+					DebugLog.Log("Сброс дейликов! Новый день!")
 					Magazine.Do()
 				}
 				
