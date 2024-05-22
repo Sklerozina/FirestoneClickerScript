@@ -170,15 +170,15 @@ DoWork(force := false) {
 				Firestone.BackToMainScreen()
 				Tools.Sleep 1000
 
-				HerosUpgrades.Do(Firestone.CurrentSettings.Get('lvlup_priority'), prestige_mode)
-				Firestone.City() ; зайти в город
-				
 				if Firestone.Icons.Red.Check(1877, 517, 1912, 555)
 				{
 					DebugLog.Log("Сброс дейликов! Новый день!")
-					Magazine.Do()
+					Firestone.CurrentSettings.Set('daily_magazine', false)
 				}
-				
+
+				HerosUpgrades.Do(Firestone.CurrentSettings.Get('lvlup_priority'), prestige_mode)
+				Firestone.City() ; зайти в город
+				Magazine.Do()
 				Tavern.Do()
 				Alchemy.Do(Firestone.CurrentSettings.Get('alchemy'))
 				Guard.Do()

@@ -43,6 +43,7 @@ Class Firestone {
             'auto_arena', 0,
             'daily_arena', false,
             'daily_tavern', false,
+            'daily_magazine', false,
             'alchemy', '111',
             'auto_blessings', 0,
             'oracle_blessings_priority', 0,
