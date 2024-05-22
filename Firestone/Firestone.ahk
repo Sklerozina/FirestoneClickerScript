@@ -117,7 +117,8 @@ Class Firestone {
         }
     }
 
-    ResetDailys() {
+    static ResetDailys() {
+        ; Магазин сбрасывается отдельно
         Firestone.CurrentSettings.Set('daily_arena', false)
         Firestone.CurrentSettings.Set('daily_tavern', false)
     }
