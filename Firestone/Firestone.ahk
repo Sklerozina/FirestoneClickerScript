@@ -107,6 +107,12 @@ Class Firestone {
                 {
                     DebugLog.Log('Окно не обнаружено')
                 }
+
+                ; Возможно открылся новый герой?
+                if Tools.PixelSearch(702, 135, 783, 176, 0xE31923, 1) {
+                    DebugLog.Log('Новый герой?')
+                    Firestone.Click(509, 524)
+                }
             }
         }
 
