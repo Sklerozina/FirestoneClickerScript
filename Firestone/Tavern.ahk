@@ -14,7 +14,7 @@ Class Tavern {
 
         DebugLog.Log("Таверна", "`n")
          ; У Таверны нет значка, выходим
-        if !Firestone.Icons.Red.Check(814, 910, 848, 949)
+        if !Firestone.Icons.Red.Check(814, 910, 848, 949) && !(Firestone.CurrentSettings.Get('daily_tavern') == 0 && Firestone.CurrentSettings.Get('auto_tavern_daily_roll') == 1)
             return
 
         Firestone.Click(717, 911) ; Заходим в Таверну из города

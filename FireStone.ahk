@@ -2,7 +2,7 @@
 #MaxThreadsPerHotkey 2
 #SingleInstance Force
 
-AppVersion := "v0.0.7-alpha"
+AppVersion := "v0.0.8-alpha"
 A_IconTip := "Firestone Clicker " AppVersion
 
 #Include Settings.ahk
