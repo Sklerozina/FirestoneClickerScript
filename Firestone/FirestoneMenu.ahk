@@ -13,6 +13,9 @@ Class FirestoneMenu extends Menu {
         this.Add("Включить логи", (*) => (
             LogsOnOff()
         ))
+        this.Add("Перезапустить скрипт", (*) => (
+            Reload()
+        )) 
         this.Add()
         this.Add("Закрыть меню", (*) => (0))
     }
