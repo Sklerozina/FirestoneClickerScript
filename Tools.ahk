@@ -41,11 +41,14 @@ Class Tools {
         }
     }
 
-    static TelegramSend(text, chatid, token) {
+    static TelegramSend(text, chatid, token, silent := false) {
         data:= "chat_id=" . chatid .
             "&text=" . text .
             "&parse_mode=HTML" .
             "&disable_web_page_preview=1"
+        
+        if silent
+            data .= "&disable_notification=1"
     
         ; https://learn.microsoft.com/en-us/windows/win32/winhttp/winhttprequest
         web := ComObject('WinHttp.WinHttpRequest.5.1')

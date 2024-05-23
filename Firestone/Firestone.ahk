@@ -36,6 +36,7 @@ Class Firestone {
         this.CurrentSettings := Settings.Section(ProcessPath)
     
         defaults := Map(
+            'name', '',
             'auto_research', 0,
             'lvlup_priority', '17',
             'open_boxes', 0,
@@ -168,7 +169,7 @@ Class Firestone {
         }
 	}
 
-    static TelegramSend(text) {
+    static TelegramSend(text, silent := false) {
         chatid :=  Settings.Section('GENERAL').Get('TELEGRAM_CHAT_ID', 0)
         token := Settings.Section('GENERAL').Get('BOT_TOKEN', "")
     
@@ -182,7 +183,10 @@ Class Firestone {
     
         if chatid == "NONE" || chatid == 0 || token == ""
             return
-    
-        return Tools.TelegramSend(text, chatid, token)
+
+        name := this.CurrentSettings.Get('name', '') != '' ? this.CurrentSettings.Get('name', '') : WinGetProcessPath(Firestone.hwid)
+        
+        text := "<b>" name "</b>`n`n" text
+        return Tools.TelegramSend(text, chatid, token, silent)
     }
 }
