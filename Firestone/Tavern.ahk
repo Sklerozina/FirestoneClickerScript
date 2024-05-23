@@ -34,11 +34,37 @@ Class Tavern {
             {
                 click_coords := this.cards_coordinates[Random(1, this.cards_coordinates.Length)]
                 Firestone.Click(click_coords[1], click_coords[2])
-                DebugLog.Log("Ждём пояления синей кнопки...")
-                if Firestone.Buttons.Blue.Wait(873, 808, 890, 863, 30000) {
-                    DebugLog.Log("Дождались")
-                    Firestone.CurrentSettings.Set('daily_tavern', true)
+
+                DebugLog.Log("Ждём пояления синей кнопки... или чёрного экрана")
+                ok := false
+                Loop 60 {
+                    Tools.Sleep(1000)
+                    if Firestone.Buttons.Blue.Wait(873, 808, 890, 863, 250)
+                        ok := true
+
+                    if Tools.WaitForSearchPixel(1560-5, 832-5, 1560+5, 832+5, 0x000000, 0, 250)
+                    {
+                        DebugLog.Log("Обнаружен артефакт!")
+                        Firestone.TelegramSend('Выпал новый артефакт!', true)
+                        Firestone.Icons.Close.WaitAndClick(1777, 19, 1894, 91, 10000) ; Ищем кнопку с крестиком для закрытия и нажимаем
+                        ok := true
+                    }
+
+                    if ok
+                    {
+                        DebugLog.Log("Дождались")
+                        Firestone.CurrentSettings.Set('daily_tavern', true)
+                        break
+                    }
                 }
+
+                ; Проверяем доступность сборки нового артефакта
+                if Firestone.Buttons.Green.Check(125, 442, 135, 557)
+                {
+                    DebugLog.Log("Найдена кнопка для собрки артефакта")
+                    Firestone.TelegramSend('Можно собрать артефакт!', true)
+                }
+                
             }
                 ;Firestone.CurrentSettings.Set('daily_tavern', true)
         }
