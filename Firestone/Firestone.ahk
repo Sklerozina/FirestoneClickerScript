@@ -37,19 +37,20 @@ Class Firestone {
     
         defaults := Map(
             'name', '',
-            'auto_research', 0,
             'lvlup_priority', '17',
             'open_boxes', 0,
             'auto_complete_quests', 0,
-            'auto_arena', 0,
             'daily_arena', false,
             'daily_tavern', false,
             'daily_magazine', false,
             'alchemy', '111',
-            'auto_blessings', 0,
             'oracle_blessings_priority', 0,
+            'auto_research', 0,
+            'auto_blessings', 0,
+            'auto_arena', 0,
             'auto_tavern', 0,
             'auto_tavern_daily_roll', 0,
+            'auto_mailbox', 0,
         )
     
         for key, value in defaults {

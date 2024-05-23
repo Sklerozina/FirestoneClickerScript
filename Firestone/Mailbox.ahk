@@ -9,6 +9,9 @@ Class Mailbox {
     ]
 
     static Do() {
+        if Firestone.CurrentSettings.Get('auto_mailbox', 0) == 0
+            return
+
         ; Проверяем значок у иконки почты
         if !Firestone.Icons.Red.Check(97, 718, 128, 748)
             return
