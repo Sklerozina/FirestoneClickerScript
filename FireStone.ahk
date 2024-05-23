@@ -25,6 +25,7 @@ A_IconTip := "Firestone Clicker " AppVersion
 #Include Library.ahk
 #Include Quests.ahk
 #Include Bags.ahk
+#Include Mailbox.ahk
 #Include WarCampaignMap.ahk
 #Include FirestoneMenu.ahk
 
@@ -175,7 +176,7 @@ DoWork(force := false) {
 					DebugLog.Log("Сброс дейликов! Новый день!")
 					Firestone.CurrentSettings.Set('daily_magazine', false)
 				}
-
+				Mailbox.Do()
 				HerosUpgrades.Do(Firestone.CurrentSettings.Get('lvlup_priority'), prestige_mode)
 				Firestone.City() ; зайти в город
 				Magazine.Do()
