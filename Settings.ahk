@@ -36,13 +36,20 @@ Class Ini {
         }
 
         for k in this.data {
-            pairs := IniRead(this.ini_name, k)
-            
+            try
+            {
+                pairs := IniRead(this.ini_name, k)
+            }
+            catch
+            {
+                continue
+            }
             Loop parse, pairs, "`n", "`r"
             {
                 Result := StrSplit(A_LoopField, "=")
                 this.data[k][Result[1]] := Result[2]
             }
+            
         }
 
         return this
