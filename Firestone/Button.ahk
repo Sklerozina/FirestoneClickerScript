@@ -3,6 +3,28 @@ Class Button {
 		this.color := color
 	}
 
+	CheckPixels(coords*) {
+		if Mod(coords.Length, 2) != 0
+			Throw ValueError("Неверное количество параметров, должно быть кратно двум!", -1, coords.Length)
+
+		xy := []
+		i := 0
+		
+		loop coords.Length / 2
+		{
+			xy.Push([coords[i+1], coords[i+2]])
+			i += 2
+		}
+
+		for coords in xy
+		{
+			if PixelGetColor(coords[1], coords[2]) != this.color
+				return false
+		}
+
+		return true
+	}
+
 	Check(x1, y1, x2, y2) {
 		return Tools.PixelSearch(x1, y1, x2, y2, this.color, 1)
 	}

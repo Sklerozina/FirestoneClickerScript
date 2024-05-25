@@ -3,7 +3,8 @@ Class Firestone {
 		Green: Button(0x0AA008),
 		Red: Button(0xE7473F),
 		Orange: Button(0xFBAC46),
-        Blue: Button(0x1289FF)
+        Blue: Button(0x1289FF),
+        White: Button(0xFFFFFF),
 	}
 
     static Icons := {
@@ -43,6 +44,7 @@ Class Firestone {
             'daily_arena', false,
             'daily_tavern', false,
             'daily_magazine', false,
+            'daily_merchant', false,
             'alchemy', '111',
             'oracle_blessings_priority', 0,
             'auto_research', 0,
@@ -51,6 +53,7 @@ Class Firestone {
             'auto_tavern', 0,
             'auto_tavern_daily_roll', 0,
             'auto_mailbox', 0,
+            'auto_merchant', 0,
         )
     
         for key, value in defaults {
@@ -127,6 +130,7 @@ Class Firestone {
 
     static ResetDailys() {
         ; Магазин сбрасывается отдельно
+        Firestone.CurrentSettings.Set('daily_merchant', false)
         Firestone.CurrentSettings.Set('daily_arena', false)
         Firestone.CurrentSettings.Set('daily_tavern', false)
     }

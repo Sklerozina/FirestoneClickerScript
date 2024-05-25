@@ -23,6 +23,7 @@ A_IconTip := "Firestone Clicker " AppVersion
 #Include Guard.ahk
 #Include Mechanic.ahk
 #Include Library.ahk
+#Include Merchant.ahk
 #Include Quests.ahk
 #Include Bags.ahk
 #Include Mailbox.ahk
@@ -180,6 +181,7 @@ DoWork(force := false) {
 				HerosUpgrades.Do(Firestone.CurrentSettings.Get('lvlup_priority'), prestige_mode)
 				Firestone.City() ; зайти в город
 				Magazine.Do()
+				Merchant.Do()
 				Tavern.Do()
 				Alchemy.Do(Firestone.CurrentSettings.Get('alchemy'))
 				Guard.Do()
