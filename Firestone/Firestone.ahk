@@ -72,7 +72,6 @@ Class Firestone {
 
     ; Принудительный возврат на главный экран (Много раз жмёт Esc, потом кликает на закрытие диалога)
     static BackToMainScreen(){
-        ono_rabotaet := false
         DebugLog.Log('Возврат на главный экран', "`n")
         game_good := false
         i := 1
@@ -81,7 +80,6 @@ Class Firestone {
 
             if i == 6
             {
-                ono_rabotaet := true
                 ; К этому моменту мы уже должны быть на главном
                 DebugLog.Log("Свернуть и развернуть, вдруг поможет?")
                 WinMinimize()
@@ -99,8 +97,6 @@ Class Firestone {
                 ; Хорошо, мы на главном экране, можно продолжать скрипт
                 this.Click 1537, 275, 500
                 game_good := true
-                if ono_rabotaet
-                    this.TelegramSend("Офигеть, оно работает!")
                 break
             } else {
                 DebugLog.Log('Кнопка не найдена')
