@@ -176,17 +176,9 @@ Class Firestone {
 
     static TelegramSend(text, silent := false) {
         chatid :=  Settings.Section('GENERAL').Get('TELEGRAM_CHAT_ID', 0)
-        token := Settings.Section('GENERAL').Get('BOT_TOKEN', "")
+        token := Settings.Section('GENERAL').Get('BOT_TOKEN', '')
     
-        if chatid == 0 {
-            Settings.Section('GENERAL').Set('TELEGRAM_CHAT_ID', 'NONE')
-        }
-
-        if token == "" {
-            Settings.Section('GENERAL').Set('BOT_TOKEN', "")
-        }
-    
-        if chatid == "NONE" || chatid == 0 || token == ""
+        if chatid == 0 || token == ""
             return
 
         name := this.CurrentSettings.Get('name', '') != '' ? this.CurrentSettings.Get('name', '') : WinGetProcessPath(Firestone.hwid)

@@ -42,6 +42,16 @@ saved_mouse_position_y := 0
 prestige_mode := false
 Settings := Ini('settings.ini')
 
+if Settings.Section('GENERAL').Get('debug', 'none') == 'none'
+	Settings.Section('GENERAL').Set('debug', 0)
+
+if Settings.Section('GENERAL').Get('BOT_TOKEN', 'none') == 'none'
+	Settings.Section('GENERAL').Set('BOT_TOKEN', '')
+
+if Settings.Section('GENERAL').Get('TELEGRAM_CHAT_ID', 'none') == 'none'
+	Settings.Section('GENERAL').Set('TELEGRAM_CHAT_ID', '')
+
+Exit
 
 DebugLog := Logs('Logs\')
 If Settings.Section('GENERAL').Get('debug', 0) {
