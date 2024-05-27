@@ -45,6 +45,7 @@ Class Firestone {
             'daily_tavern', 1,
             'daily_magazine', 1,
             'daily_merchant', 1,
+            'daily_crystal', 1,
             'alchemy', '111',
             'oracle_blessings_priority', 0,
             'auto_research', 0,
@@ -54,6 +55,7 @@ Class Firestone {
             'auto_tavern_daily_roll', 0,
             'auto_mailbox', 0,
             'auto_merchant', 0,
+            'auto_guild_crystal', 0,
         )
     
         for key, value in defaults {
@@ -130,9 +132,10 @@ Class Firestone {
 
     static ResetDailys() {
         ; Магазин сбрасывается отдельно
-        Firestone.CurrentSettings.Set('daily_merchant', false)
-        Firestone.CurrentSettings.Set('daily_arena', false)
-        Firestone.CurrentSettings.Set('daily_tavern', false)
+        Firestone.CurrentSettings.Set('daily_merchant', 0)
+        Firestone.CurrentSettings.Set('daily_arena', 0)
+        Firestone.CurrentSettings.Set('daily_tavern', 0)
+        Firestone.CurrentSettings.Set('daily_crystal', 0)
     }
 
     ; Кнопка города
