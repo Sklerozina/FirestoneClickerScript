@@ -51,8 +51,6 @@ if Settings.Section('GENERAL').Get('BOT_TOKEN', 'none') == 'none'
 if Settings.Section('GENERAL').Get('TELEGRAM_CHAT_ID', 'none') == 'none'
 	Settings.Section('GENERAL').Set('TELEGRAM_CHAT_ID', '')
 
-Exit
-
 DebugLog := Logs('Logs\')
 If Settings.Section('GENERAL').Get('debug', 0) {
 	Firestone.Menu.Rename("Включить логи", 'Выключить логи')
