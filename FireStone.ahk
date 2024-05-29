@@ -56,48 +56,36 @@ If Settings.Section('GENERAL').Get('debug', 0) {
 	Firestone.Menu.Rename("Включить логи", 'Выключить логи')
 	DebugLog.Enable()
 }
-	
-~^+C:: {
-	if !WinActive("ahk_exe Firestone.exe")
-		return
 
+HotIfWinActive("ahk_exe Firestone.exe")
+Hotkey('^+C', (*) => (
 	MouseGetPos(&x, &y)
 	A_Clipboard := x ", " y
-	Tp "Координаты курсора скопированы в буфер обмена"
-}
+	Tp("Координаты курсора скопированы в буфер обмена")
+))
 
-~^+x:: {
-	if !WinActive("ahk_exe Firestone.exe")
-		return
-
+Hotkey('^+x', (*) => (
 	MouseGetPos(&x, &y)
 	A_Clipboard := x ", " y ", " PixelGetColor(x, y)
-	Tp A_Clipboard
-}
+	Tp(A_Clipboard)
+))
+
+Hotkey('RButton', (*) => (
+	Firestone.Menu.Show()
+))
 
 ^+e:: {
 	MsgBox "Скрипт перезапущен."
 	Reload
 }
 
-~RButton::{
-    if WinActive("ahk_exe Firestone.exe")
-        Firestone.Menu.Show()
-}
-
-^+l:: {
-	LogsOnOff
-}
+^+l::LogsOnOff
 
 ; Сменить режим апгрейда героев
-^NumpadEnd::
-^Numpad1:: {
-	PrestigeModeOnOff
-}
+^NumpadEnd::PrestigeModeOnOff
+^Numpad1::PrestigeModeOnOff
 
-^y:: {
-	RunOnOff
-}
+^y::RunOnOff
 
 LogsOnOff() {
 	if DebugLog.enabled	{
