@@ -32,7 +32,7 @@ A_IconTip := "Firestone Clicker " AppVersion
 
 InstallKeybdHook
 
-SendMode "InputThenPlay"
+SendMode "Input"
 ; Thread "Interrupt", 0  ; Make all threads always-interruptible.
 
 SetDefaultMouseSpeed 25
@@ -57,33 +57,30 @@ If Settings.Section('GENERAL').Get('debug', 0) {
 	DebugLog.Enable()
 }
 
-HotIfWinActive("ahk_exe Firestone.exe")
-Hotkey('^+C', (*) => (
+#HotIf WinActive("ahk_exe Firestone.exe")
+^+C::{
 	MouseGetPos(&x, &y)
 	A_Clipboard := x ", " y
 	Tp("Координаты курсора скопированы в буфер обмена")
-))
+}
 
-Hotkey('^+x', (*) => (
+^+x::{
 	MouseGetPos(&x, &y)
 	A_Clipboard := x ", " y ", " PixelGetColor(x, y)
 	Tp(A_Clipboard)
-))
+}
 
-Hotkey('RButton', (*) => (
-	Firestone.Menu.Show()
-))
+; Сменить режим апгрейда героев
+^NumpadEnd::PrestigeModeOnOff
+^Numpad1::PrestigeModeOnOff
+
+RButton::Firestone.Menu.Show()
+#HotIf
 
 ^+e:: {
 	MsgBox "Скрипт перезапущен."
 	Reload
 }
-
-^+l::LogsOnOff
-
-; Сменить режим апгрейда героев
-^NumpadEnd::PrestigeModeOnOff
-^Numpad1::PrestigeModeOnOff
 
 ^y::RunOnOff
 
