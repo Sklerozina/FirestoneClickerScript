@@ -31,8 +31,19 @@ Class FirestoneWindow {
     }
 
     Activate() {
-        If WinExist(this.hwid)
+        If WinExist(this.hwid) {
             WinActivate
+            Sleep(500)
+
+            if !WinActive(this.hwid) ; Есть у меня непонятный бог, что окно не весгда активируется 🤔
+            {
+                WinMinimize(this.hwid)
+                Sleep(1000)
+                WinRestore(this.hwid)
+                WinActivate
+            }
+        }
+            
         else
         {
             DebugLog.Log('Окно с игрой не найдено!')
