@@ -28,6 +28,8 @@ A_IconTip := "Firestone Clicker " AppVersion
 #Include Bags.ahk
 #Include Mailbox.ahk
 #Include WarCampaignMap.ahk
+#Include MapMissions.ahk
+#Include MapMission.ahk
 #Include FirestoneMenu.ahk
 
 InstallKeybdHook

@@ -1,6 +1,7 @@
 Class Button {
-	__New(color) {
+	__New(color, variation := 1) {
 		this.color := color
+		this.variation := variation
 	}
 
 	CheckPixels(coords*) {
@@ -26,15 +27,15 @@ Class Button {
 	}
 
 	Check(x1, y1, x2, y2) {
-		return Tools.PixelSearch(x1, y1, x2, y2, this.color, 1)
+		return Tools.PixelSearch(x1, y1, x2, y2, this.color, this.variation)
 	}
 
 	Find(x1, y1, x2, y2, &FoundX, &FoundY) {
-		return Tools.PixelSearch(x1, y1, x2, y2, this.color, 1, &FoundX, &FoundY)
+		return Tools.PixelSearch(x1, y1, x2, y2, this.color, this.variation, &FoundX, &FoundY)
 	}
 
 	Wait(x1, y1, x2, y2, timeout := 30000) {
-		return Tools.WaitForSearchPixel(x1, y1, x2, y2, this.color, 1, timeout)
+		return Tools.WaitForSearchPixel(x1, y1, x2, y2, this.color, this.variation, timeout)
 	}
 
 	CheckAndClick(x1, y1, x2, y2, click_x?, click_y?, wait?, clickcount?) {
