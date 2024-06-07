@@ -37,7 +37,7 @@ InstallKeybdHook
 SendMode "Input"
 ; Thread "Interrupt", 0  ; Make all threads always-interruptible.
 
-SetDefaultMouseSpeed 25
+; SetDefaultMouseSpeed 25
 
 saved_mouse_position_x := 0
 saved_mouse_position_y := 0
