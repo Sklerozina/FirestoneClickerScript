@@ -39,10 +39,13 @@ SendMode "Input"
 
 ; SetDefaultMouseSpeed 25
 
+If !IsSet(Firestone_WorkingDir)
+	Firestone_WorkingDir := A_WorkingDir
+
 saved_mouse_position_x := 0
 saved_mouse_position_y := 0
 prestige_mode := false
-Settings := Ini('settings.ini')
+Settings := Ini(Firestone_WorkingDir '\settings.ini')
 
 if Settings.Section('GENERAL').Get('debug', 'none') == 'none'
 	Settings.Section('GENERAL').Set('debug', 0)
@@ -53,7 +56,7 @@ if Settings.Section('GENERAL').Get('BOT_TOKEN', 'none') == 'none'
 if Settings.Section('GENERAL').Get('TELEGRAM_CHAT_ID', 'none') == 'none'
 	Settings.Section('GENERAL').Set('TELEGRAM_CHAT_ID', '')
 
-DebugLog := Logs('Logs\')
+DebugLog := Logs(Firestone_WorkingDir '\Logs\')
 If Settings.Section('GENERAL').Get('debug', 0) {
 	Firestone.Menu.Rename("Включить логи", 'Выключить логи')
 	DebugLog.Enable()
