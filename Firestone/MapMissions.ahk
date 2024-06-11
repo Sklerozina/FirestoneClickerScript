@@ -24,7 +24,7 @@ Class MapMissions {
             }
             else
             {
-                if this.icon.Check(m.x-10, m.y-30, m.x+10, m.y+30)
+                if this.icon.Check(m.x-30, m.y-30, m.x+30, m.y+30)
                 {
                     DebugLog.Log('Иконка найдена!')
                     if m.Click()
