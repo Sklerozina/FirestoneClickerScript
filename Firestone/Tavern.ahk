@@ -30,7 +30,9 @@ Class Tavern {
         if Firestone.CurrentSettings.Get('daily_tavern') == 0 && Firestone.CurrentSettings.Get('auto_tavern_daily_roll') == 1
         {
             DebugLog.Log("== Ежедневные 10 круток ==")
-            if Firestone.Buttons.Green.WaitAndClick(931, 913, 941, 965, 1000) 
+            if Firestone.Buttons.Green.WaitAndClick(1016, 913, 941, 1053, 1000) &&
+                (Firestone.Buttons.White.CheckPixels(1093, 934, 1099, 933, 1096, 954, 1110, 941, 1118, 932, 1124, 943, 1116, 955) || ; проверяем цифру 10
+                Firestone.Buttons.White.CheckPixels(980, 934, 984, 933, 982, 952, 1007, 933, 996, 949, 1009, 935, 0xFFFFFF))
             {
                 click_coords := this.cards_coordinates[Random(1, this.cards_coordinates.Length)]
                 Firestone.Click(click_coords[1], click_coords[2])
@@ -65,6 +67,10 @@ Class Tavern {
                     Firestone.TelegramSend('Можно собрать артефакт!', true)
                 }
                 
+            }
+            else
+            {
+                DebugLog.Log("Не могу найти кнопку с цифрой 10... нужно больше пива!")
             }
                 ;Firestone.CurrentSettings.Set('daily_tavern', true)
         }
