@@ -1,24 +1,24 @@
 Class WarCampaignMap {
     ;; Координаты заданий для карты
     static missions := Map(
-        'domination', MapMissions([MapMission(954, 503, true), MapMission(728, 350, true)]),
+        'mystery', MapMissions([MapMissionDomination(954, 503), MapMissionDomination(728, 350)], Button(0xCF6639, 5)),
         ; ~20 minutes
-        'little', MapMissions([
+        'scout', MapMissions([
             MapMission(866, 207), MapMission(1390, 320), MapMission(1333, 409), MapMission(1216, 435), MapMission(536, 472), MapMission(682, 493),
             MapMission(845, 640), MapMission(1266, 673), MapMission(1455, 552), MapMission(907, 335), MapMission(696, 198), MapMission(499, 158), MapMission(1338, 619),
             MapMission(1291, 159), MapMission(818, 345), MapMission(1134, 416), MapMission(630, 330), MapMission(1087, 860)
         ], Button(0xFFBE8C, 5)),
         ; ~40 minutes
-        'small', MapMissions([MapMission(564, 262), MapMission(1289, 280), MapMission(1480, 227), MapMission(789, 476), MapMission(672, 569), MapMission(1433, 663),
+        'adventure', MapMissions([MapMission(564, 262), MapMission(1289, 280), MapMission(1480, 227), MapMission(789, 476), MapMission(672, 569), MapMission(1433, 663),
             MapMission(668, 728), MapMission(854, 515), MapMission(1034, 648), MapMission(466, 306), MapMission(478, 387), MapMission(445, 644),
             MapMission(1012, 500), MapMission(1418, 394), MapMission(1318, 517), MapMission(1411, 845)], Button(0xFFFB02, 5)),
         ; ~1-2 hours
-        'medium', MapMissions([MapMission(1214, 285), MapMission(1008, 401), MapMission(779, 602), MapMission(1140, 600), MapMission(1450, 469), MapMission(840, 767),
+        'war', MapMissions([MapMission(1214, 285), MapMission(1008, 401), MapMission(779, 602), MapMission(1140, 600), MapMission(1450, 469), MapMission(840, 767),
             MapMission(1047, 769), MapMission(1325, 774), MapMission(1147, 948), MapMission(1202, 521), MapMission(760, 822), MapMission(709, 646),
             MapMission(954, 190), MapMission(896, 732), MapMission(1400, 753), MapMission(1245, 360), MapMission(646, 392), MapMission(920, 575)], Button(0xF23B27, 5)),
         ; Seas, Monsters, Dragons
-        'dragons', MapMissions([MapMission(467, 891), MapMission(599, 534), MapMission(611, 166), MapMission(1476, 740)], Button(0xFFB736, 5)),
-        'monsters', MapMissions([MapMission(960, 772), MapMission(1097, 522), MapMission(873, 422), MapMission(542, 947, true)], Button(0x521770, 5)), ; 542, 947 - эту только принудительно кликать
+        'dragon', MapMissions([MapMission(467, 891), MapMission(599, 534), MapMission(611, 166), MapMission(1476, 740)], Button(0xFFB736, 5)),
+        'monster', MapMissions([MapMission(960, 772), MapMission(1097, 522), MapMission(873, 422), MapMission(542, 947, true)], Button(0x521770, 5)), ; 542, 947 - эту только принудительно кликать
         'sea', MapMissions([MapMission(1137, 312), MapMission(374, 972), MapMission(1245, 819), MapMission(836, 944, true)], Button(0x68E5F7, 5)) ; 836, 944 - эту только принудительно кликать
     )
 
@@ -100,24 +100,25 @@ Class WarCampaignMap {
         ; Проверить, есть ли не задания на карте и попытаться их начать.
         if (this.CheckSquad() || force == true)
         {
+
             ; Мисси при событии "Мировое господство"
             DebugLog.Log("=== Прокликиваем подарки ===")
-            this.missions.Get('domination').EachMapMissions(force, false)
+            this.missions.Get('mystery').EachMapMissions(force, false)
             DebugLog.Log("=== Прокликиваем 20 минутки ===")
-            this.missions.Get('little').EachMapMissions(force, false)
+            this.missions.Get('scout').EachMapMissions(force, false)
             
             DebugLog.Log("=== Прокликиваем монстров ===")
-            this.missions.Get('monsters').EachMapMissions(force, false)
+            this.missions.Get('monster').EachMapMissions(force, false)
             DebugLog.Log("=== Прокликиваем морские ===")
             this.missions.Get('sea').EachMapMissions(force, false)
 
             DebugLog.Log("=== Прокликиваем драконов ===")
-            this.missions.Get('dragons').EachMapMissions(force, false)
+            this.missions.Get('dragon').EachMapMissions(force, false)
 
             DebugLog.Log("=== Прокликиваем 40 минутки ===")
-            this.missions.Get('small').EachMapMissions(force, false)
+            this.missions.Get('adventure').EachMapMissions(force, false)
             DebugLog.Log("=== Прокликиваем 1-2 часов ===")
-            this.missions.Get('medium').EachMapMissions(force, false)
+            this.missions.Get('war').EachMapMissions(force, false)
         }
     }
 
