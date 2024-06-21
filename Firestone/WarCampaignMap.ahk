@@ -100,25 +100,15 @@ Class WarCampaignMap {
         ; Проверить, есть ли не задания на карте и попытаться их начать.
         if (this.CheckSquad() || force == true)
         {
-
             ; Мисси при событии "Мировое господство"
             DebugLog.Log("=== Прокликиваем подарки ===")
             this.missions.Get('mystery').EachMapMissions(force, false)
-            DebugLog.Log("=== Прокликиваем 20 минутки ===")
-            this.missions.Get('scout').EachMapMissions(force, false)
-            
-            DebugLog.Log("=== Прокликиваем монстров ===")
-            this.missions.Get('monster').EachMapMissions(force, false)
-            DebugLog.Log("=== Прокликиваем морские ===")
-            this.missions.Get('sea').EachMapMissions(force, false)
 
-            DebugLog.Log("=== Прокликиваем драконов ===")
-            this.missions.Get('dragon').EachMapMissions(force, false)
-
-            DebugLog.Log("=== Прокликиваем 40 минутки ===")
-            this.missions.Get('adventure').EachMapMissions(force, false)
-            DebugLog.Log("=== Прокликиваем 1-2 часов ===")
-            this.missions.Get('war').EachMapMissions(force, false)
+            for mission_type in this.Get_Priority()
+            {
+                DebugLog.Log('=== Прокликиваем ' mission_type ' ===')
+                this.missions.Get(mission_type).EachMapMissions(force, false)
+            }
         }
     }
 
@@ -193,5 +183,45 @@ Class WarCampaignMap {
         }
         else
             return 0
+    }
+
+    static Get_Priority() {
+        defaults := Map(
+            'monster', '',
+            'sea', '',
+            'dragon', '',
+            'scout', '',
+            'adventure', '',
+            'war', '')
+        
+        priority := Firestone.CurrentSettings.Get('map_missions_priority', 'monster, sea, dragon, scout, adventure, war')
+        priority := StrSplit(priority, ",", " `t`n`r")
+        
+        ; Заполняем список, проверяя, что такой тип миссий у нас есть.
+        list := []
+        for p in priority
+        {
+            if defaults.Has(p)
+                list.Push(p)
+        }
+
+        ; пробегаемся по списку типов и добавляем типы миссий, которых не хватает в конец
+        for d in defaults
+        {
+            found := false
+            for p in priority
+            {
+                if p == d
+                {
+                    found := true
+                    break
+                }
+            }
+
+            if !found
+                list.Push(d)
+        }
+
+        return list
     }
 }
