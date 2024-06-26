@@ -155,7 +155,9 @@ Class WarCampaignMap {
             if Firestone.Buttons.Green.CheckAndClick(1100, 740, 1340, 810) ; 
             {
                 DebugLog.Log("Подземелье 1")
-                this.DoWMMission(630, 700, 890, 770) ; 1 подземелье
+                this.DoWMMission(630, 700, 890, 770) ; Подземелье 1
+                DebugLog.Log("Подземелье 2")
+                this.DoWMMission(1027, 707, 1288, 775) ; Подземелье 2
                 Firestone.Esc() ; Вышли на карту
             }
             else
