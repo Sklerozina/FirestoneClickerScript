@@ -169,6 +169,7 @@ Class WarCampaignMap {
     
     static DoWMMission(zone_x1, zone_y1, zone_x2, zone_y2) {
         Tools.Sleep 500
+        MouseMove(0, 0) ; Убираем мышь, чтобы не светила кнопку
         DebugLog.Log("Поиск кнопки... (" zone_x1 "x" zone_y1 " - " zone_x2 "x" zone_y2 ")")
         if Firestone.Buttons.Green.CheckAndClick(zone_x1, zone_y1, zone_x2, zone_y2)
         {
