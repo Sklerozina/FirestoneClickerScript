@@ -171,11 +171,6 @@ DoWork(force := false) {
 				Firestone.BackToMainScreen()
 				Tools.Sleep 1000
 
-				if Firestone.Icons.Red.Check(1877, 517, 1912, 555)
-				{
-					DebugLog.Log("Сброс дейликов! Новый день!")
-					Firestone.CurrentSettings.Set('daily_magazine', false)
-				}
 				Mailbox.Do()
 				HerosUpgrades.Do(Firestone.CurrentSettings.Get('lvlup_priority'), prestige_mode)
 				Firestone.City() ; зайти в город

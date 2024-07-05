@@ -47,6 +47,7 @@ Class Firestone {
             'daily_magazine', 1,
             'daily_merchant', 1,
             'daily_crystal', 1,
+            'daily_date', FormatTime(, 'yyyyMMdd'),
             'open_boxes', 0,
             'auto_complete_quests', 0,
             'auto_research', 0,
@@ -129,11 +130,16 @@ Class Firestone {
     }
 
     static ResetDailys() {
-        ; Магазин сбрасывается отдельно
+        date := FormatTime(, 'yyyyMMdd')
+        if Firestone.CurrentSettings.Get('daily_date', date) == date
+            return
+
+        DebugLog.Log("Сброс дейликов! Новый день!")
         Firestone.CurrentSettings.Set('daily_merchant', 0)
         Firestone.CurrentSettings.Set('daily_arena', 0)
         Firestone.CurrentSettings.Set('daily_tavern', 0)
         Firestone.CurrentSettings.Set('daily_crystal', 0)
+        Firestone.CurrentSettings.Set('daily_magazine', 0)
     }
 
     ; Кнопка города

@@ -40,11 +40,8 @@ Class Magazine {
         if reward_1 && reward_2
         {
             Firestone.CurrentSettings.Set('daily_magazine', true)
-            Firestone.ResetDailys()
         }
-            
-            
-    
+
         Firestone.Esc()
     }
 }
