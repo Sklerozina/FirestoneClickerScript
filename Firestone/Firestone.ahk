@@ -57,6 +57,7 @@ Class Firestone {
             'auto_tavern_daily_roll', 0,
             'auto_mailbox', 0,
             'auto_merchant', 0,
+            'auto_merchant_sell_items', 0,
             'auto_guild_crystal', 0,
         )
     
