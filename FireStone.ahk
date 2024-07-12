@@ -2,7 +2,7 @@
 #MaxThreadsPerHotkey 2
 #SingleInstance Force
 
-AppVersion := "v0.0.20"
+AppVersion := "v0.0.21"
 A_IconTip := "Firestone Clicker " AppVersion
 
 #Include Settings.ahk
@@ -32,6 +32,7 @@ A_IconTip := "Firestone Clicker " AppVersion
 #Include MapMission.ahk
 #Include MapMissionDomination.ahk
 #Include FirestoneMenu.ahk
+#Include Events.ahk
 
 InstallKeybdHook
 
@@ -72,7 +73,10 @@ If Settings.Section('GENERAL').Get('debug', 0) {
 
 ^+x::{
 	MouseGetPos(&x, &y)
+	MouseMove 0, 0
+	Sleep 300
 	A_Clipboard := x ", " y ", " PixelGetColor(x, y)
+	MouseMove x, y
 	Tp(A_Clipboard)
 }
 
@@ -200,6 +204,8 @@ DoWork(force := false) {
 				if Firestone.CurrentSettings.Get('auto_arena', 0) == 1 && Firestone.CurrentSettings.Get('daily_arena', false) == false {
 					Arena.Do()
 				}
+
+				Events.Do()
 
 				DebugLog.Log('==== Закончил работу!', "`n")
 			}
