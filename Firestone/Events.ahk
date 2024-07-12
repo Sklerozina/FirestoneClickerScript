@@ -60,13 +60,13 @@ Class Events {
         loop 3
         {
             Firestone.Buttons.Green.CheckAndClick(228, 550, 248, 604) ; 1
-            ;Firestone.Buttons.Green.WaitAndClick() ; 2
+            ;Firestone.Buttons.Green.CheckAndClick() ; 2
             Firestone.Buttons.Green.CheckAndClick(1073, 550, 1091, 604) ; 3
             Firestone.Buttons.Green.CheckAndClick(1492, 550, 1516, 604) ; 4
-            Firestone.Buttons.Green.WaitAndClick(228, 862, 248, 919) ; 5 примерно
-            ;Firestone.Buttons.Green.WaitAndClick() ; 6
+            Firestone.Buttons.Green.CheckAndClick(228, 862, 248, 919) ; 5 примерно
+            ;Firestone.Buttons.Green.CheckAndClick() ; 6
             Firestone.Buttons.Green.CheckAndClick(1070, 862, 1093, 919) ; 7
-            Firestone.Buttons.Green.WaitAndClick(1492, 862, 1516, 919) ; 8 примерно
+            Firestone.Buttons.Green.CheckAndClick(1492, 862, 1516, 919) ; 8 примерно
         }
         
     }
