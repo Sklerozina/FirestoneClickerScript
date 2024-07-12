@@ -20,15 +20,21 @@ Class Bags {
     }
 
     static OpenBoxes() {
-        Firestone.Click(1373, 548, 500)
+        
         
         i := 0
         DebugLog.Log("Проверка слоты...")
 
         if Tools.PixelSearch(1814-5, 21-5, 1814+5, 21+5, 0xE1CDAC, 1) ; Проверка фона, если фон есть, то интерфейс мобильный
+        {
+            Firestone.Click(1373, 548, 500)
             box_coordinates := this.box_coordinates_mobile
+        }
         else ; Иначе интерфейс ПК
+        {
+            Firestone.Click(1485, 434, 500)
             box_coordinates := this.box_coordinates_pc
+        }
 
         For coords in box_coordinates
         {
