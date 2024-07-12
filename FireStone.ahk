@@ -205,7 +205,9 @@ DoWork(force := false) {
 					Arena.Do()
 				}
 
-				Events.Do()
+				if Firestone.CurrentSettings.Get('auto_events', 0) == 1 {
+					Events.Do()
+				}
 
 				DebugLog.Log('==== Закончил работу!', "`n")
 			}

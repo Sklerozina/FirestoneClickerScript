@@ -22,11 +22,13 @@ Class Events {
 
             for coord in this.corrds_red_icons
             {
+                DebugLog.Log("Проверяю координаты красной иконки " coord[1] "x" coord[2] " - " coord[3] "x" coord[4])
                 if (Firestone.Icons.Red.CheckAndClick(coord[1], coord[2], coord[3], coord[4]))
                 {
                     ; Проверяем, что это за событие
                     if Firestone.Icons.Red.CheckAndClick(1288, 8, 1324, 44, 1125, 43, 2000) ; Найдена красная иконка "испытания", похоже на стандартное событие
                     {
+                        DebugLog.Log("Обнаружено стандартное событие")
                         ; Ограниченный 3 этапами цикл
                         loop 3 {
                             ; Если ни одной кнопки не найдено, прерываем цикл раньше.
@@ -38,14 +40,18 @@ Class Events {
                     }
                     
                     ; Decorated heroes?
-                    if (PixelGetColor(677, 59) == 0x4F419C) ; Цвет фона у названия события
+                    if (PixelGetColor(677, 59) == 0x4F419C){ ; Цвет фона у названия события
+                        DebugLog.Log("Обнаружено событие 'Прославленные герои'")
                         this.DecoratedHeroes()
+                    }
 
                 }
             }
 
             Firestone.Esc()
         }
+        else
+            DebugLog.Log("Время ещё не пришло, осталось ждать " Round(A_TickCount - this.last_run.Get(Firestone.Window.hwid, 0) / 1000))
     }
 
     ; Decorated heroes
@@ -68,6 +74,8 @@ Class Events {
             Firestone.Buttons.Green.CheckAndClick(1070, 862, 1093, 919) ; 7
             Firestone.Buttons.Green.CheckAndClick(1492, 862, 1516, 919) ; 8 примерно
         }
+
+        Firestone.Esc()
         
     }
 }

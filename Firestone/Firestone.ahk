@@ -59,6 +59,7 @@ Class Firestone {
             'auto_merchant', 0,
             'auto_merchant_sell_items', 0,
             'auto_guild_crystal', 0,
+            'auto_events', 0,
         )
     
         for key, value in defaults {
