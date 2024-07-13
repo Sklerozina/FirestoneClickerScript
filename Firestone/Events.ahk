@@ -39,7 +39,7 @@ Class Events {
                         Firestone.Esc()
                     }
                     
-                    ; Decorated heroes?
+                    ; Decorated heroes / Прославленные герои?
                     if (PixelGetColor(677, 59) == 0x4F419C){ ; Цвет фона у названия события
                         DebugLog.Log("Обнаружено событие 'Прославленные герои'")
                         this.DecoratedHeroes()
@@ -54,7 +54,7 @@ Class Events {
             DebugLog.Log("Время ещё не пришло, осталось ждать " Round(A_TickCount - this.last_run.Get(Firestone.Window.hwid, 0) / 1000))
     }
 
-    ; Decorated heroes 
+    ; Decorated heroes / Прославленные герои
     static DecoratedHeroes() {
         ; Проверяем, горит ли иконка у испытаний
         if !Firestone.Icons.Red.Check(526, 119, 553, 149)
