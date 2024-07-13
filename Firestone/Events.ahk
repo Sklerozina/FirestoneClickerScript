@@ -54,7 +54,7 @@ Class Events {
             DebugLog.Log("Время ещё не пришло, осталось ждать " Round(A_TickCount - this.last_run.Get(Firestone.Window.hwid, 0) / 1000))
     }
 
-    ; Decorated heroes
+    ; Decorated heroes 
     static DecoratedHeroes() {
         ; Проверяем, горит ли иконка у испытаний
         if !Firestone.Icons.Red.Check(526, 119, 553, 149)
@@ -66,11 +66,11 @@ Class Events {
         loop 3
         {
             Firestone.Buttons.Green.CheckAndClick(228, 550, 248, 604) ; 1
-            ;Firestone.Buttons.Green.CheckAndClick() ; 2
+            Firestone.Buttons.Green.CheckAndClick(654, 550, 670, 604) ; 2
             Firestone.Buttons.Green.CheckAndClick(1073, 550, 1091, 604) ; 3
             Firestone.Buttons.Green.CheckAndClick(1492, 550, 1516, 604) ; 4
             Firestone.Buttons.Green.CheckAndClick(228, 862, 248, 919) ; 5 примерно
-            ;Firestone.Buttons.Green.CheckAndClick() ; 6
+            Firestone.Buttons.Green.CheckAndClick(654, 862, 670, 919) ; 6
             Firestone.Buttons.Green.CheckAndClick(1070, 862, 1093, 919) ; 7
             Firestone.Buttons.Green.CheckAndClick(1492, 862, 1516, 919) ; 8 примерно
         }
