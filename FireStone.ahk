@@ -83,9 +83,20 @@ If Settings.Section('GENERAL').Get('debug', 0) {
 ; Сменить режим апгрейда героев
 ^NumpadEnd::PrestigeModeOnOff
 ^Numpad1::PrestigeModeOnOff
+#HotIf
 
+#HotIf MouseOverWindow()
 RButton::Firestone.Menu.Show()
 #HotIf
+
+MouseOverWindow() {
+	MouseGetPos(&x, &y, &WinId)
+
+	if WinGetTitle(WinId) == 'Firestone'
+		return true
+	else
+		return false
+}
 
 ^+e:: {
 	MsgBox "Скрипт перезапущен."
