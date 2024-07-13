@@ -16,7 +16,12 @@ Class Guard {
 
     static CollectFreeXP() {
         DebugLog.Log("== Сбор опыта ==")
-        Firestone.Buttons.Green.CheckAndClick(1022, 703, 1053, 791) ; Кнопка бесплатного опыта
+        if Firestone.Buttons.Green.CheckAndClick(1022, 703, 1053, 791) ; Кнопка бесплатного опыта
+        {
+            ; Добавить настройку в конфиг
+            if Firestone.CurrentSettings.Get('auto_enlightenment', 0) > 0
+                Firestone.Buttons.Green.CheckAndClick(1415, 700, 1471, 792,,,250, Firestone.CurrentSettings.Get('auto_enlightenment', 0)) ; Клик на озарение, если был сбор бесплатного опыта
+        }
     }
 
     static Evolution() {
