@@ -7,12 +7,14 @@ Class Events {
 
     static Do() {
         DebugLog.Log("События", "`n")
+
+        ; Проверяем красную иконку у событий, если не горит, то и не трогаем.
+        if !Firestone.Icons.Red.Check(1712, 148, 1741, 179)
+            return
+
         if (!this.last_run.Has(Firestone.Window.hwid) || this.last_run.Get(Firestone.Window.hwid, 0) < A_TickCount - 1800000)
         {
             this.last_run.Set(Firestone.Window.hwid, A_TickCount)
-            ; Проверяем красную иконку у событий, если не горит, то и не трогаем.
-            if !Firestone.Icons.Red.Check(1712, 148, 1741, 179)
-                return
 
             Firestone.Click(1684, 207)
 
@@ -51,7 +53,7 @@ Class Events {
             Firestone.Esc()
         }
         else
-            DebugLog.Log("Время ещё не пришло, осталось ждать " Round(A_TickCount - this.last_run.Get(Firestone.Window.hwid, 0) / 1000))
+            DebugLog.Log("Время ещё не пришло, осталось ждать " Round((this.last_run.Get(Firestone.Window.hwid, 0) + 1800000 - A_TickCount) / 1000) " секунд")
     }
 
     ; Decorated heroes / Прославленные герои
