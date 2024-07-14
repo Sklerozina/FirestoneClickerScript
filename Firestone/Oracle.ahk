@@ -114,10 +114,14 @@ Class Oracle {
             for ritual in rituals
             {
                 if Firestone.Buttons.Green.CheckAndClick(ritual[1], ritual[2], ritual[3], ritual[4])
+                {
                     clicks += 1
+                    MouseMove 0, 0
+                    break ; Прерываем этот цикл, если сделали клик.
+                }
 
                 if clicks >= 2 ; Если 2 клика сделали, то можно заврешать циклы.
-                    break 2
+                    break 2 ; по идее это не нужно, но пусть будет
             }
         }
     }
