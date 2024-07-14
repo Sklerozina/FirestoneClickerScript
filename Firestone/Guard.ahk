@@ -20,7 +20,7 @@ Class Guard {
         {
             ; Добавить настройку в конфиг
             if Firestone.CurrentSettings.Get('auto_enlightenment', 0) > 0
-                Firestone.Buttons.Green.CheckAndClick(1415, 700, 1471, 792,,,250, Firestone.CurrentSettings.Get('auto_enlightenment', 0)) ; Клик на озарение, если был сбор бесплатного опыта
+                Firestone.Buttons.Green.CheckAndClick(1415, 700, 1471, 792,,,500, Firestone.CurrentSettings.Get('auto_enlightenment', 0)) ; Клик на озарение, если был сбор бесплатного опыта
         }
     }
 
