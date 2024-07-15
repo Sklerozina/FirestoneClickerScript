@@ -88,12 +88,16 @@ Class Library {
                     Firestone.ScrollDown(35)
                 }
 
-                columns := StrSplit(Sort("1, 2, 3, 4", "Random N D,"), ",", " ")
+                sort_columns := Sort("1, 2, 3, 4", "Random N D,")
+                DebugLog.Log("Порядок колонок: " sort_columns)
+                columns := StrSplit(sort_columns, ",", " ")
               
                 for column in columns
                 {
                     column := this.columns.Get(Integer(column))
-                    ys := StrSplit(Sort("226, 718, 348, 596, 472", "Random N D,"), ",", " ")
+                    slots := Sort("226, 348, 472, 596,  718", "Random N D,")
+                    DebugLog.Log("Порядок слотов: " slots)
+                    ys := StrSplit(slots, ",", " ")
                     for y in ys
                     {
                         y := Integer(y)
