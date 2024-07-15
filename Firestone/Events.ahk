@@ -4,6 +4,16 @@ Class Events {
         [1409, 262, 1444, 304],
         [1410, 436, 1446, 478]
     ]
+    static decorated_heroes_coords := [
+        [228, 550, 248, 604], ; 1
+        [654, 550, 670, 604], ; 2
+        [1073, 550, 1091, 604], ; 3
+        [1492, 550, 1516, 604], ; 4
+        [228, 862, 248, 919], ; 5
+        [654, 862, 670, 919], ; 6
+        [1070, 862, 1093, 919], ; 7
+        [1492, 862, 1516, 919], ; 8
+    ]
 
     static Do() {
         DebugLog.Log("События", "`n")
@@ -67,14 +77,14 @@ Class Events {
 
         loop 3
         {
-            Firestone.Buttons.Green.CheckAndClick(228, 550, 248, 604) ; 1
-            Firestone.Buttons.Green.CheckAndClick(654, 550, 670, 604) ; 2
-            Firestone.Buttons.Green.CheckAndClick(1073, 550, 1091, 604) ; 3
-            Firestone.Buttons.Green.CheckAndClick(1492, 550, 1516, 604) ; 4
-            Firestone.Buttons.Green.CheckAndClick(228, 862, 248, 919) ; 5 примерно
-            Firestone.Buttons.Green.CheckAndClick(654, 862, 670, 919) ; 6
-            Firestone.Buttons.Green.CheckAndClick(1070, 862, 1093, 919) ; 7
-            Firestone.Buttons.Green.CheckAndClick(1492, 862, 1516, 919) ; 8 примерно
+            for coord in this.decorated_heroes_coords
+            {
+                if Firestone.Buttons.Green.CheckAndClick(coord[1], coord[2], coord[3], coord[4])
+                {
+                    MouseMove 0, 0 ; если был клик, убираем мышку
+                    Tools.Sleep(500) ; Небольшая пауза, чтобы кнопка потухла
+                }
+            }
         }
 
         Firestone.Esc()
