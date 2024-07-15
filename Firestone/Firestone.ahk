@@ -165,12 +165,14 @@ Class Firestone {
 		}
 	}
 
-    static ScrollUp(times := 10) {
+    static ScrollUp(times := 10, wait := 250) {
         this.Press("{WheelUp}", 30, times)
+        Tools.Sleep(wait)
     }
 
-    static ScrollDown(times := 10) {
+    static ScrollDown(times := 10, wait := 250) {
         this.Press("{WheelDown}", 30, times)
+        Tools.Sleep(wait)
     }
 
 	static Press(key, wait := 1000, times := 1) {

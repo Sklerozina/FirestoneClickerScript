@@ -81,15 +81,22 @@ Class Library {
                 ; двигаем в начало, если это второй цикл, таким образом экономим время
                 if i == 2
                 {
-                    Firestone.ScrollUp(50)
+                    Firestone.ScrollUp(50, 1000)
                 }
                 else if i == 3 ; Двигаем дальше, если это 3-й цикл
                 {
                     Firestone.ScrollDown(35)
                 }
-                
-                for column in this.columns {
-                    for y in [226, 718, 348, 596, 472] {
+
+                columns := StrSplit(Sort("1, 2, 3, 4", "Random N D,"), ",", " ")
+              
+                for column in columns
+                {
+                    column := this.columns.Get(Integer(column))
+                    ys := StrSplit(Sort("226, 718, 348, 596, 472", "Random N D,"), ",", " ")
+                    for y in ys
+                    {
+                        y := Integer(y)
                         if this.FindResearch(y, column[1], column[2])
                         {
                             DebugLog.Log("Начинаем новое исследование")
