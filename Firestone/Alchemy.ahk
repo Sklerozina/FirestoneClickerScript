@@ -62,7 +62,7 @@ Class Alchemy {
         DebugLog.Log("Поиск зелёной кнопки... (" coords[1] "x" coords[2] " - " coords[3] "x" coords[4] ")")
 
         ; Пробуем найти и нажать зелёную кнопку
-        if !Firestone.Buttons.Green.WaitAndClick(coords[1], coords[2], coords[3], coords[4], timeout)
+        if !Firestone.Buttons.Green.WaitAndClick(coords[1], coords[2], coords[3], coords[4], timeout,,,250)
         {
             DebugLog.Log("Кнопка не найдена, ищем оранжевую кнопку...")
             if Firestone.Buttons.Orange.CheckAndClick(coords[1], coords[2], coords[3], coords[4], timeout)
