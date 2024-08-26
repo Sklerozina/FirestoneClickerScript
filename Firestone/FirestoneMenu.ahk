@@ -10,12 +10,19 @@ Class FirestoneMenu extends Menu {
             PrestigeModeOnOff()
         ))
         this.Add()
+        this.Add("Пометить все дейлики сделанными", (*) => (
+            SetAllDailyComplete()
+        ))
+        this.Add("Сбросить дейлики (Сделать все ещё раз)", (*) => (
+            SetAllDailyUncomplete()
+        ))
+        this.Add()
         this.Add("Включить логи", (*) => (
             LogsOnOff()
         ))
         this.Add("Перезапустить скрипт", (*) => (
             Reload()
-        )) 
+        ))
         this.Add()
         this.Add("Закрыть меню", (*) => (0))
     }

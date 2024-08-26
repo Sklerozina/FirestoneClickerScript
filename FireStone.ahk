@@ -2,7 +2,7 @@
 #MaxThreadsPerHotkey 2
 #SingleInstance Force
 
-AppVersion := "v0.0.21"
+AppVersion := "v0.0.22"
 A_IconTip := "Firestone Clicker " AppVersion
 
 #Include Settings.ahk
@@ -158,6 +158,38 @@ PrestigeModeOnOff() {
 		Tp "Обычный режим"
 		Firestone.Menu.Rename('Обычный режим', 'Режим престижа')
 		SetTimer DoPrestigeUpgrades, 0
+	}
+}
+
+SetAllDailyComplete(){
+	for key, value in Settings.data {
+		if InStr(key, 'Firestone.exe')
+		{
+			Settings.Section(key).Set('daily_merchant', 1)
+			Settings.Section(key).Set('daily_arena', 1)
+			Settings.Section(key).Set('daily_tavern', 1)
+			Settings.Section(key).Set('daily_crystal', 1)
+			Settings.Section(key).Set('daily_magazine', 1)
+		}
+	}
+}
+
+SetAllDailyUncomplete() {
+	if MsgBox("Вы уверены?", "Сбросить счётчик дейликов", 0x4) == "No"
+		return
+
+	if MsgBox("Вы ТОЧНО уверены? Это заставит скрипт попытаться сделать все дейлики ещё раз!", "Сбросить счётчик дейликов", 0x4) == "No"
+		return
+
+	for key, value in Settings.data {
+		if InStr(key, 'Firestone.exe')
+		{
+			Settings.Section(key).Set('daily_merchant', 0)
+			Settings.Section(key).Set('daily_arena', 0)
+			Settings.Section(key).Set('daily_tavern', 0)
+			Settings.Section(key).Set('daily_crystal', 0)
+			Settings.Section(key).Set('daily_magazine', 0)
+		}
 	}
 }
 
