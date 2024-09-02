@@ -1,5 +1,5 @@
 Class HerosUpgrades {
-    static coords := Map(
+    coords := Map(
         1, [1652, 134, 1776, 219], ; Общее усиление
         2, [1652, 251, 1776, 323],
         3, [1652, 366, 1776, 438],
@@ -9,11 +9,16 @@ Class HerosUpgrades {
         7, [1652, 817, 1776, 889]
     )
 
-    static Do(lvlup_priority := "1765432", prestige_mode := false) {   
+    __New(Firestone) {
+        this.Firestone := Firestone
+    }
+
+    Do() {
         DebugLog.Log("Прокачка героев", "`n")
-        Firestone.Press("{u}", 500)
+        lvlup_priority := this.Firestone.Settings.Get('lvlup_priority', "1765432")
+        this.Firestone.Press("{u}", 500)
     
-        if prestige_mode
+        if this.Firestone.prestige_mode
         {
             this.UpgradeHero(1) ; 1
             for slot in [1, 7, 6, 5, 4, 3, 2]
@@ -41,12 +46,12 @@ Class HerosUpgrades {
             }
         }
     
-        Firestone.Press("{u}")
+        this.Firestone.Press("{u}")
     }
 
-    static UpgradeHero(slot, clicks := 1) {
+    UpgradeHero(slot, clicks := 1) {
         coords := this.coords.Get(slot)
-        if Firestone.Buttons.Green.CheckAndClick(coords[1], coords[2], coords[3], coords[4],,, 200, clicks)
+        if this.Firestone.Buttons.Green.CheckAndClick(coords[1], coords[2], coords[3], coords[4],,, 200, clicks)
             DebugLog.Log('Прокачал слот ' . slot)
     }
 }

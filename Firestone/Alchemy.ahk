@@ -1,25 +1,30 @@
 Class Alchemy {
-    static buttons := Map(
+    __New(Firestone) {
+        this.Firestone := Firestone
+    }
+
+    buttons := Map(
         1, [855, 722, 935, 748], ; Кровь
         2, [1205, 722, 1285, 748], ; Пыль
         3, [1555, 722, 1635, 748] ; Монетки
     )
 
-    static Do(alchemy_settings) {
+    Do() {
         DebugLog.Log("Алхимия", "`n")
         
         ;; Проверяем, висит ли красный значёк у здания.
-        if !Firestone.Icons.Red.Check(570, 808, 614, 851)
+        if !this.Firestone.Icons.Red.Check(570, 808, 614, 851)
             return
     
-        Firestone.Click(480, 790)
+        this.Firestone.Click(480, 790)
     
         slot_ok := Map(
             1, false,
             2, false,
             3, false,
         )
-    
+
+        alchemy_settings := this.Firestone.Settings.Get('alchemy')
         alchemy_up := [
             SubStr(alchemy_settings, 1, 1),
             SubStr(alchemy_settings, 2, 1),
@@ -54,18 +59,18 @@ Class Alchemy {
             }
         }
     
-        Firestone.Esc()
+        this.Firestone.Esc()
     }
 
-    static Click(slot, timeout := 500) {
+    Click(slot, timeout := 500) {
         coords := this.buttons.Get(slot)
         DebugLog.Log("Поиск зелёной кнопки... (" coords[1] "x" coords[2] " - " coords[3] "x" coords[4] ")")
 
         ; Пробуем найти и нажать зелёную кнопку
-        if !Firestone.Buttons.Green.WaitAndClick(coords[1], coords[2], coords[3], coords[4], timeout,,,250)
+        if !this.Firestone.Buttons.Green.WaitAndClick(coords[1], coords[2], coords[3], coords[4], timeout,,,250)
         {
             DebugLog.Log("Кнопка не найдена, ищем оранжевую кнопку...")
-            if Firestone.Buttons.Orange.CheckAndClick(coords[1], coords[2], coords[3], coords[4], timeout)
+            if this.Firestone.Buttons.Orange.CheckAndClick(coords[1], coords[2], coords[3], coords[4], timeout)
             {
                 return true
             }

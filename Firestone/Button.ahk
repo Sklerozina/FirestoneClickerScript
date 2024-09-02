@@ -1,7 +1,8 @@
 Class Button {
-	__New(color, variation := 1) {
+	__New(Firestone, color, variation := 1) {
 		this.color := color
 		this.variation := variation
+		this.Firestone := Firestone
 	}
 
 	CheckPixels(coords*) {
@@ -47,7 +48,7 @@ Class Button {
 				click_y := y1 + ((y2 - y1) / 2)
 			}
 			
-			Firestone.Click(click_x, click_y, wait?, clickcount?)
+			this.Firestone.Click(click_x, click_y, wait?, clickcount?)
 			return true
 		}
 
@@ -57,7 +58,7 @@ Class Button {
 	FindAndClick(x1, y1, x2, y2, wait?, clickcount?) {
 		if this.Find(x1, y1, x2, y2, &click_x, &click_y)
 		{
-			Firestone.Click(click_x, click_y, wait?, clickcount?)
+			this.Firestone.Click(click_x, click_y, wait?, clickcount?)
 			return true
 		}
 
@@ -72,7 +73,7 @@ Class Button {
 				click_y := y1 + ((y2 - y1) / 2)
 			}
 			
-			Firestone.Click(click_x, click_y, wait?, clickcount?)
+			this.Firestone.Click(click_x, click_y, wait?, clickcount?)
 			return true
 		}
 		

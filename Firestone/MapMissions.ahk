@@ -2,8 +2,14 @@ Class MapMissions {
     missions := unset
     icon := unset
 
-    __New(missions, icon?) {
+    __New(Firestone, missions, icon?) {
         this.missions := missions
+        this.Firestone := Firestone
+
+        For m in this.missions {
+            m.Firestone := Firestone
+        }
+
         if IsSet(icon)
             this.icon := icon
     }
@@ -13,7 +19,7 @@ Class MapMissions {
 
         For m in this.missions
         {
-            If !WarCampaignMap.CheckSquad() && force == false
+            If !this.Firestone.WarCampaignMap.CheckSquad() && force == false
                 break
     
             DebugLog.Log("Координаты: " m.x "x" m.y)
@@ -38,6 +44,6 @@ Class MapMissions {
         }
 
         if try_finish == true || finish == true
-            WarCampaignMap.FinishMissions()
+            this.Firestone.WarCampaignMap.FinishMissions()
     }
 }

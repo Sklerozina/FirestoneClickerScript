@@ -6,7 +6,7 @@ Class MapMissionDomination {
     }
 
     Click() {
-        Firestone.Click this.x, this.y, 100
+        this.Firestone.Click this.x, this.y, 100
         ; Зелёная кнопка принятия
     
         ; Смотрим, появилось окно или нет, если не появилось, значит можно не проверять кнопки.
@@ -21,10 +21,10 @@ Class MapMissionDomination {
 
         DebugLog.Log("Поиск кнопки досрочного завершения...")
         ; if(CheckForImage(1251, 720, 1491, 790, "*120 images/FreeOrange.png"))
-        if(Firestone.Buttons.Orange.CheckAndClick(1257, 811, 1322, 825))
+        if(this.Firestone.Buttons.Orange.CheckAndClick(1257, 811, 1322, 825))
         {
             DebugLog.Log("Поиск кнопки подтверждения...")
-            Firestone.Buttons.Green.WaitAndClick(802, 572, 828, 637, 5000)
+            this.Firestone.Buttons.Green.WaitAndClick(802, 572, 828, 637, 5000)
             return true
         }
 

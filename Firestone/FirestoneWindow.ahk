@@ -4,7 +4,6 @@ Class FirestoneWindow {
     __New(hwid) {
         this.hwid := hwid
         this.BorderlessAndResize()
-        this.Activate()
     }
 
     BorderlessAndResize() {
@@ -28,6 +27,10 @@ Class FirestoneWindow {
 
             Sleep 500
         }
+    }
+
+    Exist() {
+        return WinExist(this.hwid)
     }
 
     Activate() {

@@ -2,15 +2,21 @@
 #MaxThreadsPerHotkey 2
 #SingleInstance Force
 
-AppVersion := "v0.0.22"
+AppVersion := "v0.0.22-controller"
 A_IconTip := "Firestone Clicker " AppVersion
+
+If !IsSet(Firestone_WorkingDir)
+	Firestone_WorkingDir := A_WorkingDir
 
 #Include Settings.ahk
 #Include Tools.ahk
 #Include Logs.ahk
-#Include Firestone\Firestone.ahk
+
+Settings := Ini(Firestone_WorkingDir '\settings.ini')
 
 #Include Firestone
+#Include Firestone.ahk
+#Include FirestoneController.ahk
 #Include FirestoneWindow.ahk
 #Include Button.ahk
 #Include Arena.ahk
@@ -41,13 +47,8 @@ SendMode "Input"
 
 ; SetDefaultMouseSpeed 25
 
-If !IsSet(Firestone_WorkingDir)
-	Firestone_WorkingDir := A_WorkingDir
-
 saved_mouse_position_x := 0
 saved_mouse_position_y := 0
-prestige_mode := false
-Settings := Ini(Firestone_WorkingDir '\settings.ini')
 
 if Settings.Section('GENERAL').Get('debug', 'none') == 'none'
 	Settings.Section('GENERAL').Set('debug', 0)
@@ -60,7 +61,7 @@ if Settings.Section('GENERAL').Get('TELEGRAM_CHAT_ID', 'none') == 'none'
 
 DebugLog := Logs(Firestone_WorkingDir '\Logs\')
 If Settings.Section('GENERAL').Get('debug', 0) {
-	Firestone.Menu.Rename("Включить логи", 'Выключить логи')
+	FirestoneController.Menu.Rename("Включить логи", 'Выключить логи')
 	DebugLog.Enable()
 }
 
@@ -86,7 +87,7 @@ If Settings.Section('GENERAL').Get('debug', 0) {
 #HotIf
 
 #HotIf MouseOverWindow()
-RButton::Firestone.Menu.Show()
+RButton::FirestoneController.Menu.Show()
 #HotIf
 
 MouseOverWindow() {
@@ -108,12 +109,12 @@ MouseOverWindow() {
 LogsOnOff() {
 	if DebugLog.enabled	{
 		Tp 'Логирование выключено'
-		Firestone.Menu.Rename('Выключить логи', "Включить логи")
+		FirestoneController.Menu.Rename('Выключить логи', "Включить логи")
 		DebugLog.Disable()
 		Settings.Section('GENERAL').Set('debug', 0)
 	} else {
 		Tp 'Логирование включено'
-		Firestone.Menu.Rename("Включить логи", 'Выключить логи')
+		FirestoneController.Menu.Rename("Включить логи", 'Выключить логи')
 		DebugLog.Enable()
 		Settings.Section('GENERAL').Set('debug', 1)
 	}
@@ -127,36 +128,38 @@ RunOnOff() {
 
 	if !toggled {
 		Tp "Скрипт приостановлен."
-		Firestone.Menu.Rename('Выключить', 'Включить')
-		Sleep 2000
-		Exit
+		FirestoneController.Menu.Rename('Выключить', 'Включить')
+		SetTimer DoWork, 0
 	}
 	
 	if toggled
 	{
 		Tp "Запускаю.", -1000
-		Firestone.Menu.Rename('Включить', 'Выключить')
+		FirestoneController.Menu.Rename('Включить', 'Выключить')
 		MouseGetPos(&saved_mouse_position_x, &saved_mouse_position_y)
-		Sleep 1100
-		DoWork(true)
 
-		SetTimer DoWork, 300000
+		SetTimer(DoWork, 300000)
+		SetTimer((*) => (DoWork(true)), -1000)
 	}
 }
 
 PrestigeModeOnOff() {
-	global prestige_mode
+	FirestoneController.prestige_mode := !FirestoneController.prestige_mode
 
-	prestige_mode := !prestige_mode
-	if prestige_mode {
+	for Path, Firestone in FirestoneController.Firestones
+	{
+		Firestone.prestige_mode := FirestoneController.prestige_mode
+	}
+
+	if FirestoneController.prestige_mode {
 		Tp "Режим престижа"
-		Firestone.Menu.Rename('Режим престижа', 'Обычный режим')
+		FirestoneController.Menu.Rename('Режим престижа', 'Обычный режим')
 		SetTimer DoPrestigeUpgrades, 60000
 	}
 	else
 	{
 		Tp "Обычный режим"
-		Firestone.Menu.Rename('Обычный режим', 'Режим престижа')
+		FirestoneController.Menu.Rename('Обычный режим', 'Режим престижа')
 		SetTimer DoPrestigeUpgrades, 0
 	}
 }
@@ -193,12 +196,15 @@ SetAllDailyUncomplete() {
 	}
 }
 
+FirestoneController.FindAllWindows()
+
 ; Запускается по таймеру
 DoWork(force := false) {
 	global saved_mouse_position_x, saved_mouse_position_y
 	static delay := 300000
 
 	Thread "Priority", 1 ; На всякий случай, чтобы задача не прерывалась другими таймерами
+	FirestoneController.FindAllWindows()
 
 	; Если мышка двигалась или нажималась клавиатура пока спали, пропускаем задачу
 	MouseGetPos(&Mx, &My)
@@ -206,50 +212,52 @@ DoWork(force := false) {
 	; Если мышка двигалась или нажималась клавиатура пока спали, пропускаем задачу
 	If((A_TimeIdlePhysical >= delay && saved_mouse_position_x == Mx && saved_mouse_position_y == My) || force == true) {
 		DebugLog.Log('====`nНачинаю работу!', "`n`n")
-		hwids := Firestone.FindAllWindows()
-		for hwid in hwids
+		
+		for Path, Firestone in FirestoneController.Firestones
 		{
-			DebugLog.Log('Окно ' . WinGetProcessPath(hwid), "`n")
-			Firestone.Set(hwid)
+			if !Firestone.Window.Exist()
+				continue
+
+			DebugLog.Log('Окно ' . WinGetProcessPath(Firestone.hwid), "`n")
 
 			try
 			{
-				Sleep 1000 ; Заглушка, чтобы пошёл таймер в A_TimeIdlePhysical
+				; Sleep 1000 ; Заглушка, чтобы пошёл таймер в A_TimeIdlePhysical
 				Firestone.BackToMainScreen()
 				Tools.Sleep 1000
 
-				Mailbox.Do()
-				HerosUpgrades.Do(Firestone.CurrentSettings.Get('lvlup_priority'), prestige_mode)
+				Firestone.Mailbox.Do()
+				Firestone.HerosUpgrades.Do()
 				Firestone.City() ; зайти в город
-				Magazine.Do()
-				Merchant.Do()
-				Tavern.Do()
-				Alchemy.Do(Firestone.CurrentSettings.Get('alchemy'))
-				Guard.Do()
-				Mechanic.Do() ; Механик
-				Guild.Do() ; Экспедиции
+				Firestone.Magazine.Do()
+				Firestone.Merchant.Do()
+				Firestone.Tavern.Do()
+				Firestone.Alchemy.Do()
+				Firestone.Guard.Do()
+				Firestone.Mechanic.Do() ; Механик
+				Firestone.Guild.Do() ; Экспедиции
 
-				if Firestone.CurrentSettings.Get('auto_research') == 1
-					Library.Do()
+				if Firestone.Settings.Get('auto_research') == 1
+					Firestone.Library.Do()
 				
-				Oracle.Do()
+				Firestone.Oracle.Do()
 				Firestone.Esc()
 				Firestone.BackToMainScreen() ;; Страховка перед заходом на карту
 
-				WarCampaignMap.Do()
+				Firestone.WarCampaignMap.Do()
 
-				if Firestone.CurrentSettings.Get('open_boxes') == 1
-					Bags.Do()
+				if Firestone.Settings.Get('open_boxes') == 1
+					Firestone.Bags.Do()
 
-				if Firestone.CurrentSettings.Get('auto_complete_quests') == 1
-					Quests.Do()
+				if Firestone.Settings.Get('auto_complete_quests') == 1
+					Firestone.Quests.Do()
 
-				if Firestone.CurrentSettings.Get('auto_arena', 0) == 1 && Firestone.CurrentSettings.Get('daily_arena', false) == false {
-					Arena.Do()
+				if Firestone.Settings.Get('auto_arena', 0) == 1 && Firestone.Settings.Get('daily_arena', false) == false {
+					Firestone.Arena.Do()
 				}
 
-				if Firestone.CurrentSettings.Get('auto_events', 0) == 1 {
-					Events.Do()
+				if Firestone.Settings.Get('auto_events', 0) == 1 {
+					Firestone.Events.Do()
 				}
 
 				DebugLog.Log('==== Закончил работу!', "`n")
@@ -280,22 +288,25 @@ DoPrestigeUpgrades(force := false) {
 	global saved_mouse_position_x, saved_mouse_position_y
 
 	MouseGetPos(&Mx, &My)
+	FirestoneController.FindAllWindows()
 
 	; Если мышка двигалась или нажималась клавиатура пока спали, пропускаем задачу
 	If((A_TimeIdle >= 60000 && saved_mouse_position_x == Mx && saved_mouse_position_y == My) || force == true) {
 		DebugLog.Log('====`nНачинаю работу! Режим престижа!', "`n`n")
-		hwids := Firestone.FindAllWindows()
-		for hwid in hwids
+
+		for Path, Firestone in FirestoneController.Firestones
 		{
-			DebugLog.Log('Окно ' . WinGetProcessPath(hwid), "`n")
-			Firestone.Set(hwid)
+			if !Firestone.Window.Exist()
+				continue
+
+			DebugLog.Log('Окно ' . WinGetProcessPath(Firestone.hwid), "`n")
 
 			try
 			{
 				Sleep 1000 ; Заглушка, чтобы пошёл таймер в A_TimeIdlePhysical
 				Firestone.BackToMainScreen()
 				Tools.Sleep 1000
-				HerosUpgrades.Do(Firestone.CurrentSettings.Get('lvlup_priority'), prestige_mode)
+				Firestone.HerosUpgrades.Do()
 			}
 			catch String as err
 			{

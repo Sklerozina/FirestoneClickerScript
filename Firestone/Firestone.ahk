@@ -1,40 +1,55 @@
 Class Firestone {
-	static Buttons := {
-		Green: Button(0x0AA008),
-		Red: Button(0xE7473F),
-		Orange: Button(0xFBAC46),
-        Blue: Button(0x1289FF),
-        White: Button(0xFFFFFF),
+	Buttons := {
+		Green: Button(this, 0x0AA008),
+		Red: Button(this, 0xE7473F),
+		Orange: Button(this, 0xFBAC46),
+        Blue: Button(this, 0x1289FF),
+        White: Button(this, 0xFFFFFF),
 	}
 
-    static Icons := {
-        Red: Button(0xF30000),
-        Close: Button(0xFF620A)
+    Icons := {
+        Red: Button(this, 0xF30000),
+        Close: Button(this, 0xFF620A)
     }
 
-    static Window := unset
-    static Menu := FirestoneMenu()
+    Window := unset
 
-    static hwid := unset
-    static hwids := unset
-    static CurrentSettings := unset
-    static saved_mouse_position_x := 0
-    static saved_mouse_position_y := 0
-    static prestige_mode := false
+    hwid := unset
+    Settings := unset
+    saved_mouse_position_x := 0
+    saved_mouse_position_y := 0
+    prestige_mode := false
 
-    static Set(hwid) {
+    __New(hwid) {
         this.hwid := hwid
 
         this.Window := FirestoneWindow(hwid)
 
         this.SetCurrentSettings()
+
+        this.Mailbox := Mailbox(this)
+        this.HerosUpgrades := HerosUpgrades(this)
+        this.Magazine := Magazine(this)
+        this.Merchant := Merchant(this)
+        this.Tavern := Tavern(this)
+        this.Alchemy := Alchemy(this)
+        this.Guard := Guard(this)
+        this.Mechanic := Mechanic(this)
+        this.Guild := Guild(this)
+        this.Library := Library(this)
+        this.Oracle := Oracle(this)
+        this.WarCampaignMap := WarCampaignMap(this)
+        this.Bags := Bags(this)
+        this.Quests := Quests(this)
+        this.Arena := Arena(this)
+        this.Events := Events(this)
     }
 
-    static SetCurrentSettings() {
+    SetCurrentSettings() {
         Settings.Reload()
         ProcessPath := WinGetProcessPath(this.Window.hwid)
     
-        this.CurrentSettings := Settings.Section(ProcessPath)
+        this.Settings := Settings.Section(ProcessPath)
     
         defaults := Map(
             'name', '',
@@ -64,24 +79,19 @@ Class Firestone {
         )
     
         for key, value in defaults {
-            if !this.CurrentSettings.Has(key)
-                this.CurrentSettings.Set(key, value)
+            if !this.Settings.Has(key)
+                this.Settings.Set(key, value)
         }
     }
 
-    static FindAllWindows(){
-        hwids := WinGetList("ahk_exe Firestone.exe")
-
-        return hwids
-    }
-
     ; Принудительный возврат на главный экран (Много раз жмёт Esc, потом кликает на закрытие диалога)
-    static BackToMainScreen(){
+    BackToMainScreen(){
         DebugLog.Log('Возврат на главный экран', "`n")
         game_good := false
         i := 1
         loop 8 {
             DebugLog.Log('Попытка ' . i++)
+            this.Window.Activate()
 
             if i == 6
             {
@@ -91,7 +101,7 @@ Class Firestone {
                 Tools.Sleep(1000)
                 WinRestore
                 Tools.Sleep(1000)
-                Firestone.Window.Activate()
+                this.Window.Activate()
             }
             
             MouseMove 0, 0
@@ -132,29 +142,29 @@ Class Firestone {
         }
     }
 
-    static ResetDailys() {
+    ResetDailys() {
         date := FormatTime(, 'yyyyMMdd')
-        if Firestone.CurrentSettings.Get('daily_date', date) == date
+        if this.Settings.Get('daily_date', date) == date
             return
 
         DebugLog.Log("Сброс дейликов! Новый день!")
-        Firestone.CurrentSettings.Set('daily_merchant', 0)
-        Firestone.CurrentSettings.Set('daily_arena', 0)
-        Firestone.CurrentSettings.Set('daily_tavern', 0)
-        Firestone.CurrentSettings.Set('daily_crystal', 0)
-        Firestone.CurrentSettings.Set('daily_magazine', 0)
+        this.Settings.Set('daily_merchant', 0)
+        this.Settings.Set('daily_arena', 0)
+        this.Settings.Set('daily_tavern', 0)
+        this.Settings.Set('daily_crystal', 0)
+        this.Settings.Set('daily_magazine', 0)
     }
 
     ; Кнопка города
-    static City() {
+    City() {
         this.Press("{t}")
     }
 
-    static Esc(wait := 1000) {
+    Esc(wait := 1000) {
         this.Press("{ESC}", wait)
     }
 
-	static Click(x, y, wait := 1000, clickcount := 1) {
+	Click(x, y, wait := 1000, clickcount := 1) {
         DebugLog.Log("Клик: (" . Round(x) . "x" . Round(y) . ")")
 		this.Window.IsActive()
 
@@ -165,17 +175,17 @@ Class Firestone {
 		}
 	}
 
-    static ScrollUp(times := 10, wait := 250) {
+    ScrollUp(times := 10, wait := 250) {
         this.Press("{WheelUp}", 30, times)
         Tools.Sleep(wait)
     }
 
-    static ScrollDown(times := 10, wait := 250) {
+    ScrollDown(times := 10, wait := 250) {
         this.Press("{WheelDown}", 30, times)
         Tools.Sleep(wait)
     }
 
-	static Press(key, wait := 1000, times := 1) {
+	Press(key, wait := 1000, times := 1) {
         DebugLog.Log(key . " (" . times . ")")
 		this.Window.IsActive()
 	
@@ -186,14 +196,14 @@ Class Firestone {
         }
 	}
 
-    static TelegramSend(text, silent := false) {
+    TelegramSend(text, silent := false) {
         chatid :=  Settings.Section('GENERAL').Get('TELEGRAM_CHAT_ID', 0)
         token := Settings.Section('GENERAL').Get('BOT_TOKEN', '')
     
         if chatid == 0 || token == ""
             return
 
-        name := this.CurrentSettings.Get('name', '') != '' ? this.CurrentSettings.Get('name', '') : WinGetProcessPath(Firestone.hwid)
+        name := this.Settings.Get('name', '') != '' ? this.Settings.Get('name', '') : WinGetProcessPath(Firestone.hwid)
         
         text := "<b>" name "</b>`n`n" text
         return Tools.TelegramSend(text, chatid, token, silent)

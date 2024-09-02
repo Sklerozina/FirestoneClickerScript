@@ -1,36 +1,40 @@
 Class Library {
-    static buttons := Map(
+    __New(Firestone) {
+        this.Firestone := Firestone
+    }
+
+    buttons := Map(
         1, [483, 880, 507, 950],
         2, [1132, 880, 1165, 950]
     )
 
-    static columns := [
+    columns := [
         [30, 485],
         [486, 949],
         [950, 1414],
         [1415, 1884]
     ]
 
-    static research_count := 0
+    research_count := 0
 
-    static Do() {
+    Do() {
         DebugLog.Log("Библиотека", "`n")
         
         ; Проверяем, висит ли красный значок у здания.
-        if !Firestone.Icons.Red.Check(384, 641, 424, 680)
+        if !this.Firestone.Icons.Red.Check(384, 641, 424, 680)
             return
 
-        Firestone.Click(313, 630) ; Здание библиотеки
+        this.Firestone.Click(313, 630) ; Здание библиотеки
 
         this.Research()
 
-        Firestone.Esc()
+        this.Firestone.Esc()
     }
 
-    static Research() {
+    Research() {
         this.research_count := 0
         DebugLog.Log("== Исследования Firestone ==")
-        Firestone.Click(1813, 930) ; Переход в Firestone исследования
+        this.Firestone.Click(1813, 930) ; Переход в Firestone исследования
     
         MouseMove 0, 0
 
@@ -81,11 +85,11 @@ Class Library {
                 ; двигаем в начало, если это второй цикл, таким образом экономим время
                 if i == 2
                 {
-                    Firestone.ScrollUp(50, 1000)
+                    this.Firestone.ScrollUp(50, 1000)
                 }
                 else if i == 3 ; Двигаем дальше, если это 3-й цикл
                 {
-                    Firestone.ScrollDown(35)
+                    this.Firestone.ScrollDown(35)
                 }
 
                 sort_columns := Sort("1, 2, 3, 4", "Random N D,")
@@ -120,30 +124,30 @@ Class Library {
         }
     }
 
-    static CheckSlot(slot) {
+    CheckSlot(slot) {
         coords := this.buttons.Get(slot)
 
         ; Проверка на оранжевую кнопку, досрочное завершение
         ;if CheckForImage(462, 899, 634, 948, "*120 images/ResearchFree.png") ; Пока не удаляю, на случай, если по цвету не будет работать
         DebugLog.Log("Пробуем завершить исследование в слоте " slot "...")
-        if Firestone.Buttons.Orange.CheckAndClick(coords[1], coords[2], coords[3], coords[4])
+        if this.Firestone.Buttons.Orange.CheckAndClick(coords[1], coords[2], coords[3], coords[4])
             return true
 
         ; Проверить зелёную кнопку завершения
-        if Firestone.Buttons.Green.CheckAndClick(coords[1], coords[2], coords[3], coords[4])
+        if this.Firestone.Buttons.Green.CheckAndClick(coords[1], coords[2], coords[3], coords[4])
             return true
 
         return false
     }
 
-    static FindResearch(row_y, from, to) {
+    FindResearch(row_y, from, to) {
         if PixelSearch(&OutputX, &OutputY, from, row_y, to, row_y, 0x0D49DE, 1)
         {
             ; попробовать кликнуть
-            Firestone.Click(OutputX, OutputY)
+            this.Firestone.Click(OutputX, OutputY)
             MouseMove 0, 0
             ;; Подождать окно принятия
-            if Firestone.Buttons.Green.WaitAndClick(669, 707, 928, 775, 1000)
+            if this.Firestone.Buttons.Green.WaitAndClick(669, 707, 928, 775, 1000)
                 return true
         }
     }
