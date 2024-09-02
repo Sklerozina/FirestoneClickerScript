@@ -152,8 +152,10 @@ Class WarCampaignMap {
             DebugLog.Log("Миссия 6")
             this.DoWMMission(280, 700, 540, 770) ; 6
             DebugLog.Log("Миссия 7")
-            this.DoWMMission(680, 710, 929, 768) ; 7
-    
+            this.DoWMMission(680, 710, 929, 770) ; 7
+            DebugLog.Log("Миссия 8")
+            this.DoWMMission(1070, 710, 1330, 770) ; 8
+
             this.Firestone.Esc() ; Вышли на карту
     
             ; Зайти ещё раз и проверить вторую стопку дейликов
