@@ -86,10 +86,11 @@ Class Library {
                 if i == 2
                 {
                     this.Firestone.ScrollUp(50, 1000)
+                    this.Firestone.ScrollDown(3, 500)
                 }
                 else if i == 3 ; Двигаем дальше, если это 3-й цикл
                 {
-                    this.Firestone.ScrollDown(35)
+                    this.Firestone.ScrollDown(32)
                 }
 
                 sort_columns := Sort("1, 2, 3, 4", "Random N D,")
