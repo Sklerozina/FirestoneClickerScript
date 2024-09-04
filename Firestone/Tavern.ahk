@@ -40,6 +40,7 @@ Class Tavern {
             {
                 click_coords := this.cards_coordinates[Random(1, this.cards_coordinates.Length)]
                 this.Firestone.Click(click_coords[1], click_coords[2])
+                this.Firestone.Settings.Set('daily_tavern', true)
 
                 DebugLog.Log("Ждём пояления синей кнопки... или чёрного экрана")
                 ok := false
@@ -59,7 +60,6 @@ Class Tavern {
                     if ok
                     {
                         DebugLog.Log("Дождались")
-                        this.Firestone.Settings.Set('daily_tavern', true)
                         break
                     }
                 }
