@@ -144,6 +144,7 @@ Class Firestone {
 
     ResetDailys() {
         date := FormatTime(, 'yyyyMMdd')
+
         if this.Settings.Get('daily_date', date) == date
             return
 
@@ -153,6 +154,7 @@ Class Firestone {
         this.Settings.Set('daily_tavern', 0)
         this.Settings.Set('daily_crystal', 0)
         this.Settings.Set('daily_magazine', 0)
+        this.Settings.Set('daily_date', date)
     }
 
     ; Кнопка города
