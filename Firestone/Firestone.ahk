@@ -130,7 +130,7 @@ Class Firestone {
                 if Tools.PixelSearch(702, 135, 783, 176, 0xE31923, 1) {
                     DebugLog.Log('Новый герой?')
                     this.TelegramSend('Доступен новый герой!', true)
-                    Firestone.Click(509, 524)
+                    this.Click(509, 524)
                 }
             }
         }
