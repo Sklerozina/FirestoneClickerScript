@@ -62,6 +62,7 @@ Class Firestone {
             'daily_magazine', 1,
             'daily_merchant', 1,
             'daily_crystal', 1,
+            'daily_crystal_clicks', 0,
             'daily_date', FormatTime(, 'yyyyMMdd'),
             
             ; коробки

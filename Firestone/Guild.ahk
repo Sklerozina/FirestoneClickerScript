@@ -51,7 +51,12 @@ Class Guild {
                 break
             }
 
-            this.Firestone.Click(1866, 887)
+            crystall_clicks := this.Firestone.Settings.Get('daily_crystal_clicks', 0)
+
+            if crystall_clicks == 0 || crystall_clicks == 1
+                this.Firestone.Click(1866, 887)
+            else
+                this.Firestone.Click(1866, 887, 500, crystall_clicks)
         }
 
         if good
