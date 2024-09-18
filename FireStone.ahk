@@ -165,14 +165,18 @@ PrestigeModeOnOff() {
 }
 
 SetAllDailyComplete(){
+	date := FormatTime(, 'yyyyMMdd')
+
 	for key, value in Settings.data {
 		if InStr(key, 'Firestone.exe')
 		{
+
 			Settings.Section(key).Set('daily_merchant', 1)
 			Settings.Section(key).Set('daily_arena', 1)
 			Settings.Section(key).Set('daily_tavern', 1)
 			Settings.Section(key).Set('daily_crystal', 1)
 			Settings.Section(key).Set('daily_magazine', 1)
+			Settings.Section(key).Set('daily_date', date)
 		}
 	}
 }
@@ -184,9 +188,11 @@ SetAllDailyUncomplete() {
 	if MsgBox("Вы ТОЧНО уверены? Это заставит скрипт попытаться сделать все дейлики ещё раз!", "Сбросить счётчик дейликов", 0x4) == "No"
 		return
 
+
 	for key, value in Settings.data {
 		if InStr(key, 'Firestone.exe')
 		{
+
 			Settings.Section(key).Set('daily_merchant', 0)
 			Settings.Section(key).Set('daily_arena', 0)
 			Settings.Section(key).Set('daily_tavern', 0)
