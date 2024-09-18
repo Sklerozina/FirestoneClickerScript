@@ -1,31 +1,22 @@
 Class Bags {
     __New(Firestone) {
         this.Firestone := Firestone
+        this.Chests := Chests(this.Firestone)
     }
-
-    box_coordinates_mobile := ["1808:776", "1659:776", "1501:776",
-    "1808:639", "1659:639", "1501:639",
-    "1808:478", "1659:478", "1501:478",
-    "1808:318", "1659:318", "1501:318",
-    "1808:172", "1659:172", " 1501:172"]
-    box_coordinates_pc := ["1837:837", "1712:837", "1586:837",
-    "1837:712", "1712:712", "1586:712",
-    "1837:588", "1712:588", "1586:588",
-    "1837:466", "1712:466", "1586:466",
-    "1837:340", "1712:340", "1586:340"]
 
     Do() {
         DebugLog.Log("Сумки", "`n")
         this.Firestone.Press("{B}")
 
-        this.OpenBoxes()
+        ; this.OpenChests()
+        this.Chests.Open()
     
         this.Firestone.Esc()
     }
 
-    OpenBoxes() {     
+    OpenChests() {
         i := 0
-        DebugLog.Log("Проверка слоты...")
+        DebugLog.Log("Проверка слотов...")
 
         if Tools.PixelSearch(1814-5, 21-5, 1814+5, 21+5, 0xE1CDAC, 1) ; Проверка фона, если фон есть, то интерфейс мобильный
         {

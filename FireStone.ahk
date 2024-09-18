@@ -32,6 +32,7 @@ Settings := Ini(Firestone_WorkingDir '\settings.ini')
 #Include Merchant.ahk
 #Include Quests.ahk
 #Include Bags.ahk
+#Include Chests.ahk
 #Include Mailbox.ahk
 #Include WarCampaignMap.ahk
 #Include MapMissions.ahk

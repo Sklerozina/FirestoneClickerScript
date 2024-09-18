@@ -63,7 +63,26 @@ Class Firestone {
             'daily_merchant', 1,
             'daily_crystal', 1,
             'daily_date', FormatTime(, 'yyyyMMdd'),
+            
+            ; коробки
             'open_boxes', 0,
+            'open_common', 0,
+            'open_uncommon', 0,
+            'open_rare', 0,
+            'open_epic', 0,
+            'open_legendary', 0,
+            'open_mythic', 0,
+            'open_wooded', 0,
+            'open_iron', 0,
+            'open_golden', 0,
+            'open_diamond', 0,
+            'open_comet', 0,
+            'open_lunar', 0,
+            'open_solar', 0,
+            'open_mystery_box', 0,
+            'open_oracles_gift', 0,
+
+            ; auto
             'auto_complete_quests', 0,
             'auto_research', 0,
             'auto_blessings', 0,
