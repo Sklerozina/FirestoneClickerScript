@@ -51,17 +51,17 @@ Class Guild {
                 break
             }
 
-            crystall_clicks := this.Firestone.Settings.Get('daily_crystal_clicks', 0)
-
-            if crystall_clicks == 0 || crystall_clicks == 1
-                this.Firestone.Click(1866, 887)
-            else
-                this.Firestone.Click(1866, 887, 500, crystall_clicks)
+            this.Firestone.Click(1866, 887)
         }
 
         if good
         {
             if this.Firestone.Buttons.Green.CheckAndClick(847, 845, 1076, 926) {
+                crystall_clicks := Integer(this.Firestone.Settings.Get('daily_crystal_clicks', 0))
+                MsgBox(crystall_clicks)
+                if crystall_clicks > 1
+                    this.Firestone.Buttons.Green.WaitAndClickAndClick(847, 845, 1076, 926,2000,,,1000, crystall_clicks)
+
                 DebugLog.Log("Ударил по кристаллу")
                 this.Firestone.Settings.Set('daily_crystal', 1)
             }
