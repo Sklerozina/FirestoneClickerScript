@@ -57,6 +57,7 @@ Class Guild {
         if good
         {
             if this.Firestone.Buttons.Green.CheckAndClick(847, 845, 1076, 926) {
+                MouseMove 0, 0
                 crystall_clicks := Integer(this.Firestone.Settings.Get('daily_crystal_clicks', 0))
                 if crystall_clicks >= 1
                     this.Firestone.Buttons.Green.WaitAndClick(847, 845, 1076, 926, 5000,,,1000, crystall_clicks)
