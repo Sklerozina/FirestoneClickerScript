@@ -58,9 +58,8 @@ Class Guild {
         {
             if this.Firestone.Buttons.Green.CheckAndClick(847, 845, 1076, 926) {
                 crystall_clicks := Integer(this.Firestone.Settings.Get('daily_crystal_clicks', 0))
-                MsgBox(crystall_clicks)
-                if crystall_clicks > 1
-                    this.Firestone.Buttons.Green.WaitAndClickAndClick(847, 845, 1076, 926,2000,,,1000, crystall_clicks)
+                if crystall_clicks >= 1
+                    this.Firestone.Buttons.Green.WaitAndClick(847, 845, 1076, 926, 5000,,,1000, crystall_clicks)
 
                 DebugLog.Log("Ударил по кристаллу")
                 this.Firestone.Settings.Set('daily_crystal', 1)
