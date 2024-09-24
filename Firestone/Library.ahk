@@ -3,9 +3,14 @@ Class Library {
         this.Firestone := Firestone
     }
 
-    buttons := Map(
+    buttons_pre8_2 := Map(
         1, [483, 880, 507, 950],
         2, [1132, 880, 1165, 950]
+    )
+
+    buttons := Map(
+        1, [535, 901, 542, 946],
+        2, [1186, 900, 1194, 947]
     )
 
     columns := [
@@ -34,8 +39,14 @@ Class Library {
     Research() {
         this.research_count := 0
         DebugLog.Log("== Исследования Firestone ==")
-        this.Firestone.Click(1813, 930) ; Переход в Firestone исследования
-    
+
+        if Tools.PixelSearch(1626, 847, 1660, 849, 0xFFCE58) { ; Расположение кнопок до обновы 8.2.0
+            this.Firestone.Click(1813, 930) ; Переход в Firestone исследования, Старые координаты
+            this.buttons := this.buttons_pre8_2
+        } else {
+            this.Firestone.Click(1814, 584) ; Переход в Firestone исследования   
+        }       
+        
         MouseMove 0, 0
 
         if Tools.PixelSearch(445, 939, 461, 976, 0x285483, 1)
