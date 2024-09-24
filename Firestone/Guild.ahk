@@ -74,7 +74,7 @@ Class Guild {
         DebugLog.Log("== Экспедиции ==")
         
         ;; Проверяем, висит ли красный значёк у здания.
-        if !this.Firestone.Icons.Red.Check(405, 443, 435, 475)
+        if !this.Firestone.Icons.Red.Check(405, 443, 435, 475) && !this.Firestone.Icons.Red.Check(480, 370, 515, 404)
             return
     
         this.Firestone.Click(296, 387) ; Клик на здание экспедиций
