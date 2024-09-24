@@ -40,7 +40,7 @@ Class Library {
         this.research_count := 0
         DebugLog.Log("== Исследования Firestone ==")
 
-        if Tools.PixelSearch(1626, 847, 1660, 849, 0xFFCE58) { ; Расположение кнопок до обновы 8.2.0
+        if Tools.PixelSearch(1626, 847, 1660, 849, 0xFFCE58, 1) { ; Расположение кнопок до обновы 8.2.0
             this.Firestone.Click(1813, 930) ; Переход в Firestone исследования, Старые координаты
             this.buttons := this.buttons_pre8_2
         } else {
