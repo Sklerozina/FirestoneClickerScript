@@ -49,13 +49,13 @@ Class Library {
         
         MouseMove 0, 0
 
-        if Tools.PixelSearch(445, 939, 461, 976, 0x285483, 1)
+        if Tools.PixelSearch(221, 892, 441, 896, 0xFFCE58, 1)
         {
             DebugLog.Log("Найдено активное исследование в слоте 1")
             this.research_count += 1
         }
     
-        if Tools.PixelSearch(1090, 939, 1105, 976, 0x285483, 1)
+        if Tools.PixelSearch(871, 892, 1086, 896, 0xFFCE58, 1)
         {
             DebugLog.Log("Найдено активное исследование в слоте 2")
             this.research_count += 1
