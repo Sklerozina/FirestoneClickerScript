@@ -10,8 +10,26 @@ Class Guild {
         this.CollectPicks() ; Забрать заодно кирки
         this.Expeditions()
         this.Crystal()
+        this.ChaosRift()
 
         this.Firestone.Esc() ; Выйти в город
+    }
+
+    ChaosRift() {
+        ; Проверяем значок у Рифта, если не светится, то и заходить смысла нет.
+        if !this.Firestone.Icons.Red.Check(1511, 661, 1544, 694)
+            return
+
+        ; Проверяем, оттикало ли время, если нет, то не заходим пока
+        if DateDiff(A_Now, this.Firestone.Settings.Get('chaos_rift_last_time', 0), 'minutes') < this.Firestone.Settings.Get('chaos_rift_delay_minutes', 120)
+            return
+
+        this.Firestone.Click(1396, 585)
+
+        this.Firestone.Buttons.Green.CheckAndClick(1027, 838, 1028, 933)
+        this.Firestone.Settings.Set('chaos_rift_last_time', A_Now)
+
+        this.Firestone.Esc()
     }
 
     CollectPicks() {

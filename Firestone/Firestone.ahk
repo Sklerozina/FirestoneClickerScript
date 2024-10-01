@@ -57,6 +57,10 @@ Class Firestone {
             'alchemy', '111',
             'oracle_blessings_priority', 0,
             'map_missions_priority', 'monster, sea, dragon, scout, adventure, war',
+            'chaos_rift_last_time', A_Now,
+            'chaos_rift_delay_minutes', 120,
+            
+            ; Дейли
             'daily_arena', 1,
             'daily_tavern', 1,
             'daily_magazine', 1,
