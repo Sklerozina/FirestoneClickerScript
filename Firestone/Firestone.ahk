@@ -100,6 +100,7 @@ Class Firestone {
             'auto_guild_crystal', 0,
             'auto_events', 0,
             'auto_enlightenment', 0,
+            'auto_chaos_rift', 0,
         )
     
         for key, value in defaults {

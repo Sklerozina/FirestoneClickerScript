@@ -16,6 +16,10 @@ Class Guild {
     }
 
     ChaosRift() {
+        ; Если выключено, не продолжаем
+        if this.Firestone.Settings.Get('auto_chaos_rift', 0) == 0
+            return
+        
         ; Проверяем значок у Рифта, если не светится, то и заходить смысла нет.
         if !this.Firestone.Icons.Red.Check(1511, 661, 1544, 694)
             return
