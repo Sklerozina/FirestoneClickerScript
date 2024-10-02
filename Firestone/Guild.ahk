@@ -16,17 +16,23 @@ Class Guild {
     }
 
     ChaosRift() {
+        DebugLog.Log("== Хаотический разлом ==")
         ; Если выключено, не продолжаем
         if this.Firestone.Settings.Get('auto_chaos_rift', 0) == 0
             return
         
         ; Проверяем значок у Рифта, если не светится, то и заходить смысла нет.
-        if !this.Firestone.Icons.Red.Check(1511, 661, 1544, 694)
+        if !this.Firestone.Icons.Red.Check(1511, 661, 1544, 694) {
+            DebugLog.Log("Пропускаем, нет красного значка.")
             return
+        }
 
         ; Проверяем, оттикало ли время, если нет, то не заходим пока
-        if DateDiff(A_Now, this.Firestone.Settings.Get('chaos_rift_last_time', 0), 'minutes') < this.Firestone.Settings.Get('chaos_rift_delay_minutes', 120)
+        time_diff := DateDiff(A_Now, this.Firestone.Settings.Get('chaos_rift_last_time', 0), 'minutes')
+        if time_diff < this.Firestone.Settings.Get('chaos_rift_delay_minutes', 120) {
+            DebugLog.Log("Пропускаем, прошло мало времени. ( " time_diff " из " this.Firestone.Settings.Get('chaos_rift_delay_minutes', 120) " )")
             return
+        }
 
         this.Firestone.Click(1396, 585)
 
