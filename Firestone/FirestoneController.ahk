@@ -50,6 +50,22 @@ Class FirestoneController {
         this.RunSingle(Firestone, ObjBindMethod(Firestone.Mailbox, 'Do', true))
     }
 
+    static RunGuard(*) {
+        Firestone := this.GetFirestoneCursor()
+        try
+        {
+            Firestone.BackToMainScreen()
+            Firestone.City()
+            Firestone.Guard.Do(true)
+            Firestone.Esc()
+        }
+        catch String as err
+        {
+            DebugLog.Log("Прерываю работу. " . err . " (From Catch)")
+            Tp "Прерываю работу. " . err, -2000
+        }
+    }
+
     static RunHerosUpgrades(*) {
         Firestone := this.GetFirestoneCursor()
         this.RunSingle(Firestone, ObjBindMethod(Firestone.HerosUpgrades, 'Do'))

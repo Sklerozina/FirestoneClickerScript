@@ -3,11 +3,11 @@ Class Guard {
         this.Firestone := Firestone
     }
 
-    Do() {
+    Do(force := false) {
         DebugLog.Log("Страж", "`n")
         
         ; Проверяем, висит ли красный значок у здания.
-        if !this.Firestone.Icons.Red.Check(738, 281, 783, 324)
+        if !this.Firestone.Icons.Red.Check(738, 281, 783, 324) && !force
             return
         
         this.Firestone.Click(625, 230) ; Здание стража
