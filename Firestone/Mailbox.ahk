@@ -13,14 +13,17 @@ Class Mailbox {
         this.Firestone := Firestone
     }
 
-    Do() {
-        if this.Firestone.Settings.Get('auto_mailbox', 0) == 0
-            return
+    Do(force := false) {
+        if !force
+        {
+            if this.Firestone.Settings.Get('auto_mailbox', 0) == 0
+                return
 
-        ; Проверяем значок у иконки почты
-        if !this.Firestone.Icons.Red.Check(97, 718, 128, 748)
-            return
-
+            ; Проверяем значок у иконки почты
+            if !this.Firestone.Icons.Red.Check(97, 718, 128, 748)
+                return
+        }
+        
         if !Tools.PixelSearch(63-5, 750-5, 63+5, 750+5, 0xFED279, 1) ; На всякий случай проверим, что в облати есть иконка почты
             return
 

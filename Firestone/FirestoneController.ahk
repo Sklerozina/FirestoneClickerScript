@@ -12,10 +12,51 @@ Class FirestoneController {
 
         for hwid in hwids {
             path := WinGetProcessPath(hwid)
-            if !this.Firestones.Has(path)
-                this.Firestones.Set(path, Firestone(hwid))
-            else
-                this.Firestones.Get(path).hwid := hwid
+            this.Firestones.Set(path, Firestone(hwid))
         }
+    }
+
+    static GetFirestone(window) {
+        path := WinGetProcessPath(window)
+
+        if !this.Firestones.Has(path) {
+            MsgBox 'Перезапустите скрипт и попробуйте ещё раз!'
+            return false
+        }
+
+        return this.Firestones.Get(path)
+    }
+
+    static GetFirestoneCursor() {
+        MouseGetPos(,, &window)
+        return this.GetFirestone(window)
+    }
+
+    static RunSingle(Firestone, Method) {
+        try
+        {
+            Firestone.BackToMainScreen()
+            Method()
+        }
+        catch String as err
+        {
+            DebugLog.Log("Прерываю работу. " . err . " (From Catch)")
+            Tp "Прерываю работу. " . err, -2000
+        }
+    }
+
+    static RunMailbox(*) {
+        Firestone := this.GetFirestoneCursor()
+        this.RunSingle(Firestone, ObjBindMethod(Firestone.Mailbox, 'Do', true))
+    }
+
+    static RunHerosUpgrades(*) {
+        Firestone := this.GetFirestoneCursor()
+        this.RunSingle(Firestone, ObjBindMethod(Firestone.HerosUpgrades, 'Do'))
+    }
+
+    static RunBags(*) {
+        Firestone := this.GetFirestoneCursor()
+        this.RunSingle(Firestone, ObjBindMethod(Firestone.Bags, 'Do'))
     }
 }
