@@ -50,6 +50,7 @@ SendMode "Input"
 
 saved_mouse_position_x := 0
 saved_mouse_position_y := 0
+last_run := 0
 
 if Settings.Section('GENERAL').Get('debug', 'none') == 'none'
 	Settings.Section('GENERAL').Set('debug', 0)
@@ -207,7 +208,7 @@ FirestoneController.FindAllWindows()
 
 ; Запускается по таймеру
 DoWork(force := false) {
-	global saved_mouse_position_x, saved_mouse_position_y
+	global saved_mouse_position_x, saved_mouse_position_y, last_run
 	static delay := 300000
 
 	Thread "Priority", 1 ; На всякий случай, чтобы задача не прерывалась другими таймерами
@@ -278,6 +279,8 @@ DoWork(force := false) {
 				break
 			}
 		}
+
+		last_run := A_Now
 		delay := 300000
 		SetTimer DoWork, delay ; Если мышь не двигалась, то продолжаем через 5 минут
     }
@@ -292,7 +295,11 @@ DoWork(force := false) {
 }
 
 DoPrestigeUpgrades(force := false) {
-	global saved_mouse_position_x, saved_mouse_position_y
+	global saved_mouse_position_x, saved_mouse_position_y, last_run
+
+	; Проверяем, когда последний раз запускалась основная работа и откладываем запуск, если уже пора
+	if last_run != 0 && DateDiff(A_Now, last_run, 'Seconds') > 300
+		return
 
 	MouseGetPos(&Mx, &My)
 	FirestoneController.FindAllWindows()
