@@ -57,8 +57,6 @@ Class Firestone {
             'alchemy', '111',
             'oracle_blessings_priority', 0,
             'map_missions_priority', 'monster, sea, dragon, scout, adventure, war',
-            'chaos_rift_last_time', A_Now,
-            'chaos_rift_delay_minutes', 120,
             
             ; Дейли
             'daily_arena', 1,
@@ -68,6 +66,7 @@ Class Firestone {
             'daily_crystal', 1,
             'daily_crystal_clicks', 0,
             'daily_date', FormatTime(, 'yyyyMMdd'),
+            'daily_chaos_rift', 1,
             
             ; коробки
             'open_boxes', 0,
@@ -179,6 +178,7 @@ Class Firestone {
         this.Settings.Set('daily_tavern', 0)
         this.Settings.Set('daily_crystal', 0)
         this.Settings.Set('daily_magazine', 0)
+        this.Settings.Set('daily_chaos_rift', 0)
         this.Settings.Set('daily_date', date)
     }
 
