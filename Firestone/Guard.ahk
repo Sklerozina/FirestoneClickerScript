@@ -32,10 +32,10 @@ Class Guard {
     }
 
     Evolution() {
-        if !this.Firestone.Icons.Red.Check(1506, 87, 1542, 123)
+        if !this.Firestone.Icons.Red.Check(1307, 78, 1343, 117)
             return
 
-        this.Firestone.Click(1442, 137)
+        this.Firestone.Click(1280, 147)
 
         DebugLog.Log("== Эволюция ==")
         if this.Firestone.Buttons.Green.CheckAndClick(1001, 676, 1115, 760) ; проверем кнопку и эволюционируем
