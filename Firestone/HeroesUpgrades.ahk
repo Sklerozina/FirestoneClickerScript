@@ -18,7 +18,7 @@ Class HerosUpgrades {
         lvlup_priority := this.Firestone.Settings.Get('lvlup_priority', "1765432")
         this.Firestone.Press("{u}", 500)
     
-        if this.Firestone.prestige_mode
+        if FirestoneController.prestige_mode
         {
             this.UpgradeHero(1) ; 1
             for slot in [1, 7, 6, 5, 4, 3, 2]
@@ -51,7 +51,7 @@ Class HerosUpgrades {
 
     UpgradeHero(slot, clicks := 1) {
         coords := this.coords.Get(slot)
-        if this.Firestone.Buttons.Green.CheckAndClick(coords[1], coords[2], coords[3], coords[4],,, 200, clicks)
+        if this.Firestone.Buttons.Green.CheckAndClick(coords[1], coords[2], coords[3], coords[4],,, 60, clicks)
             DebugLog.Log('Прокачал слот ' . slot)
     }
 }
