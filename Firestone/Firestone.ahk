@@ -100,6 +100,7 @@ Class Firestone {
             'auto_events', 0,
             'auto_enlightenment', 0,
             'auto_chaos_rift', 0,
+            'auto_guard_holy_upgrade', 0,
         )
     
         for key, value in defaults {

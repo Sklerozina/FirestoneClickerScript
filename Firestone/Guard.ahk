@@ -46,6 +46,9 @@ Class Guard {
     }
 
     HolyDamageUpgrade() {
+        if this.Firestone.Settings.Get('auto_guard_holy_upgrade', 0) == 0
+            return
+        
         this.Firestone.Click(1437, 140) ; Вкладка святого урона
         this.Firestone.Press("{Left}", 500, 5) ; Выбираем самого левого стража
 
