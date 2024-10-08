@@ -51,7 +51,7 @@ Class HerosUpgrades {
 
     UpgradeHero(slot, clicks := 1) {
         coords := this.coords.Get(slot)
-        if this.Firestone.Buttons.Green.CheckAndClick(coords[1], coords[2], coords[3], coords[4],,, 60, clicks)
+        if this.Firestone.Buttons.Green.CheckAndClick(coords[1], coords[2], coords[3], coords[4],,, 200, clicks)
             DebugLog.Log('Прокачал слот ' . slot)
     }
 }
