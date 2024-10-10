@@ -70,6 +70,7 @@ Class Firestone {
             
             ; коробки
             'open_boxes', 0,
+            'open_any', 0,
             'open_common', 0,
             'open_uncommon', 0,
             'open_rare', 0,

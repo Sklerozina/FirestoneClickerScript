@@ -71,6 +71,22 @@ Class Chests {
             DebugLog.Log("Слот " i " (" x "x" y ")...")
 
             for name, color in this.chests {
+                if this.Firestone.Settings.Get('open_any', 0) == 1
+                {
+                    if (Tools.PixelSearch(x-5, y-5, x+5, y+5, 0x9E7F67, 0))
+                    {
+                        ; MsgBox "В " . i . " пусто!"
+                        continue
+                    }
+                    else
+                    {
+                        DebugLog.Log("Слот " i "(" x "x" y ")...")
+                        this.OpenChest(x, y)
+                    }
+
+                    continue 2
+                }
+
                 if this.Firestone.Settings.Get('open_' . name, 0) != 1
                     continue
 
