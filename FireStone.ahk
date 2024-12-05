@@ -42,6 +42,7 @@ Settings := Ini(Firestone_WorkingDir '\settings.ini')
 #Include Events.ahk
 
 InstallKeybdHook
+InstallMouseHook
 
 SendMode "Input"
 ; Thread "Interrupt", 0  ; Make all threads always-interruptible.
@@ -211,7 +212,7 @@ DoWork(force := false) {
 	global saved_mouse_position_x, saved_mouse_position_y, last_run
 	static delay := 300000
 
-	Thread "Priority", 1 ; На всякий случай, чтобы задача не прерывалась другими таймерами
+	Thread("NoTimers") ; Чтобы задача не прерывалась другими таймерами
 	FirestoneController.FindAllWindows()
 
 	; Если мышка двигалась или нажималась клавиатура пока спали, пропускаем задачу
