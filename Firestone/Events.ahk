@@ -51,8 +51,6 @@ Class Events {
                             if !this.Firestone.Buttons.Green.FindAndClick(1369, 326, 1371, 880, 1000)
                                 break
                         }
-
-                        this.Firestone.Esc()
                     }
                     
                     ; Decorated heroes / Прославленные герои?
@@ -61,6 +59,8 @@ Class Events {
                         this.DecoratedHeroes()
                     }
 
+                    ; Esc потому что куда-то же мы зашли
+                    this.Firestone.Esc()
                 }
             }
 
@@ -89,9 +89,6 @@ Class Events {
                     Tools.Sleep(500) ; Небольшая пауза, чтобы кнопка потухла
                 }
             }
-        }
-
-        this.Firestone.Esc()
-        
+        }        
     }
 }
