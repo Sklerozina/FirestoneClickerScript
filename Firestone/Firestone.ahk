@@ -196,6 +196,7 @@ Class Firestone {
 	Click(x, y, wait := 1000, clickcount := 1) {
         DebugLog.Log("Клик: (" . Round(x) . "x" . Round(y) . ")")
 		this.Window.IsActive()
+        this.CheckWhiteScreen()
 
 		loop clickcount
 		{
@@ -217,6 +218,7 @@ Class Firestone {
 	Press(key, wait := 1000, times := 1) {
         DebugLog.Log(key . " (" . times . ")")
 		this.Window.IsActive()
+        this.CheckWhiteScreen()
 	
         loop times
         {
@@ -224,6 +226,15 @@ Class Firestone {
 		    Tools.Sleep(wait)
         }
 	}
+
+    CheckWhiteScreen() {
+        if PixelGetColor(1822, 26) == 0xFFFFFF && PixelGetColor(38, 609) == 0xFFFFFF
+        {
+            DebugLog.Log('Обнаружен экран покупки, прервываю работу!')
+            this.TelegramSend("Обнаружен экран покупки!")
+            throw 'Обнаружен экран покупки!'
+        } 
+    }
 
     TelegramSend(text, silent := false) {
         chatid :=  Settings.Section('GENERAL').Get('TELEGRAM_CHAT_ID', 0)
