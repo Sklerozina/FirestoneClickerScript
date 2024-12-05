@@ -39,5 +39,7 @@ Class FirestoneMenu extends Menu {
         this.FirestoneRunMenu.Add('Прокачка стража', ObjBindMethod(FirestoneController, 'RunGuard'))
         this.FirestoneRunMenu.Add('Прокачать героев', ObjBindMethod(FirestoneController, 'RunHerosUpgrades'))
         this.FirestoneRunMenu.Add('Открыть сундуки', ObjBindMethod(FirestoneController, 'RunBags'))
+        this.FirestoneRunMenu.Add('Сканировать цвета в сумках', ObjBindMethod(FirestoneController, 'RunBagsColors'))
+        
     }
 }

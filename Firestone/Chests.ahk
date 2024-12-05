@@ -151,7 +151,8 @@ Class Chests {
     }
 
     WriteColors() {
-        i := 0
+        this.Firestone.Press("{B}")
+
         DebugLog.Log("Проверка слотов...")
 
         if Tools.PixelSearch(1814-5, 21-5, 1814+5, 21+5, 0xE1CDAC, 1) ; Проверка фона, если фон есть, то интерфейс мобильный
@@ -170,8 +171,17 @@ Class Chests {
 
         chest_colors := Map()
 
+        slots := InputBox("Укажите какие слоты сумки сканировать, через запятую.`nОт 1 до 15.`nНапример: 1,2,3,12", "Сканирование слотов").value
+        slots := StrSplit(slots, ",", " ")
+        Sleep 500
         scan := Map() ; Какие слоты сканировать на цвета
 
+        for slot in slots
+        {
+            scan.Set(Integer(slot), "")
+        }
+
+        i := 0
         For coords in box_coordinates
         {
             i += 1
@@ -219,7 +229,7 @@ Class Chests {
                     DebugLog.Log("  " color_string ": " . color_count)
             }
         }
-
+        this.Firestone.Esc()
         MsgBox "я закончил"
         Exit
     }
