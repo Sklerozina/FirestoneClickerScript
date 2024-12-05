@@ -87,6 +87,12 @@ Class Chests {
                     continue 2
                 }
 
+                if (Tools.PixelSearch(x-5, y-5, x+5, y+5, 0x9E7F67, 0))
+                {
+                    ; В ячейке пусто и нет смысла искать!
+                    continue 2
+                }
+
                 if this.Firestone.Settings.Get('open_' . name, 0) != 1
                     continue
 
