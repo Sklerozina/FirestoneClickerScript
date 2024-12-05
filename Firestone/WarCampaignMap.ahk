@@ -160,13 +160,15 @@ Class WarCampaignMap {
     
             ; Зайти ещё раз и проверить вторую стопку дейликов
             DebugLog.Log("=== Подземелья ===")
-            this.Firestone.Click(1777, 977, 500) ; Ежедневные миссии
+            ; this.Firestone.Click(1777, 977, 500) ; Ежедневные миссии
+            ; С версии 8.2.4.a больше не нужно ещё раз нажимать кнопку дейликов справа-внизу
             if this.Firestone.Buttons.Green.CheckAndClick(1100, 740, 1340, 810) ; 
             {
                 DebugLog.Log("Подземелье 1")
                 this.DoWMMission(630, 700, 890, 770) ; Подземелье 1
                 DebugLog.Log("Подземелье 2")
                 this.DoWMMission(1027, 707, 1288, 775) ; Подземелье 2
+                this.Firestone.Esc() ; Вышли на выбор
                 this.Firestone.Esc() ; Вышли на карту
             }
             else
