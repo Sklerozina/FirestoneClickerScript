@@ -227,6 +227,7 @@ Class Firestone {
         DebugLog.Log("Клик: (" . Round(x) . "x" . Round(y) . ")")
 		this.Window.IsActive()
         this.CheckWhiteScreen()
+        this.CheckLoadProgressBar()
 
 		loop clickcount
 		{
@@ -249,6 +250,7 @@ Class Firestone {
         DebugLog.Log(key . " (" . times . ")")
 		this.Window.IsActive()
         this.CheckWhiteScreen()
+        this.CheckLoadProgressBar()
 	
         loop times
         {
@@ -256,6 +258,15 @@ Class Firestone {
 		    Tools.Sleep(wait)
         }
 	}
+
+    CheckLoadProgressBar() {
+        if PixelSearch(&oX, &oY, 0, 995, 8, 1016, 0xFAE56A, 3)
+        {
+            DebugLog.Log('Обнаружена полоса загрузки, прервываю работу!')
+            this.TelegramSend("Обнаружена полоса загрузки, прервываю работу!")
+            throw 'Обнаружена полоса загрузки, прервываю работу!'
+        }
+    }
 
     CheckWhiteScreen() {
         if PixelGetColor(1822, 26) == 0xFFFFFF && PixelGetColor(38, 609) == 0xFFFFFF
