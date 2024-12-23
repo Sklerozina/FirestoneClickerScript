@@ -227,7 +227,15 @@ DoWork(force := false) {
 			if !Firestone.Window.Exist()
 				continue
 
-			DebugLog.Log('Окно ' . WinGetProcessPath(Firestone.hwid), "`n")
+			DebugLog.Log('Окно ' . WinGetProcessPath(Firestone.Window.hwid), "`n")
+
+			if Firestone.Settings.Get('auto_restart_every_hours', 0) > 0 &&
+				Firestone.Settings.Get('run_string', '') != '' &&
+				DateDiff(A_Now, Firestone.Window.last_start, 'Hours') >= Firestone.Settings.Get('auto_restart_every_hours', 0)
+			{
+				DebugLog.Log('Пришло время автоматического перезапуска игры')
+				Firestone.Restart()
+			}
 
 			try
 			{
@@ -314,7 +322,7 @@ DoPrestigeUpgrades(force := false) {
 			if !Firestone.Window.Exist()
 				continue
 
-			DebugLog.Log('Окно ' . WinGetProcessPath(Firestone.hwid), "`n")
+			DebugLog.Log('Окно ' . WinGetProcessPath(Firestone.Window.hwid), "`n")
 
 			try
 			{

@@ -1,9 +1,40 @@
 Class FirestoneWindow {
     hwid := unset
+    process_path := unset
+    last_start := A_Now
 
     __New(hwid) {
         this.hwid := hwid
+        this.process_path := WinGetProcessPath(hwid)
         this.BorderlessAndResize()
+    }
+
+    Close() {
+        ; Если окна нет, то пропускаем
+        if !WinExist(this.hwid)
+            return true
+
+        WinClose(this.hwid)
+        if WinWaitClose(this.hwid,, 120000)
+            return true
+        else
+            return false
+    }
+
+    Open(run_string) {
+        Run(run_string)
+        if WinWait('ahk_exe ' this.process_path,, 300000)
+        {
+            this.hwid := Integer(WinGetID('ahk_exe ' this.process_path))
+            Sleep(30000) ; 30 секунд на запуск?
+            this.BorderlessAndResize()
+            this.last_start := A_Now
+            return true
+        }
+        else
+        {
+            return false
+        }
     }
 
     BorderlessAndResize() {

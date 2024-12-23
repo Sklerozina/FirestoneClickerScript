@@ -45,6 +45,34 @@ Class Firestone {
         this.Events := Events(this)
     }
 
+    Restart() {
+        run_string := this.Settings.Get('run_string')
+        if run_string == ''
+        {
+            DebugLog.Log('Строка запуска для игры пустая, не могу запустить!')
+            throw 'Строка запуска для игры пустая, не могу запустить!'
+        }
+            
+
+        if !this.Window.Close()
+        {
+            DebugLog.Log('Не получается закрыть игру для перезапуска!')
+            this.TelegramSend("Не получается закрыть игру для перезапуска!")
+            throw 'Не получается закрыть игру для перезапуска!'
+        }
+
+        Sleep(30000) ; Всё равно лучше подождать ещё
+
+        if !this.Window.Open(run_string)
+        {
+            DebugLog.Log('Не получается запустить игру!')
+            this.TelegramSend("Не получается запустить игру!")
+            throw 'Не получается запустить игру!'
+        }
+
+        this.hwid := this.Window.hwid
+    }
+
     SetCurrentSettings() {
         Settings.Reload()
         ProcessPath := WinGetProcessPath(this.Window.hwid)
@@ -53,6 +81,8 @@ Class Firestone {
     
         defaults := Map(
             'name', '',
+            'auto_restart_every_hours', 0,
+            'run_string', '',
             'lvlup_priority', '17',
             'alchemy', '111',
             'oracle_blessings_priority', 0,
@@ -243,7 +273,7 @@ Class Firestone {
         if chatid == 0 || token == ""
             return
 
-        name := this.Settings.Get('name', '') != '' ? this.Settings.Get('name', '') : WinGetProcessPath(Firestone.hwid)
+        name := this.Settings.Get('name', '') != '' ? this.Settings.Get('name', '') : WinGetProcessPath(Firestone.Window.hwid)
         
         text := "<b>" name "</b>`n`n" text
         return Tools.TelegramSend(text, chatid, token, silent)

@@ -7,6 +7,13 @@ Class FirestoneController {
         this.FindAllWindows()
     }
 
+    static RestartAllWindows() {
+        for Path, Firestone in this.Firestones
+        {
+            Firestone.Restart()
+        }
+    }
+
     static FindAllWindows(){
         hwids := WinGetList("ahk_exe Firestone.exe")
 
