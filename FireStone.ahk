@@ -227,7 +227,8 @@ DoWork(force := false) {
 			if !Firestone.Window.Exist()
 				continue
 
-			DebugLog.Log('Окно ' . WinGetProcessPath(Firestone.Window.hwid), "`n")
+			DebugLog.Log('Окно ' . WinGetProcessPath(Firestone.Window.hwid) ' [' Firestone.Window.hwid ']', "`n")
+			DebugLog.Log('Перезапуск был ' FormatTime(Firestone.Window.last_start, "dd.MM.yy HH:mm") ' ' DateDiff(A_Now, Firestone.Window.last_start, 'Hours') ' ч. назад.')
 
 			if Firestone.Settings.Get('auto_restart_every_hours', 0) > 0 &&
 				Firestone.Settings.Get('run_string', '') != '' &&

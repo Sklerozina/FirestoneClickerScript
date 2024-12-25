@@ -19,7 +19,14 @@ Class FirestoneController {
 
         for hwid in hwids {
             path := WinGetProcessPath(hwid)
-            this.Firestones.Set(path, Firestone(hwid))
+            if this.Firestones.Has(path)
+            {
+                this.Firestones.Get(path).Window.SetHwid(hwid)
+            }
+            else
+            {
+                this.Firestones.Set(path, Firestone(hwid))
+            }
         }
     }
 

@@ -9,6 +9,15 @@ Class FirestoneWindow {
         this.BorderlessAndResize()
     }
 
+    SetHwid(hwid) {
+        if this.hwid != hwid
+        {
+            this.hwid := hwid
+            this.BorderlessAndResize()
+            this.last_start := A_Now
+        }
+    }
+
     Close() {
         ; Если окна нет, то пропускаем
         if !WinExist(this.hwid)
