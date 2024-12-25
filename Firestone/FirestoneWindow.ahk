@@ -23,8 +23,15 @@ Class FirestoneWindow {
         if !WinExist(this.hwid)
             return true
 
-        WinClose(this.hwid)
-        if WinWaitClose(this.hwid,, 120000)
+        WinClose(this.hwid,, 60)
+        if WinWaitClose(this.hwid,, 60)
+            return true
+        else
+        {
+            WinKill(this.hwid,, 60)
+        }
+
+        if WinWaitClose(this.hwid,, 60)
             return true
         else
             return false
@@ -32,7 +39,7 @@ Class FirestoneWindow {
 
     Open(run_string) {
         Run(run_string)
-        if WinWait('ahk_exe ' this.process_path,, 300000)
+        if WinWait('ahk_exe ' this.process_path,, 60)
         {
             this.hwid := Integer(WinGetID('ahk_exe ' this.process_path))
             Sleep(30000) ; 30 секунд на запуск?
