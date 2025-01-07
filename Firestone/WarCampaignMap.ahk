@@ -155,6 +155,8 @@ Class WarCampaignMap {
             this.DoWMMission(680, 710, 929, 770) ; 7
             DebugLog.Log("Миссия 8")
             this.DoWMMission(1070, 710, 1330, 770) ; 8
+            DebugLog.Log("Миссия 9")
+            this.DoWMMission(1380, 710, 1640, 770) ; 9 примерно (Грозовой шпиль)
 
             this.Firestone.Esc() ; Вышли на карту
     
