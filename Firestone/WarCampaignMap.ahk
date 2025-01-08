@@ -132,7 +132,7 @@ Class WarCampaignMap {
             DebugLog.Log("=== Освобождение ===")
             this.Firestone.Click(720, 779) ; Кнопка выбора, освобождение
             MouseMove 513, 489
-            this.Firestone.ScrollUp(60)
+            this.Firestone.ScrollUp(80)
     
             Tools.Sleep 500
             DebugLog.Log("Миссия 1")
