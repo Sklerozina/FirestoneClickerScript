@@ -19,6 +19,8 @@ Class Firestone {
     saved_mouse_position_x := 0
     saved_mouse_position_y := 0
     prestige_mode := false
+    progress_bar_found := 0
+    force_restart := false
 
     __New(hwid) {
         this.hwid := hwid
@@ -162,6 +164,11 @@ Class Firestone {
             
             MouseMove 0, 0
             this.Esc(500)
+
+            if !this.CheckLoadProgressBar()
+                this.progress_bar_found := 0
+            else if this.progress_bar_found >= 3
+                this.force_restart := true
             
             if this.Buttons.Green.Wait(1032, 706, 1059, 780, 500) {
                 DebugLog.Log('Кнопка найдена')
@@ -262,10 +269,18 @@ Class Firestone {
     CheckLoadProgressBar() {
         if PixelSearch(&oX, &oY, 0, 995, 8, 1016, 0xFAE56A, 3)
         {
+            this.progress_bar_found += 1
+
+            if this.progress_bar_found >= 3
+            {
+                this.TelegramSend("Обнаружена полоса загрузки, прервываю работу!")
+            }
+
             DebugLog.Log('Обнаружена полоса загрузки, прервываю работу!')
-            this.TelegramSend("Обнаружена полоса загрузки, прервываю работу!")
             throw 'Обнаружена полоса загрузки, прервываю работу!'
         }
+        else
+            return false
     }
 
     CheckWhiteScreen() {

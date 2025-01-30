@@ -238,6 +238,11 @@ DoWork(force := false) {
 				Firestone.Restart()
 			}
 
+			if Firestone.force_restart == true && Firestone.Settings.Get('run_string', '') != '' {
+				DebugLog.Log('Принудительный перезапуск игры.')
+				Firestone.Restart()
+			}
+
 			try
 			{
 				; Sleep 1000 ; Заглушка, чтобы пошёл таймер в A_TimeIdlePhysical
