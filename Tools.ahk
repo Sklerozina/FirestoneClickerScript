@@ -50,12 +50,17 @@ Class Tools {
         if silent
             data .= "&disable_notification=1"
     
-        ; https://learn.microsoft.com/en-us/windows/win32/winhttp/winhttprequest
-        web := ComObject('WinHttp.WinHttpRequest.5.1')
-        web.Open('POST', "https://api.telegram.org/bot" . token . "/sendMessage", True)
-        web.SetRequestHeader("Content-Type", "application/x-www-form-urlencoded")
-        web.Send(data)
-        web.WaitForResponse()
-        return web.ResponseText
+        try {
+            ; https://learn.microsoft.com/en-us/windows/win32/winhttp/winhttprequest
+            web := ComObject('WinHttp.WinHttpRequest.5.1')
+            web.Open('POST', "https://api.telegram.org/bot" . token . "/sendMessage", True)
+            web.SetRequestHeader("Content-Type", "application/x-www-form-urlencoded")
+            web.Send(data)
+            web.WaitForResponse()
+            return web.ResponseText
+        } catch {
+            return false
+        }
+        
     }
 }
