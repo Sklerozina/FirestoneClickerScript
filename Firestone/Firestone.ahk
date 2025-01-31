@@ -167,8 +167,7 @@ Class Firestone {
 
             if !this.CheckLoadProgressBar()
                 this.progress_bar_found := 0
-            else if this.progress_bar_found >= 3
-                this.force_restart := true
+                
             
             if this.Buttons.Green.Wait(1032, 706, 1059, 780, 500) {
                 DebugLog.Log('Кнопка найдена')
@@ -273,7 +272,8 @@ Class Firestone {
 
             if this.progress_bar_found >= 3
             {
-                this.TelegramSend("Обнаружена полоса загрузки, прервываю работу!")
+                this.TelegramSend("Обнаружена полоса загрузки, пытаюсь перезапустить!")
+                this.force_restart := true
             }
 
             DebugLog.Log('Обнаружена полоса загрузки, прервываю работу!')
