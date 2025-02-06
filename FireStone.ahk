@@ -230,21 +230,21 @@ DoWork(force := false) {
 			DebugLog.Log('Окно ' . WinGetProcessPath(Firestone.Window.hwid) ' [' Firestone.Window.hwid ']', "`n")
 			DebugLog.Log('Перезапуск был ' FormatTime(Firestone.Window.last_start, "dd.MM.yy HH:mm") ' ' DateDiff(A_Now, Firestone.Window.last_start, 'Hours') ' ч. назад.')
 
-			if Firestone.Settings.Get('auto_restart_every_hours', 0) > 0 &&
-				Firestone.Settings.Get('run_string', '') != '' &&
-				DateDiff(A_Now, Firestone.Window.last_start, 'Hours') >= Firestone.Settings.Get('auto_restart_every_hours', 0)
-			{
-				DebugLog.Log('Пришло время автоматического перезапуска игры')
-				Firestone.Restart()
-			}
-
-			if Firestone.force_restart == true && Firestone.Settings.Get('run_string', '') != '' {
-				DebugLog.Log('Принудительный перезапуск игры.')
-				Firestone.Restart()
-			}
-
 			try
 			{
+				if Firestone.Settings.Get('auto_restart_every_hours', 0) > 0 &&
+					Firestone.Settings.Get('run_string', '') != '' &&
+					DateDiff(A_Now, Firestone.Window.last_start, 'Hours') >= Firestone.Settings.Get('auto_restart_every_hours', 0)
+				{
+					DebugLog.Log('Пришло время автоматического перезапуска игры')
+					Firestone.Restart()
+				}
+
+				if Firestone.force_restart == true && Firestone.Settings.Get('run_string', '') != '' {
+					DebugLog.Log('Принудительный перезапуск игры.')
+					Firestone.Restart()
+				}
+			
 				; Sleep 1000 ; Заглушка, чтобы пошёл таймер в A_TimeIdlePhysical
 				Firestone.BackToMainScreen()
 				Tools.Sleep 1000
