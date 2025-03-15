@@ -12,11 +12,11 @@ Class Magazine {
     
         DebugLog.Log("== Подарок ==")
         reward_1 := false
-        if Tools.PixelSearch(432, 869, 442, 879, 0x5B5EAA, 1)
+        if Tools.PixelSearch(473, 857, 862, 899, 0x5B5EAA, 1)
         {
             this.Firestone.Click(592, 743, 1000)
             
-            if !Tools.PixelSearch(432, 869, 442, 879, 0x5B5EAA, 1)
+            if !Tools.PixelSearch(473, 857, 862, 899, 0x5B5EAA, 1)
             {
                 reward_1 := true
             }
