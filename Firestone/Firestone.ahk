@@ -5,6 +5,7 @@ Class Firestone {
 		Orange: Button(this, 0xFBAC46),
         Blue: Button(this, 0x1289FF),
         White: Button(this, 0xFFFFFF),
+        NewGreen: Button(this, 0x54A433),
 	}
 
     Icons := {

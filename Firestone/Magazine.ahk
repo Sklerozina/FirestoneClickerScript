@@ -39,9 +39,8 @@ Class Magazine {
             }
 
             ; Проверяем новуб кнопку, для сбора ежедневных наград
-            if Tools.PixelSearch(1268, 855, 1432, 895, 0x54A433, 5)
+            if this.Firestone.Buttons.NewGreen.FindAndClick(1268, 786, 1432, 895) ; Эта падла меняет своё положение по высоте
             {
-                this.Firestone.Click 1344, 876
                 if !this.Firestone.Icons.Red.Check(1425, 25, 1474, 76)
                 {
                     reward_2 := true
