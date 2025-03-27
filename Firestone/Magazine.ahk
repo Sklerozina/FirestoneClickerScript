@@ -37,6 +37,16 @@ Class Magazine {
                     reward_2 := true
                 }
             }
+
+            ; Проверяем новуб кнопку, для сбора ежедневных наград
+            if Tools.PixelSearch(1268, 855, 1432, 895, 0x54A433, 5)
+            {
+                this.Firestone.Click 1344, 876
+                if !this.Firestone.Icons.Red.Check(1425, 25, 1474, 76)
+                {
+                    reward_2 := true
+                }
+            }
         }
         else
             reward_2 := true
