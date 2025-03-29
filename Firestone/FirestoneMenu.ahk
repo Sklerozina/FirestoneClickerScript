@@ -35,6 +35,7 @@ Class FirestoneMenu extends Menu {
     }
 
     CreateSubMenu() {
+        this.FirestoneRunMenu.Add('Проверить события', ObjBindMethod(FirestoneController, 'RunEvents'))
         this.FirestoneRunMenu.Add('Проверить почту', ObjBindMethod(FirestoneController, 'RunMailbox'))
         this.FirestoneRunMenu.Add('Прокачка стража', ObjBindMethod(FirestoneController, 'RunGuard'))
         this.FirestoneRunMenu.Add('Прокачать героев', ObjBindMethod(FirestoneController, 'RunHerosUpgrades'))

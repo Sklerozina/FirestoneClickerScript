@@ -94,4 +94,9 @@ Class FirestoneController {
         Firestone := this.GetFirestoneCursor()
         this.RunSingle(Firestone, ObjBindMethod(Firestone.Bags.Chests, 'WriteColors'))
     }
+
+    static RunEvents(*) {
+        Firestone := this.GetFirestoneCursor()
+        this.RunSingle(Firestone, ObjBindMethod(Firestone.Events, 'Do'))
+    }
 }
