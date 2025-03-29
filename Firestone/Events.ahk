@@ -23,12 +23,12 @@ Class Events {
         DebugLog.Log("События", "`n")
 
         ; Проверяем красную иконку у событий, если не горит, то и не трогаем.
-        if !this.Firestone.Icons.Red.Check(1712, 148, 1741, 179)
-            return
-
-        if (!this.last_run.Has(this.Firestone.Window.hwid) || this.last_run.Get(this.Firestone.Window.hwid, 0) < A_TickCount - 1800000)
+        ; Пока отключаю, иконка часто багует, лучше заходить периодически и проверять
+        ; if !this.Firestone.Icons.Red.Check(1712, 148, 1741, 179)
+        ;     return
+        if (!this.last_run.Has(this.Firestone.Window.hwid) || DateDiff(A_Now, this.last_run.Get(this.Firestone.Window.hwid, A_Now), 'Minutes') > 30)
         {
-            this.last_run.Set(this.Firestone.Window.hwid, A_TickCount)
+            this.last_run.Set(this.Firestone.Window.hwid, A_Now)
 
             this.Firestone.Click(1684, 207)
 
@@ -51,6 +51,8 @@ Class Events {
                             if !this.Firestone.Buttons.Green.FindAndClick(1369, 326, 1371, 880, 1000)
                                 break
                         }
+
+                        this.Firestone.Esc()
                     }
                     
                     ; Decorated heroes / Прославленные герои?
@@ -58,9 +60,6 @@ Class Events {
                         DebugLog.Log("Обнаружено событие 'Прославленные герои'")
                         this.DecoratedHeroes()
                     }
-
-                    ; Esc потому что куда-то же мы зашли
-                    this.Firestone.Esc()
                 }
             }
 
@@ -83,12 +82,14 @@ Class Events {
         {
             for coord in this.decorated_heroes_coords
             {
-                if this.Firestone.Buttons.Green.CheckAndClick(coord[1], coord[2], coord[3], coord[4])
+                if this.Firestone.Buttons.Green.CheckAndClick(coord[1], coord[2], coord[3], coord[4], 200)
                 {
                     MouseMove 0, 0 ; если был клик, убираем мышку
                     Tools.Sleep(500) ; Небольшая пауза, чтобы кнопка потухла
                 }
             }
-        }        
+        }
+
+        this.Firestone.Esc()     
     }
 }
