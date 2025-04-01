@@ -139,7 +139,8 @@ LogsOnOff() {
 
 DoBackgroundClicker() {
 	for Path, Firestone in FirestoneController.Firestones {
-		ControlClick('X0 Y0',Firestone.Window.hwid)
+		if !WinActive(Firestone.Window.hwid) && !MouseOverWindow()
+			ControlClick('X0 Y0',Firestone.Window.hwid)
 	}
 }
 
