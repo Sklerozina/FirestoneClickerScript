@@ -92,10 +92,13 @@ If Settings.Section('GENERAL').Get('debug', 0) {
 	else
 		toggle := false
 
-	if toggle
+	if toggle {
+		Tp("Кликер в фоне активирован.")
 		SetTimer(DoBackgroundClicker, 50, -100)
-	else
+	} else {
+		Tp("Кликер в фоне выключен.")
 		SetTimer(DoBackgroundClicker, 0)
+	}
 }
 
 ; Сменить режим апгрейда героев
