@@ -84,6 +84,20 @@ If Settings.Section('GENERAL').Get('debug', 0) {
 	Tp(A_Clipboard)
 }
 
+^+Space::{
+	static toggle := false
+
+	if !toggle
+		toggle := true
+	else
+		toggle := false
+
+	if toggle
+		SetTimer(DoBackgroundClicker, 50, -100)
+	else
+		SetTimer(DoBackgroundClicker, 0)
+}
+
 ; Сменить режим апгрейда героев
 ^NumpadEnd::PrestigeModeOnOff
 ^Numpad1::PrestigeModeOnOff
@@ -120,6 +134,12 @@ LogsOnOff() {
 		FirestoneController.Menu.Rename("Включить логи", 'Выключить логи')
 		DebugLog.Enable()
 		Settings.Section('GENERAL').Set('debug', 1)
+	}
+}
+
+DoBackgroundClicker() {
+	for Path, Firestone in FirestoneController.Firestones {
+		ControlClick('X0 Y0',Firestone.Window.hwid)
 	}
 }
 
