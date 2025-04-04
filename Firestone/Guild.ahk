@@ -21,6 +21,14 @@ Class Guild {
         if this.Firestone.Settings.Get('auto_chaos_rift', 0) == 0
             return
         
+        ; Если цифра 2, то мы просто заходим и кликаем разок в рифт.
+        if this.Firestone.Settings.Get('auto_chaos_rift', 0) == 2 {
+            this.Firestone.Click(1396, 585)
+            this.Firestone.Buttons.Green.WaitAndClick(1027, 838, 1028, 933, 1000)
+            this.Firestone.Esc()
+            return
+        }
+
         ; Проверяем, отстукивался ли разлом сегодня
         if this.Firestone.Settings.Get('daily_chaos_rift', 1) == 1
             return
