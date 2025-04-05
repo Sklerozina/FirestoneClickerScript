@@ -82,7 +82,7 @@ Class Events {
                     this.Firestone.ScrollUp(100)
                 } else {
                     MouseMove(854, 457)
-                    this.Firestone.ScrollDown(42)
+                    this.Firestone.ScrollDown(52)
                 }
 
                 loop 5
