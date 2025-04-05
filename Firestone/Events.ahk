@@ -53,12 +53,14 @@ Class Events {
                         }
 
                         this.Firestone.Esc()
-                    }
-                    
-                    ; Decorated heroes / Прославленные герои?
-                    if (PixelGetColor(677, 59) == 0x4F419C){ ; Цвет фона у названия события
+                    } else if PixelGetColor(677, 59) == 0x4F419C { ; Цвет фона у названия события
                         DebugLog.Log("Обнаружено событие 'Прославленные герои'")
                         this.DecoratedHeroes()
+                    } else if PixelGetColor(1765, 485) == 0xDE9D29 { ; Годовщина
+                        this.Anniversary()
+                    } else {
+                        ; Неизвестное событие, просто выходим                        
+                        this.Firestone.Esc()
                     }
                 }
             }
@@ -67,6 +69,31 @@ Class Events {
         }
         else
             DebugLog.Log("Время ещё не пришло, осталось ждать " Round((this.last_run.Get(this.Firestone.Window.hwid, 0) + 1800000 - A_TickCount) / 1000) " секунд")
+    }
+
+    Anniversary() {
+        this.Firestone.Buttons.Green.FindAndClick(1121, 813, 1147, 866) ; Забрать ежедневную награду
+        
+        if this.Firestone.Icons.Red.CheckAndClick(663, 118, 690, 149, 548, 168) {
+            loop 3
+            {
+                if A_Index == 1 {
+                    MouseMove(854, 457)
+                    this.Firestone.ScrollUp(100)
+                } else {
+                    MouseMove(854, 457)
+                    this.Firestone.ScrollDown(42)
+                }
+
+                loop 5
+                {
+                    if !this.Firestone.Buttons.Green.FindAndClick(228, 831, 1779, 831)
+                        break
+                }
+            }
+        }
+
+        this.Firestone.Esc()
     }
 
     ; Decorated heroes / Прославленные герои
