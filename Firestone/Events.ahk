@@ -57,6 +57,7 @@ Class Events {
                         DebugLog.Log("Обнаружено событие 'Прославленные герои'")
                         this.DecoratedHeroes()
                     } else if PixelGetColor(1765, 485) == 0xDE9D29 { ; Годовщина
+                        DebugLog.Log("Обнаружено событие 'Годовщина'")
                         this.Anniversary()
                     } else {
                         ; Неизвестное событие, просто выходим                        
@@ -74,7 +75,8 @@ Class Events {
     Anniversary() {
         this.Firestone.Buttons.Green.FindAndClick(1121, 813, 1147, 866) ; Забрать ежедневную награду
         
-        if this.Firestone.Icons.Red.CheckAndClick(663, 118, 690, 149, 548, 168) {
+        if this.Firestone.Icons.Red.CheckAndClick(663, 118, 690, 149, 548, 168)
+        {
             loop 3
             {
                 if A_Index == 1 {
