@@ -1,10 +1,12 @@
 Class FirestoneWindow {
+    Firestone := unset
     hwid := unset
     process_path := unset
     last_start := A_Now
 
-    __New(hwid) {
+    __New(hwid, Firestone) {
         this.hwid := hwid
+        this.Firestone := Firestone
         this.process_path := WinGetProcessPath(hwid)
         this.BorderlessAndResize()
     }
@@ -102,6 +104,8 @@ Class FirestoneWindow {
     }
 
     IsActive() {
+        static active_attempts := 0
+
         if !WinExist(this.hwid)
         {
             DebugLog.Log('Окно с игрой не найдено!')
@@ -110,7 +114,14 @@ Class FirestoneWindow {
     
         if !WinActive(this.hwid)
         {
-            DebugLog.Log('Окно перестало быть активным!')
+            active_attempts += 1
+            DebugLog.Log('Окно перестало быть активным! {' active_attempts '}')
+
+            if active_attempts > 10 {
+                this.Firestone.force_restart := true
+                active_attempts := 0
+            }
+
             throw 'Окно перестало быть активным!'
         }
     }

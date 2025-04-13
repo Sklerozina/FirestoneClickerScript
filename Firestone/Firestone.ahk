@@ -26,7 +26,7 @@ Class Firestone {
     __New(hwid) {
         this.hwid := hwid
 
-        this.Window := FirestoneWindow(hwid)
+        this.Window := FirestoneWindow(hwid, this)
 
         this.SetCurrentSettings()
 

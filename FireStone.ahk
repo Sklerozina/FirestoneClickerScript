@@ -2,7 +2,7 @@
 #MaxThreadsPerHotkey 2
 #SingleInstance Force
 
-AppVersion := "v0.1.11"
+AppVersion := "v0.1.12"
 A_IconTip := "Firestone Clicker " AppVersion
 
 If !IsSet(Firestone_WorkingDir)
@@ -268,6 +268,7 @@ DoWork(force := false) {
 				if Firestone.force_restart == true && Firestone.Settings.Get('run_string', '') != '' {
 					DebugLog.Log('Принудительный перезапуск игры.')
 					Firestone.Restart()
+					Firestone.force_restart := false
 				}
 			
 				; Sleep 1000 ; Заглушка, чтобы пошёл таймер в A_TimeIdlePhysical
