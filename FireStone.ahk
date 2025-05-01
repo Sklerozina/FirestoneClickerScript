@@ -143,7 +143,7 @@ LogsOnOff() {
 DoBackgroundClicker() {
 	MouseGetPos(&x, &y)
 	for Path, Firestone in FirestoneController.Firestones {
-		if !WinActive(Firestone.Window.hwid) && (x > 230 && x < 1512 && y > 268 && y < 779)
+		if x > 230 && x < 1512 && y > 268 && y < 779
 			ControlClick('X0 Y0',Firestone.Window.hwid)
 	}
 }
