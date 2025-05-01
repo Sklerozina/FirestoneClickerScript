@@ -249,20 +249,29 @@ DoWork(force := false) {
 		
 		for Path, Firestone in FirestoneController.Firestones
 		{
-			if !Firestone.Window.Exist()
-				continue
-
-			DebugLog.Log('Окно ' . WinGetProcessPath(Firestone.Window.hwid) ' [' Firestone.Window.hwid ']', "`n")
+			DebugLog.Log('Окно ' . Path ' [' Firestone.Window.hwid ']', "`n")
 			DebugLog.Log('Перезапуск был ' FormatTime(Firestone.Window.last_start, "dd.MM.yy HH:mm") ' ' DateDiff(A_Now, Firestone.Window.last_start, 'Hours') ' ч. назад.')
 
 			try
 			{
 				if Firestone.Settings.Get('auto_restart_every_hours', 0) > 0 &&
 					Firestone.Settings.Get('run_string', '') != '' &&
-					DateDiff(A_Now, Firestone.Window.last_start, 'Hours') >= Firestone.Settings.Get('auto_restart_every_hours', 0)
+					DateDiff(A_Now, Firestone.Window.last_start, 'Hours') >= Firestone.Settings.Get('auto_restart_every_hours', 0) && Firestone.Window.Exist()
 				{
 					DebugLog.Log('Пришло время автоматического перезапуска игры')
 					Firestone.Restart()
+				}
+
+				if !Firestone.Window.Exist() && Firestone.Settings.Get('autorun_if_notfound', 0) {
+					DebugLog.Log('Окно с игрой не найдено, запуск.')
+					result_yn := MsgBox("Запуск игры через 30 секунд...",, "Y/N/C T30")
+					if (result_yn = "Timeout" || result_yn = "Yes") {
+						Firestone.Restart()
+					} else if result_yn = "Cancel" {
+						RunOnOff()
+					}
+				} else if !Firestone.Window.Exist() {
+					continue
 				}
 
 				if Firestone.force_restart == true && Firestone.Settings.Get('run_string', '') != '' {

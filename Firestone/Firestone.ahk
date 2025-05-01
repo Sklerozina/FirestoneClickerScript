@@ -84,6 +84,7 @@ Class Firestone {
     
         defaults := Map(
             'name', '',
+            'autorun_if_notfound', 0,
             'auto_restart_every_hours', 0,
             'run_string', '',
             'lvlup_priority', '17',
@@ -261,7 +262,7 @@ Class Firestone {
 	
         loop times
         {
-            Send key
+            Send(key)
 		    Tools.Sleep(wait)
         }
 	}

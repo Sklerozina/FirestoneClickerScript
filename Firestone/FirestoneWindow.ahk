@@ -117,12 +117,15 @@ Class FirestoneWindow {
             active_attempts += 1
             DebugLog.Log('Окно перестало быть активным! {' active_attempts '}')
 
-            if active_attempts > 10 {
+            if active_attempts > 4 {
                 this.Firestone.force_restart := true
+                this.Firestone.TelegramSend("Похоже игра зависла!")
                 active_attempts := 0
             }
 
             throw 'Окно перестало быть активным!'
+        } else {
+            active_attempts := 0
         }
     }
 
