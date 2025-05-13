@@ -100,7 +100,24 @@ Class WarCampaignMap {
         }
     }
 
+    CheckMapPosition() {
+        if PixelGetColor(407, 133) == 0xE1F3FD
+            return true
+        else
+            return false
+    }
+
+    FixMapPosition() {
+        MouseMove(1651, 284)
+        this.Firestone.Press("{LButton down}", 500)
+        MouseMove(1651-11, 284 + 172)
+        this.Firestone.Press("{LButton up}", 500)
+    }
+
     CheckMissions(force := false){
+        if !this.CheckMapPosition()
+            this.FixMapPosition()
+
         ; Проверить, есть ли не задания на карте и попытаться их начать.
         if (this.CheckSquad() || force == true)
         {
