@@ -20,8 +20,10 @@ Class Button {
 
 		for coords in xy
 		{
-			if PixelGetColor(coords[1], coords[2]) != this.color
+			if PixelGetColor(coords[1], coords[2]) != this.color {
+				DebugLog.Log(coords[1] " x " coords[2] " != " Format("{1:#X}", this.color))
 				return false
+			}
 		}
 
 		return true
