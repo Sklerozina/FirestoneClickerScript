@@ -128,6 +128,7 @@ Class Firestone {
             'auto_arena', 0,
             'auto_tavern', 0,
             'auto_tavern_daily_roll', 0,
+            'auto_tavern_daily_roll_two', 0,
             'auto_mailbox', 0,
             'auto_merchant', 0,
             'auto_merchant_sell_items', 0,

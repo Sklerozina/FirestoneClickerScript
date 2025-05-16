@@ -37,6 +37,7 @@ Class Tavern {
             if (this.Firestone.Buttons.White.CheckPixels(1093, 934, 1099, 933, 1096, 954, 1110, 941, 1118, 932, 1124, 943, 1116, 955) || ; проверяем цифру 10
             this.Firestone.Buttons.White.CheckPixels(980, 934, 984, 933, 983, 952, 1007, 933, 996, 949, 1009, 935)) && this.Firestone.Buttons.Green.WaitAndClick(1016, 913, 941, 1053, 1000)
             {
+                Tools.Sleep()
                 click_coords := this.cards_coordinates[Random(1, this.cards_coordinates.Length)]
                 this.Firestone.Click(click_coords[1], click_coords[2])
                 this.Firestone.Settings.Set('daily_tavern', true)
@@ -63,6 +64,26 @@ Class Tavern {
                     }
                 }
 
+                if this.Firestone.Settings.Get('auto_tavern_daily_roll_two') == 1
+                {
+                    DebugLog.Log("Делаем дополнительные две крутки...")
+                    Loop 2 {
+                        if this.Firestone.Buttons.Green.WaitAndClick(709, 918, 752, 970) {
+                            Tools.Sleep()
+                            click_coords := this.cards_coordinates[Random(1, this.cards_coordinates.Length)]
+                            this.Firestone.Click(click_coords[1], click_coords[2])
+
+                            if Tools.WaitForSearchPixel(1560-5, 832-5, 1560+5, 832+5, 0x000000, 0, 1000)
+                            {
+                                DebugLog.Log("Обнаружен артефакт!")
+                                this.Firestone.TelegramSend('Выпал новый артефакт!', true)
+                                this.Firestone.Icons.Close.WaitAndClick(1777, 19, 1894, 91, 10000) ; Ищем кнопку с крестиком для закрытия и нажимаем
+                                ok := true
+                            }
+                        }
+                    }
+                }
+
                 ; Проверяем доступность сборки нового артефакта
                 if this.Firestone.Buttons.Green.Check(108, 451, 128, 540)
                 {
@@ -75,7 +96,7 @@ Class Tavern {
             {
                 DebugLog.Log("Не могу найти кнопку с цифрой 10... нужно больше пива!")
             }
-                ;this.Firestone.Settings.Set('daily_tavern', true)
+            ;this.Firestone.Settings.Set('daily_tavern', true)
         }
     }
 
