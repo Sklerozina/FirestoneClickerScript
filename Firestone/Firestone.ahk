@@ -98,7 +98,6 @@ Class Firestone {
             'daily_magazine', 1,
             'daily_merchant', 1,
             'daily_crystal', 1,
-            'daily_crystal_clicks', 0,
             'daily_date', FormatTime(, 'yyyyMMdd'),
             'daily_chaos_rift', 1,
             
@@ -128,7 +127,6 @@ Class Firestone {
             'auto_arena', 0,
             'auto_tavern', 0,
             'auto_tavern_daily_roll', 0,
-            'auto_tavern_daily_roll_two', 0,
             'auto_mailbox', 0,
             'auto_merchant', 0,
             'auto_merchant_sell_items', 0,
@@ -137,6 +135,7 @@ Class Firestone {
             'auto_enlightenment', 0,
             'auto_chaos_rift', 0,
             'auto_guard_holy_upgrade', 0,
+            'auto_event_mode', 0,
         )
     
         for key, value in defaults {

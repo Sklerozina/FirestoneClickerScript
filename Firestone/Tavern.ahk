@@ -64,7 +64,7 @@ Class Tavern {
                     }
                 }
 
-                if this.Firestone.Settings.Get('auto_tavern_daily_roll_two') == 1
+                if this.Firestone.Settings.Get('auto_event_mode') == 1
                 {
                     DebugLog.Log("Делаем дополнительные две крутки...")
                     Loop 2 {
