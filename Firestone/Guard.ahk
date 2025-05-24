@@ -1,4 +1,18 @@
 Class Guard {
+    slots := Map(
+        1, [742, 935],
+        2, [888, 935],
+        3, [1032, 936],
+        4, [1173, 932],
+    )
+
+    slots_icons := Map(
+        1, [784, 863, 818, 895],
+        2, [924, 863, 963, 895],
+        3, [1070, 863, 1105, 895],
+        4, [1215, 863, 1246, 895],
+    )
+
     __New(Firestone) {
         this.Firestone := Firestone
     }
@@ -50,19 +64,15 @@ Class Guard {
             return
         
         this.Firestone.Click(1437, 140) ; Вкладка святого урона
-        this.Firestone.Press("{Left}", 500, 5) ; Выбираем самого левого стража
-
-        Loop 5
+        
+        For n, coords in this.slots
         {
-            if this.Firestone.Icons.Red.Check(1466, 79, 1504, 115) {
-                While this.Firestone.Buttons.Green.WaitAndClick(1569, 707, 1602, 753, 1000)
-                {
-                    MouseMove 0, 0
-                    Tools.Sleep 250
-                }
+            DebugLog.Log("Страж " n )
+            this.Firestone.Click(coords[1], coords[2], 250)
+            While this.Firestone.Buttons.Green.WaitAndClick(1569, 707, 1602, 753, 500)
+            {
+                MouseMove 0, 0
             }
-
-            this.Firestone.Press("{Right}", 500)
         }
     }
 
@@ -71,19 +81,15 @@ Class Guard {
         if !this.Firestone.Buttons.Green.Check(527, 692, 537, 752)
             return
 
-        this.Firestone.Press("{Left}", 500, 5) ; Выбираем самого левого стража
-
-        loop 5
+        For n, coords in this.slots
         {
+            this.Firestone.Click(coords[1], coords[2], 500)
             ; Проверяем наличие кнопки "Активировать"
             if !this.Firestone.Buttons.Green.Check(527, 692, 537, 752) {
                 ; Кнопки нет, значит страж активный
                 Tools.Sleep(500)
                 return
             }
-
-            ; выбираем следующего
-            this.Firestone.Press("{Right}", 500)
         }
     }
 }
