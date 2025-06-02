@@ -245,6 +245,7 @@ DoWork(force := false) {
 
 	; Если мышка двигалась или нажималась клавиатура пока спали, пропускаем задачу
 	If((A_TimeIdlePhysical >= delay && saved_mouse_position_x == Mx && saved_mouse_position_y == My) || force == true) {
+		Settings.Reload()
 		DebugLog.Log('====`nНачинаю работу!', "`n`n")
 		
 		for Path, Firestone in FirestoneController.Firestones
