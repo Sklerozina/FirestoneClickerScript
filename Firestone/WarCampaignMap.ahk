@@ -101,7 +101,7 @@ Class WarCampaignMap {
     }
 
     CheckMapPosition() {
-        if PixelGetColor(407, 133) == 0xE1F3FD
+        if Tools.PixelSearch(406, 132, 408, 134, 0xE1F3FD, 1)
             return true
         else
             return false
@@ -114,9 +114,50 @@ Class WarCampaignMap {
         this.Firestone.Press("{LButton up}", 500)
     }
 
-    CheckMissions(force := false){
+    FixMapPosition2() {
+        BlockInput('On')
+        send_mode := A_SendMode
+        SendMode('Event')
+        ; ZoomOut на всякий случай
+        MouseMove(972, 554)
+        this.Firestone.ScrollDown(60, 500)
+
+        loop 3 {
+            
+            MouseMove(361, 167)
+            this.Firestone.Press("{LButton down}", 500)
+            MouseMove(1536, 903)
+            this.Firestone.Press("{LButton up}", 500)
+        }
+        
+        MouseMove(1631, 918)
+        this.Firestone.Press("{LButton down}", 500)
+        MouseMove(1631-756, 918-761)
+        this.Firestone.Press("{LButton up}", 500)
+
+        SendMode(send_mode)
+        BlockInput('Off')
+    }
+
+    FixMap() {
         if !this.CheckMapPosition()
             this.FixMapPosition()
+
+        if !this.CheckMapPosition()
+            this.FixMapPosition2()
+        
+        if this.CheckMapPosition()
+            return true
+        else
+            return false
+    }
+
+    CheckMissions(force := false){
+        if !this.FixMap() {
+            DebugLog.Log('Не получается выровнять карту!!')
+            this.Firestone.TelegramSend('Не получается выровнять карту!!')
+            throw 'Не получается выровнять карту!!'
+        }
 
         ; Проверить, есть ли не задания на карте и попытаться их начать.
         if (this.CheckSquad() || force == true)
