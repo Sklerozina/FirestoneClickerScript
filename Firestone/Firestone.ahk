@@ -3,6 +3,7 @@ Class Firestone {
 		Green: Button(this, 0x0AA008),
 		Red: Button(this, 0xE7473F),
 		Orange: Button(this, 0xFBAC46),
+        Organe_Buy: Button(this, 0xF7A242),
         Blue: Button(this, 0x1289FF),
         White: Button(this, 0xFFFFFF),
         NewGreen: Button(this, 0x54A433),
@@ -136,6 +137,7 @@ Class Firestone {
             'auto_chaos_rift', 0,
             'auto_guard_holy_upgrade', 0,
             'auto_event_mode', 0,
+            'auto_map_refresh_gems', 0,
         )
     
         for key, value in defaults {

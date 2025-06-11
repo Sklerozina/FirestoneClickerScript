@@ -44,6 +44,10 @@ Class WarCampaignMap {
         ; Прокликать завершённые задания
         DebugLog.Log("== Миссии ==")
         map_status := this.FinishMissions()
+
+        if this.Firestone.Settings.Get('auto_map_refresh_gems', 0)
+            this.CheckRefresh()
+
         if map_status == 'hangup'
             this.CheckMissions(true)
         else
@@ -55,6 +59,11 @@ Class WarCampaignMap {
         this.DoWMDailys()
     
         this.Firestone.Esc()
+    }
+
+    CheckRefresh() {
+        if this.Firestone.Buttons.Organe_Buy.CheckAndClick(258, 898, 275, 935)
+            this.Firestone.Buttons.Green.WaitAndClick(843, 652, 879, 689, 5000)
     }
 
     FinishMissions() {
