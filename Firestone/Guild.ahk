@@ -105,12 +105,28 @@ Class Guild {
 
     Expeditions() {
         DebugLog.Log("== Экспедиции ==")
+
+        v := 0 ; v = 1 старая версия, 2 новая
+
+        ;; Проверяем, висит ли красный значёк у здания. (Версия игры до 8.3.2)
+        if this.Firestone.Icons.Red.Check(405, 443, 435, 475) || this.Firestone.Icons.Red.Check(480, 370, 515, 404) {
+            v := 1
+        }
+
+        ;; Версия игры 8.3.2
+        if this.Firestone.Icons.Red.Check(391, 411, 423, 444) {
+            v := 2
+        }
         
-        ;; Проверяем, висит ли красный значёк у здания.
-        if !this.Firestone.Icons.Red.Check(405, 443, 435, 475) && !this.Firestone.Icons.Red.Check(480, 370, 515, 404)
+        if v == 0
             return
-    
-        this.Firestone.Click(296, 387) ; Клик на здание экспедиций
+
+        if v == 1 {
+            this.Firestone.Click(296, 387) ; Клик на здание экспедиций
+        } else {
+            this.Firestone.Click(285, 360) ; Клик на здание экспедиций
+        }
+        
         this.Firestone.Buttons.Green.WaitAndClick(1185, 267, 1229, 328, 1000)
         MouseMove 0, 0
         this.Firestone.Buttons.Green.WaitAndClick(1185, 267, 1229, 328, 1000)
