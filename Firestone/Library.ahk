@@ -91,15 +91,15 @@ Class Library {
         {
             DebugLog.Log("Поиск новых исследований...")
             i := 1
-            loop 3
+            loop 2
             {
-                ; двигаем в начало, если это второй цикл, таким образом экономим время
-                if i == 2
+                ; двигаем в начало, если это первый цикл
+                if i == 1
                 {
                     this.Firestone.ScrollUp(50, 1000)
                     this.Firestone.ScrollDown(3, 500)
                 }
-                else if i == 3 ; Двигаем дальше, если это 3-й цикл
+                else if i == 2 ; Двигаем дальше, если это 2-й цикл
                 {
                     this.Firestone.ScrollDown(32)
                 }
