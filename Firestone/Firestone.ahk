@@ -92,6 +92,7 @@ Class Firestone {
             'alchemy', '111',
             'oracle_blessings_priority', 0,
             'map_missions_priority', 'monster, sea, dragon, scout, adventure, war',
+            'screenshot_crystal', 0,
             
             ; Дейли
             'daily_arena', 1,
@@ -246,12 +247,12 @@ Class Firestone {
 		}
 	}
 
-    ScrollUp(times := 10, wait := 250) {
+    ScrollUp(times := 10, wait := 500) {
         this.Press("{WheelUp}", 30, times)
         Tools.Sleep(wait)
     }
 
-    ScrollDown(times := 10, wait := 250) {
+    ScrollDown(times := 10, wait := 500) {
         this.Press("{WheelDown}", 30, times)
         Tools.Sleep(wait)
     }

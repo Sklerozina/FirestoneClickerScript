@@ -10,6 +10,10 @@ Class Guild {
         this.CollectPicks() ; Забрать заодно кирки
         this.Expeditions()
         this.Crystal()
+
+        if this.Firestone.Settings.Get('screenshot_crystal', 0)
+            this.CrystalGetScreenshots()
+        
         this.ChaosRift()
 
         this.Firestone.Esc() ; Выйти в город
@@ -61,6 +65,35 @@ Class Guild {
 
             this.Firestone.Esc()
         }
+    }
+
+    CrystalGetScreenshots() {
+        ; Скриншотим данные по кристаллу
+        ; CTRL+SHIFT+S - Скриншот Топ 3
+        ; SHIFT+ALT+S - Скриншот окна за всё время
+
+        DebugLog.Log("== Скриншоты кристалла ==")
+
+        this.Firestone.Click(1650, 832) ; Переход в кристалл
+
+        this.Firestone.Press('^+{s}') ; Скриншот топ 3
+
+        this.Firestone.Click(1814, 665) ; открываев топ урона гильдии
+        MouseMove(1068, 565)
+
+        this.Firestone.Press('+!{s}') ; Скриншот первой страницы
+
+        this.Firestone.ScrollDown(22) ; проматываем ниже
+
+        this.Firestone.Press('+!{s}') ; Скриншот второй страницы
+
+        this.Firestone.ScrollDown(22) ; проматываем ниже
+
+        this.Firestone.Press('+!{s}') ; Скриншот второй страницы
+
+        this.Firestone.Esc() ; Закрываем топ
+
+        this.Firestone.Esc() ; Обратно на экран гильдии
     }
 
     Crystal() {
