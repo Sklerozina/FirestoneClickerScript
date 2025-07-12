@@ -285,6 +285,10 @@ DoWork(force := false) {
 				Firestone.BackToMainScreen()
 				Tools.Sleep 1000
 
+				; Сбрасываем дейлики
+				if Firestone.Icons.Red.Check(1883, 508, 1911, 541)
+					Firestone.ResetDailys()
+
 				Firestone.Mailbox.Do()
 				Firestone.HerosUpgrades.Do()
 				Firestone.City() ; зайти в город

@@ -192,9 +192,6 @@ Class WarCampaignMap {
         DebugLog.Log("Поиск красного значка у кнопки...")
         if (this.Firestone.Icons.Red.Check(1850, 900, 1900, 950))
         {
-            ; Сбрасываем дейлики
-			this.Firestone.ResetDailys()
-
             this.Firestone.Click(1777, 977) ; Ежедневные миссии
             DebugLog.Log("=== Освобождение ===")
             this.Firestone.Click(720, 779) ; Кнопка выбора, освобождение
