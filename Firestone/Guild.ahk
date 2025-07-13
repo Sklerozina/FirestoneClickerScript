@@ -81,15 +81,15 @@ Class Guild {
         this.Firestone.Click(1814, 665) ; открываев топ урона гильдии
         MouseMove(1068, 565)
 
-        this.Firestone.Press('+!{s}') ; Скриншот первой страницы
+        this.Firestone.Press('^+{1}') ; Скриншот первой страницы
 
         this.Firestone.ScrollDown(22) ; проматываем ниже
 
-        this.Firestone.Press('+!{s}') ; Скриншот второй страницы
+        this.Firestone.Press('^+{2}') ; Скриншот второй страницы
 
         this.Firestone.ScrollDown(22) ; проматываем ниже
 
-        this.Firestone.Press('+!{s}') ; Скриншот второй страницы
+        this.Firestone.Press('^+{3}') ; Скриншот второй страницы
 
         this.Firestone.Esc() ; Закрываем топ
 
