@@ -1,4 +1,6 @@
 Class Guild {
+    last_screenshot_date := A_Now
+
     __New(Firestone) {
         this.Firestone := Firestone
     }
@@ -11,7 +13,7 @@ Class Guild {
         this.Expeditions()
         this.Crystal()
 
-        if this.Firestone.Settings.Get('screenshot_crystal', 0)
+        if this.Firestone.Settings.Get('screenshot_crystal', 0) > 0 && DateDiff(A_Now, this.last_screenshot_date, 'Minutes') > this.Firestone.Settings.Get('screenshot_crystal', 0)
             this.CrystalGetScreenshots()
         
         this.ChaosRift()
