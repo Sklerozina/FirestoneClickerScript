@@ -23,8 +23,10 @@ Class Tavern {
             this.Firestone.Click(717, 911) ; Заходим в Таверну из города
             Tools.Sleep(500)
 
-            if Tools.PixelSearch(706-5, 216-5, 706+5, 216+5, 0x7B3D23, 1)
+            if Tools.PixelSearch(706-5, 216-5, 706+5, 216+5, 0x7B3D23, 1) { ; Проверка на наличия выбора в таверне
+                DebugLog.Log("Обнаружен новый интерфейс")
                 this.new_interface := 1
+            }
         }
         else
             return
@@ -37,7 +39,12 @@ Class Tavern {
         }
         else {
             if this.Firestone.Icons.Red.Check(889, 307, 920, 336)  && !(this.Firestone.Settings.Get('daily_tavern') == 0 && this.Firestone.Settings.Get('auto_tavern_daily_roll') == 1) {
-                this.Firestone.Click(775, 478)
+                if !Tools.PixelSearch(706-5, 216-5, 706+5, 216+5, 0x7B3D23, 1) { ; Проверка на наличия выбора в таверне
+                    this.Firestone.Click(717, 911) ; Заходим в Таверну из города
+                }
+                
+                ; Делаем таверную рутину
+                this.Firestone.Click(775, 494)
                 this.CollectTokens()
                 this.DailyRoll()
                 this.Firestone.Esc()
@@ -45,17 +52,21 @@ Class Tavern {
             else
                 this.Firestone.Esc()
 
-            if this.Firestone.Icons.Red.Check(814, 910, 848, 949) && this.Firestone.Settings.Get('auto_scarab_game', 0)
-                this.Firestone.Click(717, 911) ; Заходим в Таверну из города ещё раз
-            else
-                this.Firestone.Esc()
+            if this.Firestone.Icons.Red.Check(814, 910, 848, 949) && this.Firestone.Settings.Get('auto_scarab_game', 0) {
+                if !Tools.PixelSearch(706-5, 216-5, 706+5, 216+5, 0x7B3D23, 1) { ; Проверка на наличия выбора в таверне
+                    this.Firestone.Click(717, 911) ; Заходим в Таверну из города
+                }
 
-            if this.Firestone.Icons.Red.Check(1271, 300, 1316, 331) {
-                this.Firestone.Click(1149, 496)
-                this.ScarabsGame()
+                if this.Firestone.Icons.Red.Check(1271, 300, 1316, 331) {
+                    this.Firestone.Click(1149, 496)
+                    this.ScarabsGame()
+                }
             }
-            
-            
+            else {
+                if !Tools.PixelSearch(706-5, 216-5, 706+5, 216+5, 0x7B3D23, 1) { ; Проверка на наличия выбора в таверне
+                    this.Firestone.Esc()
+                }
+            }
         }
     }
 
