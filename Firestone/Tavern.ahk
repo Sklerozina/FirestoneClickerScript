@@ -38,7 +38,7 @@ Class Tavern {
             this.Firestone.Esc()
         }
         else {
-            if this.Firestone.Icons.Red.Check(889, 307, 920, 336)  && !(this.Firestone.Settings.Get('daily_tavern') == 0 && this.Firestone.Settings.Get('auto_tavern_daily_roll') == 1) {
+            if this.Firestone.Icons.Red.Check(886, 306, 920, 336) && !(this.Firestone.Settings.Get('daily_tavern') == 0 && this.Firestone.Settings.Get('auto_tavern_daily_roll') == 1) {
                 if !Tools.PixelSearch(706-5, 216-5, 706+5, 216+5, 0x7B3D23, 1) { ; Проверка на наличия выбора в таверне
                     this.Firestone.Click(717, 911) ; Заходим в Таверну из города
                 }
@@ -52,18 +52,16 @@ Class Tavern {
             else
                 this.Firestone.Esc()
 
-            if this.Firestone.Icons.Red.Check(814, 910, 848, 949) && this.Firestone.Settings.Get('auto_scarab_game', 0) {
-                if !Tools.PixelSearch(706-5, 216-5, 706+5, 216+5, 0x7B3D23, 1) { ; Проверка на наличия выбора в таверне
-                    this.Firestone.Click(717, 911) ; Заходим в Таверну из города
-                }
+            if !Tools.PixelSearch(706-5, 216-5, 706+5, 216+5, 0x7B3D23, 1) { ; Проверка на наличия выбора в таверне
+                this.Firestone.Click(717, 911) ; Заходим в Таверну из города
+            }
 
-                if this.Firestone.Icons.Red.Check(1271, 300, 1316, 331) {
-                    this.Firestone.Click(1149, 496)
-                    this.ScarabsGame()
-                }
+            if this.Firestone.Icons.Red.Check(1276, 302, 1311, 330) && this.Firestone.Settings.Get('auto_scarab_game', 0) {
+                this.Firestone.Click(1149, 496)
+                this.ScarabsGame()
             }
             else {
-                if !Tools.PixelSearch(706-5, 216-5, 706+5, 216+5, 0x7B3D23, 1) { ; Проверка на наличия выбора в таверне
+                if Tools.PixelSearch(706-5, 216-5, 706+5, 216+5, 0x7B3D23, 1) { ; Проверка на наличия выбора в таверне
                     this.Firestone.Esc()
                 }
             }
