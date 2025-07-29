@@ -154,6 +154,9 @@ Class Tavern {
 
     ScarabsGame() {
         ; Red Icon 1271, 300, 1316, 331
-        this.Firestone.Buttons.Green.WaitAndClick(1143, 869, 1160, 951)
+        Loop 10 {
+            if !this.Firestone.Buttons.Green.WaitAndClick(1143, 869, 1160, 951, 10000)
+                break
+        }
     }
 }
