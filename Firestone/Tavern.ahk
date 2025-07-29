@@ -1,6 +1,7 @@
 Class Tavern {
     __New(Firestone) {
         this.Firestone := Firestone
+        this.new_interface := 0
     }
 
     cards_coordinates := [
@@ -18,15 +19,44 @@ Class Tavern {
 
         DebugLog.Log("Таверна", "`n")
          ; У Таверны нет значка, выходим
-        if !this.Firestone.Icons.Red.Check(814, 910, 848, 949) && !(this.Firestone.Settings.Get('daily_tavern') == 0 && this.Firestone.Settings.Get('auto_tavern_daily_roll') == 1)
+        if this.Firestone.Icons.Red.Check(814, 910, 848, 949) {
+            this.Firestone.Click(717, 911) ; Заходим в Таверну из города
+            Tools.Sleep(500)
+
+            if Tools.PixelSearch(706-5, 216-5, 706+5, 216+5, 0x7B3D23, 1)
+                this.new_interface := 1
+        }
+        else
             return
-
-        this.Firestone.Click(717, 911) ; Заходим в Таверну из города
         
-        this.CollectTokens()
-        this.DailyRoll()
+        if this.new_interface == 0 {
+            this.Firestone.Click(775, 478)
+            this.CollectTokens()
+            this.DailyRoll()
+            this.Firestone.Esc()
+        }
+        else {
+            if this.Firestone.Icons.Red.Check(889, 307, 920, 336)  && !(this.Firestone.Settings.Get('daily_tavern') == 0 && this.Firestone.Settings.Get('auto_tavern_daily_roll') == 1) {
+                this.Firestone.Click(775, 478)
+                this.CollectTokens()
+                this.DailyRoll()
+                this.Firestone.Esc()
+            }
+            else
+                this.Firestone.Esc()
 
-        this.Firestone.Esc()
+            if this.Firestone.Icons.Red.Check(814, 910, 848, 949) && this.Firestone.Settings.Get('auto_scarab_game', 0)
+                this.Firestone.Click(717, 911) ; Заходим в Таверну из города ещё раз
+            else
+                this.Firestone.Esc()
+
+            if this.Firestone.Icons.Red.Check(1271, 300, 1316, 331) {
+                this.Firestone.Click(1149, 496)
+                this.ScarabsGame()
+            }
+            
+            
+        }
     }
 
     DailyRoll() {
@@ -111,5 +141,10 @@ Class Tavern {
             Tools.Sleep 1000
     
         this.Firestone.Esc()
+    }
+
+    ScarabsGame() {
+        ; Red Icon 1271, 300, 1316, 331
+        this.Firestone.Buttons.Green.WaitAndClick(1143, 869, 1160, 951)
     }
 }
