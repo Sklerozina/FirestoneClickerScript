@@ -69,7 +69,7 @@ Class Guard {
         {
             DebugLog.Log("Страж " n )
             this.Firestone.Click(coords[1], coords[2], 250)
-            While this.Firestone.Buttons.Green.WaitAndClick(1569, 707, 1602, 753, 500)
+            While this.Firestone.Buttons.Green.WaitAndClick(1764, 670, 1787, 750, 500)
             {
                 MouseMove 0, 0
             }
