@@ -46,12 +46,12 @@ Class Guard {
     }
 
     Evolution() {
+        DebugLog.Log("== Эволюция ==")
         if !this.Firestone.Icons.Red.Check(1307, 78, 1343, 117)
             return
 
         this.Firestone.Click(1280, 147)
 
-        DebugLog.Log("== Эволюция ==")
         if this.Firestone.Buttons.Green.CheckAndClick(1001, 676, 1115, 760) ; проверем кнопку и эволюционируем
             this.Firestone.TelegramSend('Эволюция стража!', true)
 
@@ -60,6 +60,7 @@ Class Guard {
     }
 
     HolyDamageUpgrade() {
+        DebugLog.Log("== Святой урон ==")
         if this.Firestone.Settings.Get('auto_guard_holy_upgrade', 0) == 0
             return
         
@@ -77,6 +78,7 @@ Class Guard {
     }
 
     FindActiveGuard() {
+        DebugLog.Log("Поиск активного стража...")
         ; Ищем кнопку "Активировать", если её нет, значит мы уже в активном страже
         if !this.Firestone.Buttons.Green.Check(527, 692, 537, 752)
             return
