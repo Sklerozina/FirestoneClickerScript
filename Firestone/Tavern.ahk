@@ -160,5 +160,7 @@ Class Tavern {
             
             MouseMove 0,0
         }
+
+        this.Firestone.Esc()
     }
 }
