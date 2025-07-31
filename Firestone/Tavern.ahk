@@ -100,7 +100,6 @@ Class Tavern {
                 Loop 60 {
                     Tools.Sleep(1000)
                     if this.Firestone.Buttons.Blue.Wait(900, 810, 915, 865, 250) {
-                        MsgBox('Синяя кнопка найдена!')
                         ok := true
                     }
 
