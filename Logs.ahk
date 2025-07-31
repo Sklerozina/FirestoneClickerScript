@@ -13,6 +13,13 @@ Class Logs {
             FileAppend(before . FormatTime(,"yyyy-MM-dd HH:mm:ss ") . text . "`n", this.dir FormatTime(, "yyyy-MM-dd") '.txt', "`n UTF-8")
     }
 
+    Msg(text, timeout := 1000) {
+        if this.enabled {
+            MsgBox(text,,'T' timeout)
+            Tools.Sleep(500)
+        }
+    }
+
     Enable() {
         this.enabled := 1
     }
