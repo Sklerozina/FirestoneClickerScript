@@ -69,6 +69,8 @@ Class Guard {
 
         if this.Firestone.Buttons.Green.CheckAndClick(1336, 569, 1373, 611) ; проверем кнопку и повышаем редкость
             this.Firestone.TelegramSend('Редкость стража повышена!', true)
+
+        Tools.Sleep(10000) ; спим 10 секунд, пока идёт анимация, вроде должно хватить
     }
 
     HolyDamageUpgrade() {
