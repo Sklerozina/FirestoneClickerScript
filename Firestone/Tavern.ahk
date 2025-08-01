@@ -264,36 +264,34 @@ Class Tavern {
             MouseMove 0,0
         }
 
-        ; if this.Firestone.Icons.Red.Check(1864, 155, 1897, 189) { ; Усыпальница фараона забрать награды
-        ;     this.Firestone.Click(1813, 205)
+        if this.Firestone.Icons.Red.Check(1864, 155, 1897, 189) { ; Усыпальница фараона забрать награды
+            this.Firestone.Click(1813, 205)
 
-        ;     loop 5 {
-        ;         if !this.Firestone.Buttons.Green.WaitAndClick(1005, 935, 1021, 976, 10000)
-        ;             break
+            loop 5 {
+                if !this.Firestone.Buttons.Green.WaitAndClick(1005, 935, 1021, 976, 10000)
+                    break
             
-        ;         MouseMove 0,0
-        ;     }
+                MouseMove 0,0
+            }
 
-        ;     if this.Firestone.Icons.Red.Check(1865, 371, 1894, 402) { ; Усыпальница фараона -> Цели
-        ;         this.Firestone.Click(1815, 418)
-        ;         MouseMove(613, 482)
-        ;         Tools.Sleep(250)
-        ;         this.Firestone.ScrollUp(100)
+            if this.Firestone.Icons.Red.Check(1865, 371, 1894, 402) { ; Усыпальница фараона -> Цели
+                this.Firestone.Click(1815, 418)
+                MouseMove(613, 482)
+                Tools.Sleep(250)
+                this.Firestone.ScrollUp(100)
 
-        ;         loop 10 {
-        ;             loop 3 {
-        ;                 this.Firestone.Buttons.Green.WaitAndClick(946, 235, 946, 964, 500)
-        ;             }
-        ;             MouseMove(613, 482)
-        ;             Tools.Sleep(250)
-        ;             this.Firestone.ScrollDown(20)
-        ;         }
+                loop 20 {
+                    this.Firestone.Buttons.Green.CheckAndClick(961, 638, 1085, 668,,, 500)
+                    MouseMove(613, 482)
+                    Tools.Sleep(250)
+                    this.Firestone.ScrollDown(8)
+                }
 
-        ;         this.Firestone.Esc()
-        ;     }
+                this.Firestone.Esc()
+            }
 
-        ;     this.Firestone.Esc()
-        ; }
+            this.Firestone.Esc()
+        }
 
         this.Firestone.Esc()
     }
