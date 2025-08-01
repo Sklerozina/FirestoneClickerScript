@@ -42,7 +42,7 @@ Class Guard {
         {
             ; Добавить настройку в конфиг
             if this.Firestone.Settings.Get('auto_enlightenment', 0) > 0
-                this.Firestone.Buttons.Green.CheckAndClick(1415, 700, 1471, 792,,,500, this.Firestone.Settings.Get('auto_enlightenment', 0)) ; Клик на озарение, если был сбор бесплатного опыта
+                this.Firestone.Buttons.Green.CheckAndClick(1415, 700, 1471, 792,,,, this.Firestone.Settings.Get('auto_enlightenment', 0)) ; Клик на озарение, если был сбор бесплатного опыта
         }
     }
 
@@ -61,13 +61,13 @@ Class Guard {
     }
 
     RarityUp() {
-         DebugLog.Log("== Эволюция ==")
-        if !this.Firestone.Icons.Red.Check(1624, 77, 1661, 112)
+        DebugLog.Log("== Редкость стража ==")
+        if !this.Firestone.Icons.Red.Check(1623, 79, 1661, 114)
             return
 
-        this.Firestone.Click(1593, 136)
+        this.Firestone.Click(1597, 142)
 
-        if this.Firestone.Buttons.Green.CheckAndClick(1326, 566, 1360, 604) ; проверем кнопку и эволюционируем
+        if this.Firestone.Buttons.Green.CheckAndClick(1336, 569, 1373, 611) ; проверем кнопку и повышаем редкость
             this.Firestone.TelegramSend('Редкость стража повышена!', true)
     }
 
