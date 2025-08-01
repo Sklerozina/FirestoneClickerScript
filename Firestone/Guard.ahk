@@ -29,6 +29,7 @@ Class Guard {
         this.FindActiveGuard()
 
         this.CollectFreeXP()
+        this.RarityUp()
         this.Evolution()
         this.HolyDamageUpgrade()
         
@@ -57,6 +58,17 @@ Class Guard {
 
         ; После эволюциюю можно попробовать дождаться появление кнопки опыта по времени
         this.Firestone.Buttons.Green.WaitAndClick(1022, 703, 1053, 791, 10000) ; Кнопка бесплатного опыта
+    }
+
+    RarityUp() {
+         DebugLog.Log("== Эволюция ==")
+        if !this.Firestone.Icons.Red.Check(1624, 77, 1661, 112)
+            return
+
+        this.Firestone.Click(1593, 136)
+
+        if this.Firestone.Buttons.Green.CheckAndClick(1326, 566, 1360, 604) ; проверем кнопку и эволюционируем
+            this.Firestone.TelegramSend('Редкость стража повышена!', true)
     }
 
     HolyDamageUpgrade() {
