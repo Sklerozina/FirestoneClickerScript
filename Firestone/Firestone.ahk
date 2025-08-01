@@ -11,7 +11,8 @@ Class Firestone {
 
     Icons := {
         Red: Button(this, 0xF30000),
-        Close: Button(this, 0xFF620A)
+        Red2: Button(this, 0xFF0000),
+        Close: Button(this, 0xFF620A),
     }
 
     Window := unset
