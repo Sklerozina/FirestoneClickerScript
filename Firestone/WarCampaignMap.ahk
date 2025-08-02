@@ -19,10 +19,11 @@ Class WarCampaignMap {
             'war', MapMissions(this.Firestone, [MapMission(1214, 285), MapMission(1008, 401), MapMission(779, 602), MapMission(1140, 600), MapMission(1450, 469), MapMission(840, 767),
                 MapMission(1047, 769), MapMission(1325, 774), MapMission(1147, 948), MapMission(1202, 521), MapMission(760, 822), MapMission(709, 646),
                 MapMission(954, 190), MapMission(896, 732), MapMission(1400, 753), MapMission(1245, 360), MapMission(646, 392), MapMission(920, 575)], Button(this.Firestone, 0xF23B27, 5)),
-            ; Seas, Monsters, Dragons
+            ; Seas, Monsters, Dragons, Titans
             'dragon', MapMissions(this.Firestone, [MapMission(467, 891), MapMission(599, 534), MapMission(611, 166), MapMission(1476, 740)], Button(this.Firestone, 0xFFB736, 5)),
             'monster', MapMissions(this.Firestone, [MapMission(960, 772), MapMission(1097, 522), MapMission(873, 422), MapMission(542, 947, true)], Button(this.Firestone, 0x521770, 5)), ; 542, 947 - эту только принудительно кликать
-            'sea', MapMissions(this.Firestone, [MapMission(1137, 312), MapMission(374, 972), MapMission(1245, 819), MapMission(836, 944, true)], Button(this.Firestone, 0x68E5F7, 5)) ; 836, 944 - эту только принудительно кликать
+            'sea', MapMissions(this.Firestone, [MapMission(1137, 312), MapMission(374, 972), MapMission(1245, 819), MapMission(836, 944, true)], Button(this.Firestone, 0x68E5F7, 5)), ; 836, 944 - эту только принудительно кликать
+            'titans', MapMissions(this.Firestone, [MapMission(1167, 4, true)], Button(this.Firestone, 0xE7DBB5, 3)),
         )
     }
 
