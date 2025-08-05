@@ -23,7 +23,7 @@ Class WarCampaignMap {
             'dragon', MapMissions(this.Firestone, [MapMission(467, 891), MapMission(599, 534), MapMission(611, 166), MapMission(1476, 740)], Button(this.Firestone, 0xFFB736, 5)),
             'monster', MapMissions(this.Firestone, [MapMission(960, 772), MapMission(1097, 522), MapMission(873, 422), MapMission(542, 947, true)], Button(this.Firestone, 0x521770, 5)), ; 542, 947 - эту только принудительно кликать
             'sea', MapMissions(this.Firestone, [MapMission(1137, 312), MapMission(374, 972), MapMission(1245, 819), MapMission(836, 944, true)], Button(this.Firestone, 0x68E5F7, 5)), ; 836, 944 - эту только принудительно кликать
-            'titans', MapMissions(this.Firestone, [MapMission(1167, 4, true), MapMission(1099, 15, true)], Button(this.Firestone, 0xE7DBB5, 3)),
+            'titans', MapMissions(this.Firestone, [MapMission(1167, 4, true), MapMission(1099, 15, true), MapMission(1209, 2, true)], Button(this.Firestone, 0xE7DBB5, 3)),
         )
     }
 
