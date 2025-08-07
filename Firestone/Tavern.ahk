@@ -257,24 +257,32 @@ Class Tavern {
     }
 
     ScarabsGame() {
-        Loop 10 { ; Крутим казино, если есть на что
+        Loop 50 { ; Крутим казино, если есть на что
             if !this.Firestone.Buttons.Green.WaitAndClick(1143, 869, 1160, 951, 10000)
                 break
             
             MouseMove 0,0
         }
 
-        if this.Firestone.Icons.Red.Check(1864, 155, 1897, 189) { ; Усыпальница фараона забрать награды
+        if this.Firestone.Icons.Red.Check(1864, 155, 1897, 189) || this.Firestone.Icons.Red2.Check(1864, 155, 1897, 189) { ; Усыпальница фараона забрать награды
             this.Firestone.Click(1813, 205)
 
-            loop 5 {
-                if !this.Firestone.Buttons.Green.WaitAndClick(1005, 935, 1021, 976, 10000)
+            if Tools.PixelSearch(230-5, 575-5, 230+5, 575+5, 0x168700, 1) {
+                DebugLog.Log("Можно получить зверя!")
+                this.Firestone.TelegramSend('Можно получить зверя!', true)
+            }
+
+            loop 20 {
+                if this.Firestone.Buttons.Green.WaitAndClick(1005, 935, 1021, 976, 10000) {
+                    this.Firestone.Esc()
+                }
+                else
                     break
             
                 MouseMove 0,0
             }
 
-            if this.Firestone.Icons.Red.Check(1865, 371, 1894, 402) { ; Усыпальница фараона -> Цели
+            if this.Firestone.Icons.Red.Check(1865, 371, 1894, 402) || this.Firestone.Icons.Red2.Check(1865, 371, 1894, 402) { ; Усыпальница фараона -> Цели
                 this.Firestone.Click(1815, 418)
                 MouseMove(613, 482)
                 Tools.Sleep(250)
