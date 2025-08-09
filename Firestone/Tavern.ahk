@@ -191,7 +191,7 @@ Class Tavern {
                 this.Firestone.Click(1815, 418, 2000) ; клик на цели
 
                 loop 10 {
-                    if !this.Firestone.Buttons.Green.WaitAndClick(162, 734, 1754, 748,,, 500)
+                    if !this.Firestone.Buttons.White.WaitAndClick(162, 734, 1754, 748,,, 500)
                         return
                     
                     MouseMove(0, 0)
