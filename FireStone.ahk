@@ -69,7 +69,7 @@ If Settings.Section('GENERAL').Get('debug', 0) {
 }
 
 #HotIf WinActive("ahk_exe Firestone.exe")
-^+C::{
+^+c::{
 	MouseGetPos(&x, &y)
 	A_Clipboard := x ", " y
 	Tp("Координаты курсора скопированы в буфер обмена")
@@ -82,6 +82,35 @@ If Settings.Section('GENERAL').Get('debug', 0) {
 	A_Clipboard := x ", " y ", " PixelGetColor(x, y)
 	MouseMove x, y
 	Tp(A_Clipboard)
+}
+
+^+p::{
+	text := InputBox('Например:`n1774, 884, 1775, 873','Вставьте координаты (через запятую)').Value
+	coords := StrSplit(text, ',', ' ')
+	if Mod(coords.Length, 2) != 0 {
+		MsgBox("Неверное количество параметров, должно быть кратно двум! " coords.Length)
+		return
+	}
+		
+
+	xy := []
+	i := 0
+	output := ""
+
+	loop coords.Length / 2
+	{
+		xy.Push([coords[i+1], coords[i+2]])
+		i += 2
+	}
+
+	for coords in xy
+	{
+		if A_Index != 1
+			output .= '`n'
+		output .= coords[1] 'x' coords[2] ' = ' PixelGetColor(coords[1], coords[2])
+	}
+
+	MsgBox(output)
 }
 
 ^+Space::{
