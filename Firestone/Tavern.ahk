@@ -63,7 +63,7 @@ Class Tavern {
             good := false
             loop 10 ; Бескончный цикл не делаю, чтобы случайно не залочить скрипт
             {
-                if this.Firestone.Buttons.White.CheckPixels(1774, 884, 1775, 873)
+                if this.Firestone.Buttons.White.CheckPixels(1774, 884) && !this.Firestone.Buttons.White.CheckPixels(1766, 899)
                 {
                     DebugLog.Log("x10 найдено!")
                     good := true
