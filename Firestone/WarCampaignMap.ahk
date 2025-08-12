@@ -276,7 +276,7 @@ Class WarCampaignMap {
             'adventure', '',
             'war', '')
         
-        priority := this.Firestone.Settings.Get('map_missions_priority', 'monster, sea, dragon, scout, adventure, war')
+        priority := this.Firestone.Settings.Get('map_missions_priority', 'titans monster, sea, dragon, scout, adventure, war')
         priority := StrSplit(priority, ",", " `t`n`r")
         
         ; Заполняем список, проверяя, что такой тип миссий у нас есть.
