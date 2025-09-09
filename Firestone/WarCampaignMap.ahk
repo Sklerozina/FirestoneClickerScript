@@ -111,7 +111,7 @@ Class WarCampaignMap {
     }
 
     CheckMapPosition() {
-        if Tools.PixelSearch(406, 132, 408, 134, 0xE1F3FD, 1)
+        if Tools.PixelSearch(406, 132, 408, 134, 0xE1F3FD, 1) || Tools.PixelSearch(406, 132, 408, 134, 0xB5C3CB, 1)
             return true
         else
             return false
