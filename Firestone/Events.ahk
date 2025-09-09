@@ -35,7 +35,7 @@ Class Events {
 
             if PixelGetColor(1478, 201) != 0xCECBEC ; <— удалить
             {
-                Firestone.BackToMainScreen()
+                this.Firestone.BackToMainScreen()
                 this.Firestone.Click(1239, 918)
             }
             
