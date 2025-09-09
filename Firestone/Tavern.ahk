@@ -211,7 +211,9 @@ Class Tavern {
             this.Firestone.Esc() ; выходим из усыпальницы
         }
         
-        if Tools.PixelSearch(230-5, 575-5, 230+5, 575+5, 0x168700, 1) {
+        Tools.Sleep(1000)
+        
+        if Tools.PixelSearch(210, 587, 354, 624, 0x148700, 3) {
             DebugLog.Log("Можно получить зверя!")
             this.Firestone.TelegramSend('Можно получить зверя!', true)
         }
