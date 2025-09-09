@@ -34,7 +34,10 @@ Class Events {
             this.Firestone.Click(1684, 207) ; <— удалить
 
             if PixelGetColor(1478, 201) != 0xCECBEC ; <— удалить
+            {
+                Firestone.BackToMainScreen()
                 this.Firestone.Click(1239, 918)
+            }
             
             ; Проверяем цвет рамки и убеждаемся, что окно открылось
             if PixelGetColor(1478, 201) != 0xCECBEC
