@@ -30,18 +30,13 @@ Class Events {
         {
             this.last_run.Set(this.Firestone.Window.hwid, A_Now)
 
-            ; Эту можно удалить, когда эпики обновят до 9.0.2
-            this.Firestone.Click(1684, 207) ; <— удалить
-
-            if PixelGetColor(1478, 201) != 0xCECBEC ; <— удалить
-            {
-                this.Firestone.BackToMainScreen()
-                this.Firestone.Click(1239, 918)
-            }
+            this.Firestone.Click(1239, 918)
             
             ; Проверяем цвет рамки и убеждаемся, что окно открылось
-            if PixelGetColor(1478, 201) != 0xCECBEC
+            if PixelGetColor(1478, 201) != 0xCECBEC {
+                this.Firestone.BackToMainScreen()
                 return ; Пока просто выходим и пробуем в следующий раз
+            }
 
             for coord in this.corrds_red_icons
             {
