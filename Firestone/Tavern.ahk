@@ -111,7 +111,7 @@ Class Tavern {
                     good := false
                     loop 10 ; Бескончный цикл не делаю, чтобы случайно не залочить скрипт
                     {
-                        if this.Firestone.Buttons.White.CheckPixels(1785, 868, 1768, 882)
+                        if this.Firestone.Buttons.White.CheckPixels(1785, 880, 1768, 893) 
                         {
                             DebugLog.Log("x1 найдено!")
                             good := true
@@ -123,7 +123,7 @@ Class Tavern {
 
                     if good {
                         Loop 2 {
-                            if this.Firestone.Buttons.Green.WaitAndClick(this.Firestone.Buttons.Green.WaitAndClick(845, 946, 862, 980, 1000)) {
+                            if this.Firestone.Buttons.Green.WaitAndClick(845, 946, 862, 980, 1000) {
                                 Tools.Sleep()
                                 click_coords := this.cards_coordinates[Random(1, this.cards_coordinates.Length)]
                                 this.Firestone.Click(click_coords[1], click_coords[2])
