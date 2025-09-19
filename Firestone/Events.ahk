@@ -30,7 +30,14 @@ Class Events {
         {
             this.last_run.Set(this.Firestone.Window.hwid, A_Now)
 
-            this.Firestone.Click(1239, 918)
+            if Tools.PixelSearch(1201, 945, 1265, 962, 0xEFEF8C, 1)
+                this.Firestone.Click(1239, 918)
+            else if Tools.PixelSearch(548, 945, 595, 954, 0xEFEF8C, 1) {
+                this.Firestone.Click(576, 916)
+            } else {
+                DebugLog.Log("Не могу найти кнопку событий.")
+                return
+            }
             
             ; Проверяем цвет рамки и убеждаемся, что окно открылось
             if PixelGetColor(1478, 201) != 0xCECBEC {

@@ -2,7 +2,7 @@
 #MaxThreadsPerHotkey 2
 #SingleInstance Force
 
-AppVersion := "v0.1.28"
+AppVersion := "v0.1.29"
 A_IconTip := "Firestone Clicker " AppVersion
 
 If !IsSet(Firestone_WorkingDir)
