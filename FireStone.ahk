@@ -2,7 +2,7 @@
 #MaxThreadsPerHotkey 2
 #SingleInstance Force
 
-AppVersion := "v0.1.29"
+AppVersion := "v0.1.30"
 A_IconTip := "Firestone Clicker " AppVersion
 
 If !IsSet(Firestone_WorkingDir)
@@ -299,6 +299,9 @@ DoWork(force := false) {
 						Firestone.Restart()
 					} else if result_yn = "Cancel" {
 						RunOnOff()
+					} else if result_yn = "No" {
+						DebugLog.Log('Запуск отложен!')
+            			throw 'Запуск отложен!'
 					}
 				} else if !Firestone.Window.Exist() {
 					continue
@@ -359,7 +362,7 @@ DoWork(force := false) {
 				DebugLog.Log("Прерываю работу. " . err . " (From Catch)")
 				Tp "Прерываю работу. " . err, -2000
 				delay := 180000
-				SetTimer DoWork, delay ; Если мышь двигалась, то следующий раз будет через 3 минуты
+				; SetTimer DoWork, delay ; Если мышь двигалась, то следующий раз будет через 3 минуты
 				break
 			}
 		}

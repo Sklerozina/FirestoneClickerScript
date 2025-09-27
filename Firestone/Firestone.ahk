@@ -7,7 +7,8 @@ Class Firestone {
         Blue: Button(this, 0x1289FF),
         White: Button(this, 0xFFFFFF),
         NewGreen: Button(this, 0x54A433),
-        Gray: Button(this, 0xA5A2A5, 5)
+        Gray: Button(this, 0xA5A2A5, 5),
+        UpgradeHeroFont: Button(this, 0x542710)
 	}
 
     Icons := {
@@ -91,6 +92,8 @@ Class Firestone {
             'auto_restart_every_hours', 0,
             'run_string', '',
             'lvlup_priority', '17',
+            'lvlup_prestige_mode', 'x1',
+            'lvlup_normal_mode', 'x1',
             'alchemy', '111',
             'oracle_blessings_priority', 0,
             'map_missions_priority', 'monster, sea, dragon, scout, adventure, war',

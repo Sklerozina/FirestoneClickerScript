@@ -17,19 +17,25 @@ Class HerosUpgrades {
         DebugLog.Log("Прокачка героев", "`n")
         lvlup_priority := this.Firestone.Settings.Get('lvlup_priority', "1765432")
         this.Firestone.Press("{u}", 500)
-    
+  
         if FirestoneController.prestige_mode
         {
+            if this.Firestone.Settings.Get('lvlup_prestige_mode', '') != ''
+                this.SelectMode(this.Firestone.Settings.Get('lvlup_prestige_mode', ''))
+
             this.UpgradeHero(1) ; 1
             for slot in [1, 7, 6, 5, 4, 3, 2]
             {
                 this.UpgradeHero(slot, 5) ; 1
             }
         } else {
+            if this.Firestone.Settings.Get('lvlup_normal_mode', '') != ''
+                this.SelectMode(this.Firestone.Settings.Get('lvlup_normal_mode', ''))
+            
             loop parse lvlup_priority {
                 switch A_LoopField {
                     case "1":
-                        this.UpgradeHero(1) ; 1
+                        this.UpgradeHero(1, 5) ; 1
                     case "2":
                         this.UpgradeHero(2, 5) ; 2
                     case "3":
@@ -53,5 +59,25 @@ Class HerosUpgrades {
         coords := this.coords.Get(slot)
         if this.Firestone.Buttons.Green.CheckAndClick(coords[1], coords[2], coords[3], coords[4],,, 200, clicks)
             DebugLog.Log('Прокачал слот ' . slot)
+    }
+
+    SelectMode(mode := '') {
+        if mode == 'max' {
+            Loop 10 {
+                if !this.Firestone.Buttons.UpgradeHeroFont.CheckPixels(1505, 954, 1687, 968)
+                    this.Firestone.Click(1598, 959, 500)
+                else
+                    return
+            }
+        } else if mode == 'x1' {
+            Loop 10 {
+                if !this.Firestone.Buttons.UpgradeHeroFont.CheckPixels(1528, 953, 1663, 966)
+                    this.Firestone.Click(1598, 959, 500)
+                else
+                    return
+            }
+        }
+        
+        
     }
 }
