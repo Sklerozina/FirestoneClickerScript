@@ -2,7 +2,7 @@
 #MaxThreadsPerHotkey 2
 #SingleInstance Force
 
-AppVersion := "v0.1.30"
+AppVersion := "v0.1.31"
 A_IconTip := "Firestone Clicker " AppVersion
 
 If !IsSet(Firestone_WorkingDir)
@@ -319,7 +319,7 @@ DoWork(force := false) {
 
 				; Сбрасываем дейлики
 				if Firestone.Icons.Red.Check(1883, 508, 1911, 541)
-					Firestone.ResetDailys()
+					Firestone.ResetDailysTimer()
 
 				Firestone.Mailbox.Do()
 				Firestone.HerosUpgrades.Do()

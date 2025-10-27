@@ -215,12 +215,19 @@ Class Firestone {
         }
     }
 
-    ResetDailys() {
+    ResetDailysTimer() {
         date := FormatTime(, 'yyyyMMdd')
 
         if this.Settings.Get('daily_date', date) == date
             return
 
+        ; Откладываем сброс дейликов на 5 минут
+        SetTimer(ObjBindMethod(this, "ResetDailys"), -300000)
+    }
+
+    ResetDailys() {
+        date := FormatTime(, 'yyyyMMdd')
+        
         DebugLog.Log("Сброс дейликов! Новый день!")
         this.Settings.Set('daily_merchant', 0)
         this.Settings.Set('daily_arena', 0)
