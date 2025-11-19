@@ -18,14 +18,16 @@ Class FirestoneController {
         hwids := WinGetList("ahk_exe Firestone.exe")
 
         for hwid in hwids {
-            path := WinGetProcessPath(hwid)
-            if this.Firestones.Has(path)
-            {
-                this.Firestones.Get(path).Window.SetHwid(hwid)
-            }
-            else
-            {
-                this.Firestones.Set(path, Firestone(hwid))
+            If InStr(WinGetTitle(hwid), 'Firestone') {
+                path := WinGetProcessPath(hwid)
+                if this.Firestones.Has(path)
+                {
+                    this.Firestones.Get(path).Window.SetHwid(hwid)
+                }
+                else
+                {
+                    this.Firestones.Set(path, Firestone(hwid))
+                }
             }
         }
     }
