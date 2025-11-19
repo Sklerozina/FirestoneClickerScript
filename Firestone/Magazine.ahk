@@ -9,6 +9,7 @@ Class Magazine {
 
         DebugLog.Log("Магазин", "`n")
         this.Firestone.Click(1300, 343)
+        Tools.Sleep(3000) ; Предположительно, игра подвисает и награды не всегда собираются.
     
         DebugLog.Log("== Подарок ==")
         reward_1 := false
