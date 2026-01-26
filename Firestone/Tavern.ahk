@@ -170,9 +170,11 @@ Class Tavern {
     }
 
     ScarabsGame() {
+        DebugLog.Log("== Игра скарабея ==")
         ; Если кнопка на входе серая, нет смысла искать зелёную и ждать 10 секунд
         if !this.Firestone.Buttons.Gray.Wait(1058, 913, 1081, 946, 1000)
         {
+            DebugLog.Log("=== Крутим казино ===")
             Loop 50 { ; Крутим казино, если есть на что
                 if !this.Firestone.Buttons.Green.WaitAndClick(1040, 911, 1066, 956, 10000)
                     break
@@ -182,7 +184,8 @@ Class Tavern {
         }
 
         if this.Firestone.Icons.Red.Check(1864, 155, 1897, 189) || this.Firestone.Icons.Red2.Check(1864, 155, 1897, 189) { ; Усыпальница фараона забрать награды
-            this.Firestone.Click(1813, 205) ; клик на усыпальницу 
+            DebugLog.Log("=== Усыпальница фараона ===")
+            this.Firestone.Click(1813, 205) ; клик на усыпальницу
 
             if !this.Firestone.Buttons.Gray.Wait(1188, 939, 1206, 977, 1000) ; Если кнопка на входе серая, нет смысла искать зелёную и ждать 10 секунд
             {
@@ -195,11 +198,13 @@ Class Tavern {
             }
 
             if this.Firestone.Icons.Red.Check(1865, 371, 1894, 402) || this.Firestone.Icons.Red2.Check(1865, 371, 1894, 402) { ; Усыпальница фараона -> Цели
+                DebugLog.Log("=== Усыпальница фараона -> Цели ===")
                 this.Firestone.Click(1815, 418, 2000) ; клик на цели
 
+                DebugLog.Log("=== Забираем цели ===")
                 loop 10 {
-                    if !this.Firestone.Buttons.White.FindAndClick(162, 721, 1754, 732)
-                        return
+                    if !this.Firestone.Buttons.White.FindAndClick(162, 721, 1754, 732) && !this.Firestone.Buttons.White.FindAndClick(162, 769, 1754, 779) ;; Можно удалить после выхода 9.0.5a в эпиках
+                        break
                     
                     MouseMove(0, 0)
                     Tools.Sleep(250)
