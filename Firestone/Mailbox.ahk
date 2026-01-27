@@ -14,20 +14,25 @@ Class Mailbox {
     }
 
     Do(force := false) {
+        DebugLog.Log('== Почта ==')
+        
         if !force
         {
             if this.Firestone.Settings.Get('auto_mailbox', 0) == 0
                 return
 
             ; Проверяем значок у иконки почты
-            if !this.Firestone.Icons.Red.Check(97, 718, 128, 748)
+            if !this.Firestone.Icons.Red.Check(97, 718, 128, 748) {
+                DebugLog.Log('Красная иконка не обнаружена, новой почты нет.')
                 return
+            }
         }
         
-        if !Tools.PixelSearch(63-5, 750-5, 63+5, 750+5, 0xFED279, 1) ; На всякий случай проверим, что в облати есть иконка почты
+        if !Tools.PixelSearch(22, 736, 79, 782, 0xFED279, 1) { ; На всякий случай проверим, что в облати есть иконка почты
+            DebugLog.Log('Не могу найти кнопку почты.')
             return
-
-        DebugLog.Log('== Почта ==')
+        }
+        
         this.Firestone.Click(58, 764) ; Клик на иконку почты
 
         this.Firestone.Click(514, 959) ; Клик в самое нижнее письмо, чтобы новые можно было найти по цвету
