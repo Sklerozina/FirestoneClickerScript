@@ -200,9 +200,8 @@ Class Firestone {
                 }
 
                 ; Возможно открылся новый герой?
-                if Tools.PixelSearch(702, 135, 783, 176, 0xE31923, 1) {
+                if Tools.PixelSearch(702, 135, 783, 176, 0xE31923, 0) {
                     DebugLog.Log('Новый герой?')
-                    this.TelegramSend('Доступен новый герой!', true)
                     this.Click(509, 524)
                 }
             }
