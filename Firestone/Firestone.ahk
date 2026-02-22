@@ -162,7 +162,7 @@ Class Firestone {
             DebugLog.Log('Попытка ' . i++)
             this.Window.Activate()
 
-            if i == 6
+            if i == 5
             {
                 ; К этому моменту мы уже должны быть на главном
                 DebugLog.Log("Свернуть и развернуть, вдруг поможет?")
@@ -171,6 +171,15 @@ Class Firestone {
                 WinRestore
                 Tools.Sleep(1000)
                 this.Window.Activate()
+            }
+
+            if i >= 6 ; Возможно игра не принимает нажатие кнопок, помогает зайти в город и выйти
+            {
+                ; проверяем наличие кнопки захода в город
+                if Tools.WaitForSearchPixel(1850, 195, 1865, 208, 0x2F3970, 1, 1000) { 
+                    this.Click(1859, 193)
+                    this.Esc()
+                }
             }
             
             MouseMove 0, 0
