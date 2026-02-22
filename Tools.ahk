@@ -1,4 +1,9 @@
 Class Tools {
+    static ToolTip(text) {
+        ToolTip(text)
+        SetTimer(ToolTip, -1500)
+    }
+    
     static WaitForSearchPixel(x1, y1, x2, y2, color, variation := 0, timeout := 30000) {
         t := 0
         while t <= timeout
@@ -27,10 +32,13 @@ Class Tools {
             MsgBox "Возникла неожиданная ошибка с поиском изображения:`n" exc.Message
     }
 
-    static Sleep(m := 1000) {
+    static Sleep(m := 1000, max := 0) {
         MouseGetPos(&Mx1, &My1)
     
-        Sleep m
+        if max <= 0
+            Sleep m
+        else
+            Sleep(Random(m, max))
     
         MouseGetPos(&Mx2, &My2)
     
