@@ -62,6 +62,9 @@ if Settings.Section('GENERAL').Get('BOT_TOKEN', 'none') == 'none'
 if Settings.Section('GENERAL').Get('TELEGRAM_CHAT_ID', 'none') == 'none'
 	Settings.Section('GENERAL').Set('TELEGRAM_CHAT_ID', '')
 
+if Settings.Section('GLOBAL').Get('EVENT_MODE', 'none') == 'none'
+	Settings.Section('GLOBAL').Set('EVENT_MODE', 0)
+
 DebugLog := Logs(Firestone_WorkingDir '\Logs\')
 If Settings.Section('GENERAL').Get('debug', 0) {
 	FirestoneController.Menu.Rename("Включить логи", 'Выключить логи')
@@ -218,6 +221,22 @@ PrestigeModeOnOff() {
 		Tp "Обычный режим"
 		FirestoneController.Menu.Uncheck('Режим престижа')
 		SetTimer DoPrestigeUpgrades, 0
+	}
+}
+
+EventModeOnOff() {
+	event_mode := Settings.Section('GLOBAL').Get('EVENT_MODE', 0)
+	
+	if !event_mode {
+		Tp "Режим событий включён"
+		FirestoneController.Menu.Check('Режим событий')
+		Settings.Section('GLOBAL').Set('EVENT_MODE', 1)
+	}
+	else
+	{
+		Tp "Режим событий выключен"
+		FirestoneController.Menu.Uncheck('Режим событий')
+		Settings.Section('GLOBAL').Set('EVENT_MODE', 0)
 	}
 }
 

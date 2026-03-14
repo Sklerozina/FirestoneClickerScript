@@ -11,6 +11,10 @@ Class FirestoneMenu extends Menu {
         this.Add("Режим престижа", (*) => (
             PrestigeModeOnOff()
         ))
+        this.Add("Режим событий", (*) => (
+            EventModeOnOff()
+        ))
+
         this.Add()
         this.Add('Действия', this.FirestoneRunMenu)
         
@@ -32,6 +36,9 @@ Class FirestoneMenu extends Menu {
         this.Add("Закрыть меню", (*) => (0))
 
         this.CreateSubMenu()
+
+        if Settings.Section('GLOBAL').Get('EVENT_MODE', 0)
+            this.Check('Режим событий')
     }
 
     CreateSubMenu() {

@@ -103,7 +103,7 @@ Class Tavern {
                     }
                 }
 
-                if this.Firestone.Settings.Get('auto_event_mode') == 1
+                if Settings.Section('GLOBAL').Get('EVENT_MODE', 0) == 1
                 {
                     DebugLog.Log("Делаем дополнительные две крутки...")
 

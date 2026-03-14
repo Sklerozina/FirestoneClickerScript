@@ -142,7 +142,6 @@ Class Firestone {
             'auto_enlightenment', 0,
             'auto_chaos_rift', 0,
             'auto_guard_holy_upgrade', 0,
-            'auto_event_mode', 0,
             'auto_map_refresh_gems', 0,
             'auto_scarab_game', 0,
         )
