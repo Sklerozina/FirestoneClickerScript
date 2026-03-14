@@ -210,13 +210,13 @@ PrestigeModeOnOff() {
 
 	if FirestoneController.prestige_mode {
 		Tp "Режим престижа"
-		FirestoneController.Menu.Rename('Режим престижа', 'Обычный режим')
+		FirestoneController.Menu.Check('Режим престижа')
 		SetTimer DoPrestigeUpgrades, 60000
 	}
 	else
 	{
 		Tp "Обычный режим"
-		FirestoneController.Menu.Rename('Обычный режим', 'Режим престижа')
+		FirestoneController.Menu.Uncheck('Режим престижа')
 		SetTimer DoPrestigeUpgrades, 0
 	}
 }
