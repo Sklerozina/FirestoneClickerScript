@@ -188,6 +188,7 @@ RunOnOff() {
 
 	if !toggled {
 		Tp "Скрипт приостановлен."
+		FirestoneController.Menu.Uncheck('Выключить')
 		FirestoneController.Menu.Rename('Выключить', 'Включить')
 		SetTimer DoWork, 0
 	}
@@ -195,6 +196,7 @@ RunOnOff() {
 	if toggled
 	{
 		Tp "Запускаю.", -1000
+		FirestoneController.Menu.Check('Включить')
 		FirestoneController.Menu.Rename('Включить', 'Выключить')
 		MouseGetPos(&saved_mouse_position_x, &saved_mouse_position_y)
 
