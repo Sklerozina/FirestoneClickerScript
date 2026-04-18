@@ -159,7 +159,7 @@ Class Library {
             this.Firestone.Click(OutputX, OutputY)
             MouseMove 0, 0
             ;; Подождать окно принятия
-            if this.Firestone.Buttons.Green.WaitAndClick(669, 707, 928, 775, 1000)
+            if this.Firestone.Buttons.Green.WaitAndClick(727, 631, 747, 718, 1000)
                 return true
         }
     }

@@ -160,11 +160,11 @@ Class Tavern {
         DebugLog.Log("== Обмен пива ==")
         this.Firestone.Click(1731, 42) ; Клик по иконке плюса для обмена пива
     
-        while Tools.WaitForSearchPixel(344-5, 437-5, 344+5, 437+5, 0x3CA8E1, 1, 1000) {
-            this.Firestone.Click(521, 509)
+        Loop 20 {
+            if !this.Firestone.Buttons.Gold.WaitAndClick(414, 578, 436, 633, 1000) {
+                break
+            }
         }
-        else
-            Tools.Sleep 1000
     
         this.Firestone.Esc()
     }

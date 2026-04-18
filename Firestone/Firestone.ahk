@@ -8,6 +8,7 @@ Class Firestone {
         White: Button(this, 0xFFFFFF),
         NewGreen: Button(this, 0x54A433),
         Gray: Button(this, 0xA5A2A5, 5),
+        Gold: Button(this, 0xFFBD33, 5),
         UpgradeHeroFont: Button(this, 0x542710)
 	}
 
