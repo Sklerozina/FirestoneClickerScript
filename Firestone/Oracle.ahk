@@ -45,7 +45,13 @@ Class Oracle {
             DebugLog.Log("Сбор бесплатной ежедневной награды")
             this.Firestone.Click(824, 738, 500)
             Tools.Sleep(500)
-            this.Firestone.Buttons.Gold.WaitAndClick(580, 743, 612, 794, 5000)
+            if !this.Firestone.Buttons.Gold.WaitAndClick(580, 743, 612, 794, 5000) {
+                ; Костыль для версии до 9.0.7
+                if PixelGetColor(467, 815) == 0x5B5EAA
+                {
+                    this.Firestone.Click(641, 739, 500)
+                }
+            }
             this.Firestone.Esc()
         }
     }

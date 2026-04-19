@@ -159,7 +159,7 @@ Class Library {
             this.Firestone.Click(OutputX, OutputY)
             MouseMove 0, 0
             ;; Подождать окно принятия
-            if this.Firestone.Buttons.Green.WaitAndClick(727, 631, 747, 718, 1000)
+            if this.Firestone.Buttons.Green.WaitAndClick(727, 631, 747, 783, 1000) ; 783 можно будет заменить на 718, когда в эпиках тоже будет 9.0.7
                 return true
         }
     }
