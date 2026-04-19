@@ -9,17 +9,21 @@ Class Magazine {
 
         DebugLog.Log("Магазин", "`n")
         this.Firestone.Click(1300, 343)
-        Tools.Sleep(3000) ; Предположительно, игра подвисает и награды не всегда собираются.
+        Tools.Sleep(1000) ; Предположительно, игра подвисает и награды не всегда собираются.
     
         DebugLog.Log("== Подарок ==")
         reward_1 := false
-        if Tools.PixelSearch(473, 857, 862, 899, 0x5B5EAA, 1)
-        {
-            this.Firestone.Click(592, 743, 1000)
-            
-            if !Tools.PixelSearch(473, 857, 862, 899, 0x5B5EAA, 1)
-            {
+        if this.Firestone.Icons.Red.Check(594, 19, 629, 52)
+        {          
+            if this.Firestone.Buttons.Gold.WaitAndClick(563, 824, 592, 877, 5, 5000) {
                 reward_1 := true
+            } else {
+                ; На случай старой версии игры до 9.0.7
+                this.Firestone.Click(592, 743, 1000)
+                if !this.Firestone.Icons.Red.Check(594, 19, 629, 52)
+                {
+                    reward_1 := true
+                }
             }
         }
         else ; Видимо награду уже собрали

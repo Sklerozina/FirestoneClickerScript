@@ -13,8 +13,8 @@ Class Firestone {
 	}
 
     Icons := {
-        Red: Button(this, 0xF30000),
-        Red2: Button(this, 0xFF0000),
+        Red: Button(this, 0xF30000, 5),
+        Red2: Button(this, 0xFF0000, 5),
         Close: Button(this, 0xFF620A),
     }
 
