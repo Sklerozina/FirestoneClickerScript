@@ -38,7 +38,7 @@ Class Guard {
 
     CollectFreeXP() {
         DebugLog.Log("== Сбор опыта ==")
-        if this.Firestone.Buttons.Green.CheckAndClick(1022, 703, 1053, 791) ; Кнопка бесплатного опыта
+        if this.Firestone.Buttons.Green.WaitAndClick(1022, 703, 1053, 791, 2000) ; Кнопка бесплатного опыта
         {
             ; Добавить настройку в конфиг
             if this.Firestone.Settings.Get('auto_enlightenment', 0) > 0
