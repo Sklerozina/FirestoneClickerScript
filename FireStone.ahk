@@ -2,7 +2,7 @@
 #MaxThreadsPerHotkey 2
 #SingleInstance Force
 
-AppVersion := "v0.1.33"
+AppVersion := "v0.1.34"
 A_IconTip := "Firestone Clicker " AppVersion
 
 If !IsSet(Firestone_WorkingDir)
@@ -254,6 +254,7 @@ SetAllDailyComplete(){
 			Settings.Section(key).Set('daily_tavern', 1)
 			Settings.Section(key).Set('daily_crystal', 1)
 			Settings.Section(key).Set('daily_magazine', 1)
+			Settings.Section(key).Set('daily_scarab_free', 1)
 			Settings.Section(key).Set('daily_date', date)
 		}
 	}
@@ -276,6 +277,7 @@ SetAllDailyUncomplete() {
 			Settings.Section(key).Set('daily_tavern', 0)
 			Settings.Section(key).Set('daily_crystal', 0)
 			Settings.Section(key).Set('daily_magazine', 0)
+			Settings.Section(key).Set('daily_scarab_free', 0)
 		}
 	}
 }

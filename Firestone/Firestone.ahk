@@ -108,6 +108,7 @@ Class Firestone {
             'daily_crystal', 1,
             'daily_date', FormatTime(, 'yyyyMMdd'),
             'daily_chaos_rift', 1,
+            'daily_scarab_free', 1,
             
             ; коробки
             'open_boxes', 0,
@@ -243,6 +244,7 @@ Class Firestone {
         this.Settings.Set('daily_crystal', 0)
         this.Settings.Set('daily_magazine', 0)
         this.Settings.Set('daily_chaos_rift', 0)
+        this.Settings.Set('daily_scarab_free', 0)
         this.Settings.Set('daily_date', date)
     }
 

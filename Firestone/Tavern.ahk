@@ -170,6 +170,16 @@ Class Tavern {
     }
 
     ScarabsGame() {
+        DebugLog.Log("== Магазин ==")
+        if this.Firestone.Icons.Red.Check(1864, 652, 1898, 684) && this.Firestone.Settings.Get('daily_scarab_free', 1) == 0 {
+            this.Firestone.Click(1815, 703)
+
+            if this.Firestone.Buttons.Gold.WaitAndClick(569, 715, 602, 764, 3000)
+                this.Firestone.Settings.Set('daily_scarab_free', 1) ; помечаем, что забрали сегодня
+
+            this.Firestone.Esc()
+        }
+
         DebugLog.Log("== Игра скарабея ==")
         ; Если кнопка на входе серая, нет смысла искать зелёную и ждать 10 секунд
         if !this.Firestone.Buttons.Gray.Wait(1058, 913, 1081, 946, 1000)
