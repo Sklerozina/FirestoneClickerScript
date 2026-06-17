@@ -63,7 +63,7 @@ Class Guild {
         {
             this.Firestone.Click 660, 211, 500 ;; Здание магазина
 
-            if this.Firestone.Icons.Red.Check(161, 668, 196, 709){
+            if this.Firestone.Icons.Red.Wait(161, 668, 196, 709, 5000){
                 this.Firestone.Click 211, 721, 500
                 this.Firestone.Click 712, 410, 500
             }
