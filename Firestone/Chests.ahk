@@ -70,42 +70,10 @@ Class Chests {
             
             DebugLog.Log("Слот " i " (" x "x" y ")...")
 
-            for name, color in this.chests {
-                if this.Firestone.Settings.Get('open_any', 0) == 1
-                {
-                    if (Tools.PixelSearch(x-5, y-5, x+5, y+5, 0x9E7F67, 0))
-                    {
-                        ; MsgBox "В " . i . " пусто!"
-                        continue
-                    }
-                    else
-                    {
-                        DebugLog.Log("Слот " i "(" x "x" y ")...")
-                        this.OpenChest(x, y)
-                    }
-
-                    continue 2
-                }
-
-                if (Tools.PixelSearch(x-5, y-5, x+5, y+5, 0x9E7F67, 0))
-                {
-                    ; В ячейке пусто и нет смысла искать!
-                    continue 2
-                }
-
-                if this.Firestone.Settings.Get('open_' . name, 0) != 1
-                    continue
-
-                ; Ищем совпадение
-                if this.CheckColor(x, y, color) {
-                    DebugLog.Log('Нашёл ' name ' в слоте ' i)
-
-                    ; открываем сундуки
-                    this.OpenChest(x, y)
-                    
-                    break
-                }
-            }
+            if Tools.PixelSearch(x-5, y-5, x+5, y+5, 0x9E7F67, 2)
+                continue ; В ячейке пусто и нет смысла искать!
+            else
+                this.OpenChest(x, y)
         }
     }
 
@@ -122,11 +90,11 @@ Class Chests {
         MouseMove 0, 0
 
         DebugLog.Log("Поиск кнопок x50 или x25 или x10...")
-        if this.Firestone.Buttons.Green.FindAndClick(1283, 696, 1301, 851) ; x50
+        if this.Firestone.Buttons.Green.FindAndClick(1283, 696, 1301, 911) ; x50
             box_opened := true
-        else if this.Firestone.Buttons.Green.FindAndClick(1153, 696, 1176, 851) ; x25
+        else if this.Firestone.Buttons.Green.FindAndClick(1153, 696, 1176, 911) ; x25
             box_opened := true
-        else if this.Firestone.Buttons.Green.FindAndClick(863, 696, 1053, 851) ; x10
+        else if this.Firestone.Buttons.Green.FindAndClick(863, 696, 1053, 911) ; x10
             box_opened := true
         else
         {
