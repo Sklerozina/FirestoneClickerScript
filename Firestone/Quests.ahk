@@ -44,7 +44,7 @@ Class Quests {
 
     Complete() {
         MouseMove 0, 0
-        If this.Firestone.Buttons.Green.WaitAndClick(1576, 263, 1613, 309, 1000)
+        If this.Firestone.Buttons.Green.WaitAndClick(1516, 263, 1580, 309, 1000)
         {
             this.Firestone.Buttons.Green.WaitAndClick(1035, 635, 1099, 727, 500)
             return true
