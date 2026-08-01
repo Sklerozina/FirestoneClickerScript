@@ -18,6 +18,7 @@ Class Chests {
         'epic', 0x243B3C,
         'legendary', 0x68645E, 
         'mythic', 0xA08C8B,
+        'titan', [836, 366, 0x29FFFD],
         
         ; Танки
         'wooded', 0x472726,

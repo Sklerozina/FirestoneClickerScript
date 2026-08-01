@@ -65,7 +65,8 @@ Class Guild {
 
             if this.Firestone.Icons.Red.Wait(161, 668, 196, 709, 5000){
                 this.Firestone.Click 211, 721, 500
-                this.Firestone.Click 712, 410, 500
+                if !this.Firestone.Buttons.Green.WaitAndClick(604, 692, 632, 739, 3000)
+                    this.Firestone.Click 712, 410, 500 ; Костыль для эпиков
             }
 
             this.Firestone.Esc()

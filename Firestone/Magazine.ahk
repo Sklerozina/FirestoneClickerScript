@@ -14,16 +14,12 @@ Class Magazine {
         DebugLog.Log("== Подарок ==")
         reward_1 := false
         if this.Firestone.Icons.Red.Check(594, 19, 629, 52)
-        {          
-            if this.Firestone.Buttons.Gold.WaitAndClick(563, 824, 592, 877, 5, 5000) {
+        {
+            if this.Firestone.Buttons.Green.WaitAndClick(565, 828, 588, 869, 5, 5000) {
                 reward_1 := true
-            } else {
-                ; На случай старой версии игры до 9.0.7
-                this.Firestone.Click(592, 743, 1000)
-                if !this.Firestone.Icons.Red.Check(594, 19, 629, 52)
-                {
+            } else { ; Временно для эпиков
+                this.Firestone.Buttons.Gold.WaitAndClick(563, 824, 592, 877, 5, 1000)
                     reward_1 := true
-                }
             }
         }
         else ; Видимо награду уже собрали

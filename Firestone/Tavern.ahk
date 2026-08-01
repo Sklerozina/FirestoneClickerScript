@@ -161,9 +161,13 @@ Class Tavern {
         this.Firestone.Click(1731, 42) ; Клик по иконке плюса для обмена пива
     
         Loop 20 {
-            if !this.Firestone.Buttons.Gold.WaitAndClick(414, 578, 436, 633, 1000) {
+            if !this.Firestone.Buttons.Green.WaitAndClick(414, 578, 436, 633, 1000) {
+                if this.Firestone.Buttons.Gold.WaitAndClick(414, 578, 436, 633, 1000) ; Костыль для эпиков
+                    continue
                 break
             }
+
+            MouseMove(0, -50)
         }
     
         this.Firestone.Esc()
@@ -174,7 +178,7 @@ Class Tavern {
         if this.Firestone.Icons.Red.Check(1864, 652, 1898, 684) && this.Firestone.Settings.Get('daily_scarab_free', 1) == 0 {
             this.Firestone.Click(1815, 703)
 
-            if this.Firestone.Buttons.Gold.WaitAndClick(569, 715, 602, 764, 3000)
+            if this.Firestone.Buttons.Green.WaitAndClick(569, 715, 602, 764, 3000)
                 this.Firestone.Settings.Set('daily_scarab_free', 1) ; помечаем, что забрали сегодня
 
             this.Firestone.Esc()
