@@ -229,6 +229,7 @@ Class Firestone {
         }
 
         if !game_good {
+            this.force_restart := true
             DebugLog.Log('Игра сломалась!')
             this.TelegramSend("Игра сломалась!")
             throw 'Игра сломалась!'
