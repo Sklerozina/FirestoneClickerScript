@@ -14,7 +14,7 @@ Class MapMissions {
             this.icon := icon
     }
 
-    EachMapMissions(force := false, finish := false) {
+    EachMapMissions(force := false, finish := false, force_click_all := false) {
         try_finish := false
 
         For m in this.missions
@@ -23,7 +23,7 @@ Class MapMissions {
                 break
     
             DebugLog.Log("Координаты: " m.x "x" m.y)
-            if m.force_click == true || force == true
+            if m.force_click == true || force == true || force_click_all == true
             {
                 if m.Click()
                     try_finish := true

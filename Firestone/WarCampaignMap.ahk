@@ -174,12 +174,12 @@ Class WarCampaignMap {
         {
             ; Мисси при событии "Мировое господство"
             DebugLog.Log("=== Прокликиваем подарки ===")
-            this.missions.Get('mystery').EachMapMissions(force, false)
+            this.missions.Get('mystery').EachMapMissions(force, false, true)
 
             for mission_type in this.Get_Priority()
             {
                 DebugLog.Log('=== Прокликиваем ' mission_type ' ===')
-                this.missions.Get(mission_type).EachMapMissions(force, false)
+                this.missions.Get(mission_type).EachMapMissions(force, false, true)
             }
         }
     }
