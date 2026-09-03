@@ -99,6 +99,7 @@ Class Firestone {
             'oracle_blessings_priority', 0,
             'map_missions_priority', 'monster, sea, dragon, scout, adventure, war',
             'screenshot_crystal', 0,
+            'force_click_map_missions', 0,
             
             ; Дейли
             'daily_arena', 1,
