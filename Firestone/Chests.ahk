@@ -90,12 +90,17 @@ Class Chests {
 
         MouseMove 0, 0
 
+        y := 696
+        if this.Firestone.Buttons.Green.Check(573, 642, 583, 703) {
+            y := 757 ; 9.1.1
+        }
+
         DebugLog.Log("Поиск кнопок x50 или x25 или x10...")
-        if this.Firestone.Buttons.Green.FindAndClick(1283, 696, 1301, 911) ; x50
+        if this.Firestone.Buttons.Green.FindAndClick(1283, y, 1301, 911) ; x50
             box_opened := true
-        else if this.Firestone.Buttons.Green.FindAndClick(1153, 696, 1176, 911) ; x25
+        else if this.Firestone.Buttons.Green.FindAndClick(1153, y, 1176, 911) ; x25
             box_opened := true
-        else if this.Firestone.Buttons.Green.FindAndClick(863, 696, 1053, 911) ; x10
+        else if this.Firestone.Buttons.Green.FindAndClick(863, y, 1053, 911) ; x10
             box_opened := true
         else
         {
