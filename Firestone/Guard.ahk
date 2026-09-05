@@ -62,12 +62,12 @@ Class Guard {
 
     RarityUp() {
         DebugLog.Log("== Редкость стража ==")
-        if !this.Firestone.Icons.Red2.Check(1623, 79, 1661, 114)
+        if !this.Firestone.Icons.Red2.Check(1014, 66, 1039, 94)
             return
 
-        this.Firestone.Click(1597, 142)
+        this.Firestone.Click(987, 120)
 
-        if this.Firestone.Buttons.Green.CheckAndClick(1336, 569, 1373, 611) ; проверем кнопку и повышаем редкость
+        if this.Firestone.Buttons.Green.CheckAndClick(813, 589, 843, 622) ; проверем кнопку и повышаем редкость
             this.Firestone.TelegramSend('Редкость стража повышена!', true)
 
         Tools.Sleep(10000) ; спим 10 секунд, пока идёт анимация, вроде должно хватить
