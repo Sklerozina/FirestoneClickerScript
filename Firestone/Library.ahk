@@ -36,6 +36,24 @@ Class Library {
         this.Firestone.Esc()
     }
 
+    CountUp() {
+        this.research_count += 1
+
+        if this.research_count > 2
+            this.research_count := 2
+    }
+
+    CountDown() {
+        this.research_count -= 1
+
+        if this.research_count < 0
+            this.research_count := 0
+    }
+
+    GetCount() {
+        return ' (count: ' this.research_count ')'
+    }
+
     Research() {
         this.research_count := 0
         DebugLog.Log("== Исследования Firestone ==")
@@ -49,27 +67,29 @@ Class Library {
         
         MouseMove 0, 0
 
-        if Tools.PixelSearch(221, 892, 441, 896, 0xFFCE58, 1)
+        if Tools.PixelSearch(184, 883, 205, 909, 0xFFCE58, 1)
         {
-            DebugLog.Log("Найдено активное исследование в слоте 1")
-            this.research_count += 1
+            this.CountUp()
+            DebugLog.Log("Найдено активное исследование в слоте 1" this.GetCount())
         }
     
-        if Tools.PixelSearch(871, 892, 1086, 896, 0xFFCE58, 1)
+        if Tools.PixelSearch(834, 885, 855, 908, 0xFFCE58, 1)
         {
-            DebugLog.Log("Найдено активное исследование в слоте 2")
-            this.research_count += 1
+            this.CountUp()
+            DebugLog.Log("Найдено активное исследование в слоте 2" this.GetCount())
         }
         
         ; Проверка первого слота
         loop 2
         {
             if this.CheckSlot(1)
-                this.research_count -= 1
+                this.CountDown()
 
             MouseMove 0, 0
             Tools.Sleep 500
         }
+
+        DebugLog.Log("Слоты проверены" this.GetCount())
     
         ;; Проверка второго слота
         ; Проверка на оранжевую кнопку, досрочное бесплатное завершение
@@ -77,10 +97,9 @@ Class Library {
         if this.research_count > 0 {
             if this.CheckSlot(2)
             {
-                DebugLog.Log("Исследование завершено")
-                this.research_count -= 1
+                this.CountDown()
+                DebugLog.Log("Исследование завершено" this.GetCount())
             }
-                
     
             MouseMove 0, 0
             Tools.Sleep 500
@@ -89,7 +108,7 @@ Class Library {
         ;; Добавить проверку на второе исследование
         if (this.research_count < 2)
         {
-            DebugLog.Log("Поиск новых исследований...")
+            DebugLog.Log("Поиск новых исследований..." this.GetCount())
             i := 1
             loop 2
             {
@@ -119,12 +138,12 @@ Class Library {
                         y := Integer(y)
                         if this.FindResearch(y, column[1], column[2])
                         {
-                            DebugLog.Log("Начинаем новое исследование")
-                            this.research_count += 1
+                            this.CountUp()
+                            DebugLog.Log("Начинаем новое исследование" this.GetCount())
                         }
                             
 
-                        if (this.research_count == 2)
+                        if (this.research_count >= 2)
                             break 3
                     }
                 }
@@ -141,7 +160,7 @@ Class Library {
 
         ; Проверка на оранжевую кнопку, досрочное завершение
         ;if CheckForImage(462, 899, 634, 948, "*120 images/ResearchFree.png") ; Пока не удаляю, на случай, если по цвету не будет работать
-        DebugLog.Log("Пробуем завершить исследование в слоте " slot "...")
+        DebugLog.Log("Пробуем завершить исследование в слоте " slot "..." this.GetCount())
         if this.Firestone.Buttons.Orange.CheckAndClick(coords[1], coords[2], coords[3], coords[4])
             return true
 
