@@ -62,6 +62,7 @@ Class Guard {
 
     RarityUp() {
         DebugLog.Log("== Редкость стража ==")
+        this.FindActiveGuard()
         if !this.Firestone.Icons.Red2.Check(1014, 66, 1039, 94)
             return
 
