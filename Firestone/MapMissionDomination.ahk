@@ -28,6 +28,45 @@ Class MapMissionDomination {
             return true
         }
 
+        ; Проверяем наличие кнопки принятия миссии и кликаем её
+        DebugLog.Log("Поиск кнопки старта миссии...")
+        if !this.Firestone.Buttons.Green.WaitAndClick(955, 802, 990, 886, 500) ; Ищем кнопку и кликаем, если нет, проверяем другие варианты
+        {
+            DebugLog.Log("Поиск кнопки досрочного завершения...")
+            if(this.Firestone.Buttons.Orange.CheckAndClick(1251, 720, 1491, 790))
+            {
+                DebugLog.Log("Поиск кнопки подтверждения...")
+                if this.Firestone.Buttons.Green.WaitAndClick(802, 572, 828, 637, 5000)
+                    DebugLog.Log("Кнопка найдена")
+
+                return true
+            }
+    
+            ; Проверяем наличие кнопки отмены
+            DebugLog.Log("Поиск кнопки отмены...")
+            if(this.Firestone.Buttons.Red.Check(967, 713, 1009, 783))
+            {
+                this.Firestone.Press("{Esc}")
+                return true
+            }
+
+            ; Возможно клик был по выполненной миссии, проверяем наличие кнопки
+            DebugLog.Log("Поиск кнопки подтверждения...")
+            if this.Firestone.Buttons.Green.CheckAndClick(802, 572, 828, 637)
+                return true
+    
+            ; if(Tools.CheckForImage(1024, 803, 1164, 874, "*80 images/NotEnoughSquads.png"))
+            ; {
+            ;     this.Firestone.Esc()
+            ;     return true
+            ; }
+            DebugLog.Log("Какое-то окно точно открылось, но мы не знаем что за окно")
+            this.Firestone.Esc() ; если дошли сюда, то какое-то окно мы точно открыли
+
+            ; окно подтверждения принятия награды "награды миссии"
+            
+        }
+
         return false
     }
 }
