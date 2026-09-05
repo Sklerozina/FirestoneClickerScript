@@ -343,6 +343,6 @@ Class Firestone {
         name := this.Settings.Get('name', '') != '' ? this.Settings.Get('name', '') : WinGetProcessPath(Firestone.Window.hwid)
         
         text := "<b>" name "</b>`n`n" text
-        return Tools.TelegramSend(text, chatid, token, silent)
+        return Tools.TelegramSend(text, chatid, token, silent, Settings.Section('GENERAL').Get('PROXY_IP', ''), Settings.Section('GENERAL').Get('PROXY_PORT', ''))
     }
 }

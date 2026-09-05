@@ -49,7 +49,7 @@ Class Tools {
         }
     }
 
-    static TelegramSend(text, chatid, token, silent := false) {
+    static TelegramSend(text, chatid, token, silent := false, proxy_ip := "", proxy_port := "") {
         data:= "chat_id=" . chatid .
             "&text=" . text .
             "&parse_mode=HTML" .
@@ -61,6 +61,12 @@ Class Tools {
         try {
             ; https://learn.microsoft.com/en-us/windows/win32/winhttp/winhttprequest
             web := ComObject('WinHttp.WinHttpRequest.5.1')
+            
+            ; Устанавливаем прокси, если указан
+            if (proxy_ip != "" && proxy_port != "") {
+                web.SetProxy(2, proxy_ip ":" proxy_port)
+            }
+
             web.Open('POST', "https://api.telegram.org/bot" . token . "/sendMessage", True)
             web.SetRequestHeader("Content-Type", "application/x-www-form-urlencoded")
             web.Send(data)

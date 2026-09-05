@@ -59,6 +59,12 @@ if Settings.Section('GENERAL').Get('debug', 'none') == 'none'
 if Settings.Section('GENERAL').Get('BOT_TOKEN', 'none') == 'none'
 	Settings.Section('GENERAL').Set('BOT_TOKEN', '')
 
+if Settings.Section('GENERAL').Get('PROXY_IP', 'none') == 'none'
+	Settings.Section('GENERAL').Set('PROXY_IP', '')
+
+if Settings.Section('GENERAL').Get('PROXY_PORT', 'none') == 'none'
+	Settings.Section('GENERAL').Set('PROXY_PORT', '')
+
 if Settings.Section('GENERAL').Get('TELEGRAM_CHAT_ID', 'none') == 'none'
 	Settings.Section('GENERAL').Set('TELEGRAM_CHAT_ID', '')
 
