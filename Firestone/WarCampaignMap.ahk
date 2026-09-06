@@ -215,11 +215,17 @@ Class WarCampaignMap {
             this.Firestone.ScrollDown(60)
     
             DebugLog.Log("Миссия 6")
-            this.DoWMMission(280, 700, 540, 770) ; 6
+            if this.DoWMMission(280, 700, 540, 770) ; 6
+                this.Firestone.ScrollDown(60)
+            
             DebugLog.Log("Миссия 7")
-            this.DoWMMission(680, 710, 929, 770) ; 7
+            if this.DoWMMission(680, 710, 929, 770) ; 7
+                this.Firestone.ScrollDown(60)
+            
             DebugLog.Log("Миссия 8")
-            this.DoWMMission(1070, 710, 1330, 770) ; 8
+            if this.DoWMMission(1070, 710, 1330, 770) ; 8
+                this.Firestone.ScrollDown(60)
+            
             DebugLog.Log("Миссия 9")
             this.DoWMMission(1380, 710, 1640, 770) ; 9 примерно (Грозовой шпиль)
 
@@ -261,6 +267,8 @@ Class WarCampaignMap {
             }
             else
                 DebugLog.Log("Бой длился " Round((A_TickCount - start_time) / 1000) " секунд" )
+            
+            return 1
         }
         else
             return 0
