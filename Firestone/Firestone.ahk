@@ -314,6 +314,7 @@ Class Firestone {
             if this.progress_bar_found >= 3
             {
                 this.TelegramSend("Обнаружена полоса загрузки, пытаюсь перезапустить!")
+                this.progress_bar_found := 0
                 this.force_restart := true
             }
 
