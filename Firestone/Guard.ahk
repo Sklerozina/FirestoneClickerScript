@@ -48,12 +48,14 @@ Class Guard {
 
     Evolution() {
         DebugLog.Log("== Эволюция ==")
-        if !this.Firestone.Icons.Red.Check(1307, 78, 1343, 117)
+        if !this.Firestone.Icons.Red.Check(1230, 82, 1263, 113)
             return
 
-        this.Firestone.Click(1280, 147)
+        this.FindActiveGuard()
 
-        if this.Firestone.Buttons.Green.CheckAndClick(1001, 676, 1115, 760) ; проверем кнопку и эволюционируем
+        this.Firestone.Click(1200, 138)
+
+        if this.Firestone.Buttons.Green.CheckAndClick(984, 714, 994, 757) ; проверем кнопку и эволюционируем
             this.Firestone.TelegramSend('Эволюция стража!', true)
 
         ; После эволюциюю можно попробовать дождаться появление кнопки опыта по времени
@@ -62,13 +64,14 @@ Class Guard {
 
     RarityUp() {
         DebugLog.Log("== Редкость стража ==")
-        this.FindActiveGuard()
-        if !this.Firestone.Icons.Red2.Check(1014, 66, 1039, 94)
+        if !this.Firestone.Icons.Red2.Check(1623, 79, 1661, 114)
             return
 
-        this.Firestone.Click(987, 120)
+        this.FindActiveGuard()
 
-        if this.Firestone.Buttons.Green.CheckAndClick(813, 589, 843, 622) ; проверем кнопку и повышаем редкость
+        this.Firestone.Click(1597, 142)
+
+        if this.Firestone.Buttons.Green.CheckAndClick(1336, 569, 1373, 611) ; проверем кнопку и повышаем редкость
             this.Firestone.TelegramSend('Редкость стража повышена!', true)
 
         Tools.Sleep(10000) ; спим 10 секунд, пока идёт анимация, вроде должно хватить

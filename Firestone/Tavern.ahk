@@ -141,7 +141,7 @@ Class Tavern {
                 }
 
                 ; Проверяем доступность сборки нового артефакта
-                if this.Firestone.Buttons.Green.Check(195, 940, 215, 999)
+                if this.Firestone.Buttons.Green.Check(100, 940, 120, 999)
                 {
                     DebugLog.Log("Найдена кнопка для собрки артефакта")
                     this.Firestone.TelegramSend('Можно собрать артефакт!', true)
