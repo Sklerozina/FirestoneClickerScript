@@ -12,7 +12,7 @@ Class MapMission {
         ; Смотрим, появилось окно или нет, если не появилось, значит можно не проверять кнопки.
         ; Должно ускорить поиск миссий
         DebugLog.Log("Поиск окна миссии...")
-        if !Tools.WaitForSearchPixel(414, 206, 424, 216, 0xE1CDAC, 1, 250) {
+        if !Tools.WaitForSearchPixel(414, 206, 424, 216, 0xE1CDAC, 1, 500) {
             DebugLog.Log("Окно миссии не найдено")
             return false
         }
@@ -24,7 +24,7 @@ Class MapMission {
         if !this.Firestone.Buttons.Green.WaitAndClick(955, 802, 990, 886, 500) ; Ищем кнопку и кликаем, если нет, проверяем другие варианты
         {
             DebugLog.Log("Поиск кнопки досрочного завершения...")
-            if(this.Firestone.Buttons.Orange.CheckAndClick(1251, 720, 1491, 790))
+            if this.Firestone.Buttons.Orange.CheckAndClick(1251, 720, 1300, 741)
             {
                 DebugLog.Log("Поиск кнопки подтверждения...")
                 if this.Firestone.Buttons.Green.WaitAndClick(802, 572, 828, 637, 5000)

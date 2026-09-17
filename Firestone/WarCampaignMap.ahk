@@ -80,15 +80,19 @@ Class WarCampaignMap {
             else
             {
                 DebugLog.Log("Миссия обнаружена")
-                this.Firestone.Click 138, 239, 500
+                this.Firestone.Click(138, 239, 500)
                 ; окно подтверждения принятия награды "награды миссии"
+                ; Ждём появления рамки
+                if !Tools.WaitForSearchPixel(433, 211, 443, 221, 0xE2CDAC, 1, 1000)
+                    continue
+                
                 DebugLog.Log("Поиск кнопки подтверждения...")
-                if this.Firestone.Buttons.Green.CheckAndClick(802, 572, 828, 637)
+                if this.Firestone.Buttons.Green.CheckAndClick(809, 575, 837, 638)
                     continue
 
                 DebugLog.Log("Поиск кнопки досрочного завершения...")
                 ; if(CheckForImage(1251, 720, 1491, 790, "*120 images/FreeOrange.png"))
-                if(this.Firestone.Buttons.Orange.CheckAndClick(1251, 720, 1491, 790))
+                if this.Firestone.Buttons.Orange.CheckAndClick(1251, 720, 1300, 741)
                 {
                     DebugLog.Log("Поиск кнопки подтверждения...")
                     this.Firestone.Buttons.Green.WaitAndClick(802, 572, 828, 637, 5000)
