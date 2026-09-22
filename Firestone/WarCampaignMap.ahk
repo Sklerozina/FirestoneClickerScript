@@ -19,11 +19,12 @@ Class WarCampaignMap {
             'war', MapMissions(this.Firestone, [MapMission(1214, 285), MapMission(1008, 401), MapMission(779, 602), MapMission(1140, 600), MapMission(1450, 469), MapMission(840, 767),
                 MapMission(1047, 769), MapMission(1325, 774), MapMission(1147, 948), MapMission(1202, 521), MapMission(760, 822), MapMission(709, 646),
                 MapMission(954, 190), MapMission(896, 732), MapMission(1400, 753), MapMission(1245, 360), MapMission(646, 392), MapMission(920, 575)], Button(this.Firestone, 0xF79194, 5)),
-            ; Seas, Monsters, Dragons, Titans
+            ; Seas, Monsters, Dragons, Titans, Shadows
             'dragon', MapMissions(this.Firestone, [MapMission(467, 891), MapMission(599, 534), MapMission(611, 166), MapMission(1476, 740)], Button(this.Firestone, 0xA08E19, 5)),
             'monster', MapMissions(this.Firestone, [MapMission(960, 772), MapMission(1097, 522), MapMission(873, 422), MapMission(542, 947, true)], Button(this.Firestone, 0x642485, 5)), ; 542, 947 - эту только принудительно кликать
             'sea', MapMissions(this.Firestone, [MapMission(1137, 312), MapMission(374, 953), MapMission(1245, 819), MapMission(836, 944, true)], Button(this.Firestone, 0x1385BA, 5)), ; 836, 944 - эту только принудительно кликать
             'titans', MapMissions(this.Firestone, [MapMission(1167, 4, true), MapMission(1099, 15, true), MapMission(1209, 2, true), MapMission(1278, 2, true), MapMission(1267, 5, true)], Button(this.Firestone, 0xE7DBB5, 3)),
+            'shadows', MapMissions(this.Firestone, [MapMission(1458, 110)], Button(this.Firestone, 0x4D0000, 3)),
         )
     }
 
@@ -280,6 +281,7 @@ Class WarCampaignMap {
 
     Get_Priority() {
         defaults := Map(
+            'shadows', '',
             'titans', '',
             'monster', '',
             'sea', '',
@@ -288,7 +290,7 @@ Class WarCampaignMap {
             'adventure', '',
             'war', '')
         
-        priority := this.Firestone.Settings.Get('map_missions_priority', 'titans monster, sea, dragon, scout, adventure, war')
+        priority := this.Firestone.Settings.Get('map_missions_priority', 'shadows, titans, monster, sea, dragon, scout, adventure, war')
         priority := StrSplit(priority, ",", " `t`n`r")
         
         ; Заполняем список, проверяя, что такой тип миссий у нас есть.
